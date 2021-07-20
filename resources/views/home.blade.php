@@ -1,3 +1,3 @@
 <x-app-layout>
-    <a href="#" @click.prevent="logout">Logout</a>
+    <tweet-form user="{{ json_encode($user) }}" />
 </x-app-layout>

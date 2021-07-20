@@ -1,4 +1,5 @@
 import LoginForm from "./components/LoginForm";
+import TweetForm from "./components/TweetForm";
 
 import { createApp } from 'vue'
 
@@ -6,7 +7,8 @@ const axios = require('axios')
 
 const app = createApp({
     components: {
-        LoginForm
+        LoginForm,
+        TweetForm,
     },
     methods: {
         async logout() {

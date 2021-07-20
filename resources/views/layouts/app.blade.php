@@ -17,8 +17,15 @@
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
     <body>
-        <div id="app" class="min-h-screen bg-gray-100">
-
+        <div id="app" class="w-full lg:w-container border border-solid border-gray lg:mx-auto">
+            <header>
+                <nav class="py-2 px-3 border-b border-solid border-gray flex justify-between items-baseline">
+                    <a href="#" class="text-xl font-bold">Home</a>
+                    @auth
+                        <a href="#" class="text-blue text-sm hover:underline" @click.prevent="logout">Logout</a>
+                    @endauth
+                </nav>
+            </header>
             <!-- Page Content -->
             <main>
                 {{ $slot }}
