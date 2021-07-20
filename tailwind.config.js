@@ -23,7 +23,8 @@ module.exports = {
                 },
             },
             width: {
-                'container': '600px'
+                'container': '600px',
+                'container-child': '598px'
             }
         },
     },

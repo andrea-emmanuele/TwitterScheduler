@@ -1,5 +1,6 @@
 import LoginForm from "./components/LoginForm";
 import TweetForm from "./components/TweetForm";
+import Tweets from "./components/tweets/Tweets";
 
 import { createApp } from 'vue'
 
@@ -9,6 +10,7 @@ const app = createApp({
     components: {
         LoginForm,
         TweetForm,
+        Tweets
     },
     methods: {
         async logout() {

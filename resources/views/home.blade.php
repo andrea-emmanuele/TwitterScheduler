@@ -1,3 +1,6 @@
 <x-app-layout>
-    <tweet-form user="{{ json_encode($user) }}" />
+    <div>
+        <tweet-form user="{{ json_encode($user) }}"/>
+    </div>
+    <tweets user="{{ $user->id }}" />
 </x-app-layout>
