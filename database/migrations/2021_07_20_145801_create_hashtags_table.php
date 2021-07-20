@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTweetsTable extends Migration
+class CreateHashtagsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,9 @@ class CreateTweetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tweets', function (Blueprint $table) {
+        Schema::create('hashtags', function (Blueprint $table) {
             $table->id();
-            $table->text('message');
-            $table->string('media_path')->nullable();
-            $table->dateTime('published_at');
-            $table->foreignId('user_id')
-                ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -33,6 +27,6 @@ class CreateTweetsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tweets');
+        Schema::dropIfExists('hashtags');
     }
 }

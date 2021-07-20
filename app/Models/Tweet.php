@@ -16,4 +16,14 @@ class Tweet extends Model
         'user_id',
         'hashtag_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function hashtags()
+    {
+        return $this->belongsToMany(Hashtag::class);
+    }
 }
