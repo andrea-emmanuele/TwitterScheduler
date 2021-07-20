@@ -19,7 +19,7 @@
     <body>
         <div id="app" class="w-full lg:w-container border border-solid border-gray lg:mx-auto">
             <header>
-                <nav class="py-2 px-3 border-b border-solid border-gray flex justify-between items-baseline">
+                <nav class="bg-white w-full lg:w-container-child py-2 px-3 border-b border-solid border-gray flex justify-between items-baseline fixed z-20">
                     <a href="#" class="text-xl font-bold">Home</a>
                     @auth
                         <a href="#" class="text-blue text-sm hover:underline" @click.prevent="logout">Logout</a>
@@ -27,7 +27,7 @@
                 </nav>
             </header>
             <!-- Page Content -->
-            <main>
+            <main class="mt-10">
                 {{ $slot }}
             </main>
         </div>
