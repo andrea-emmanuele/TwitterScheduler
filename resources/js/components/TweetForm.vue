@@ -7,7 +7,7 @@
         </div>
         <div class="ml-1 flex-1">
             <form @submit.prevent="submit">
-                <Textarea v-model="form.message" @content="setValue" :contenteditable="!isLoading" :class="{ 'opacity-50': isLoading }" :placeholder="!isLoading && !form.message ? 'What is happening?' : ''" />
+                <Textarea @content="setValue" :contenteditable="!isLoading" :class="{ 'opacity-50': isLoading }" :placeholder="!isLoading && !$store.state.form.message ? 'What is happening?' : ''" />
                     <!--                    <textarea
                                             ref="tweet-message"
                                             v-model="form.message"
@@ -40,8 +40,8 @@
                             </div>
                         </div>
                         <div class="flex items-center ml-auto">
-                            <span v-show="form.message && !isLoading">{{ remainingChars }}</span>
-                            <div v-show="form.message && !isLoading" class="h-8 border-r border-solid border-gray-100 mx-3"></div>
+                            <span v-show="$store.state.form.message && !isLoading">{{ remainingChars }}</span>
+                            <div v-show="$store.state.form.message && !isLoading" class="h-8 border-r border-solid border-gray-100 mx-3"></div>
                             <button type="submit" class="text-white font-bold bg-blue py-2 px-4 rounded-full flex items-center" :disabled="!canSubmit">
                                 <svg v-show="isLoading" class="animate-spin mr-2 h-5 w-5 text-white"
                                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -62,6 +62,9 @@
 
 <script>
 import Textarea from "./Textarea";
+
+const axios = require('axios')
+
 export default {
     name: "TweetForm",
     components: { Textarea },
@@ -71,41 +74,38 @@ export default {
     data() {
         return {
             profile: {},
-            form: {
-                message: ''
-            },
             isLoading: false,
         }
     },
     computed: {
         remainingChars() {
-            return 320 - this.form.message.length
+            return 320 - this.$store.state.form.message.length
         },
         canSubmit() {
-            return this.form.message && this.remainingChars >= 0 && !this.isLoading
+            return this.$store.state.form.message && this.remainingChars >= 0 && !this.isLoading
         }
     },
     created() {
         this.profile = JSON.parse(this.user)
+        this.$store.commit('setUserID', this.profile.id)
     },
     methods: {
         setValue(value) {
-            this.form.message = value
+            this.$store.commit('setMessage', value)
+            console.log(this.$store.state.form.message)
         },
-        resize() {
-            const textarea = this.$refs["tweet-message"]
-
-            if (textarea.scrollHeight < 300) {
-                textarea.style.height = 'initial'
-                textarea.style.height = `${textarea.scrollHeight}px`
-            }
+        async createTweet() {
+            this.isLoading = true
+            return await axios.post('/api/create-tweet', this.$store.state.form)
         },
         submit() {
-            this.isLoading = true
-            setTimeout(() => {
-                this.isLoading = false
-            }, 2000)
-            console.log(this.form.message)
+            this.createTweet()
+                .then(response => {
+                    this.isLoading = false
+
+                    this.$store.commit('clearMessage')
+                    this.$store.commit('addNewTweet', response.data[0])
+                })
         }
     }
 }

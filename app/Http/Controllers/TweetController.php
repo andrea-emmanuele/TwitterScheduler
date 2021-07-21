@@ -12,8 +12,30 @@ class TweetController extends Controller
         $tweets = Tweet::where([
             ['user_id', $request->user],
             ['published_at', '<', now()]
-        ])->with('user')->get();
+        ])->with('user')->orderBy('published_at', 'DESC')->get();
 
         return response()->json($tweets);
+    }
+
+    public function store(Request $request)
+    {
+        $tweet = new Tweet();
+        $tweet->message = $request->message;
+
+        if ($request->published_at)
+        {
+            $tweet->published_at = $request->published_at;
+        }
+        else
+        {
+            $tweet->published_at = now();
+        }
+
+        $tweet->user_id = $request->userId;
+        $tweet->save();
+
+        $tweet = Tweet::where('id', $tweet->id)->with('user')->get();
+
+        return response()->json($tweet);
     }
 }

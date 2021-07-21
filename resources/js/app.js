@@ -1,8 +1,9 @@
+import { createApp } from 'vue'
+import store from './store'
 import LoginForm from "./components/LoginForm";
 import TweetForm from "./components/TweetForm";
 import Tweets from "./components/tweets/Tweets";
 
-import { createApp } from 'vue'
 
 const axios = require('axios')
 
@@ -19,6 +20,6 @@ const app = createApp({
             response.status === 200 ? window.location.replace('/login') : null
         }
     }
-}).mount('#app')
+}).use(store).mount('#app')
 
 
