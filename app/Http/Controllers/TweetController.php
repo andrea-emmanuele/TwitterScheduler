@@ -9,7 +9,10 @@ class TweetController extends Controller
 {
     public function index(Request $request)
     {
-        $tweets = Tweet::where('user_id', $request->user)->with('user')->get();
+        $tweets = Tweet::where([
+            ['user_id', $request->user],
+            ['published_at', '<', now()]
+        ])->with('user')->get();
 
         return response()->json($tweets);
     }

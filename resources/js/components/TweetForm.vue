@@ -7,16 +7,17 @@
         </div>
         <div class="ml-1 flex-1">
             <form @submit.prevent="submit">
-                    <textarea
-                        ref="tweet-message"
-                        v-model="form.message"
-                        rows="1"
-                        class="text-lg w-full border-none p-0 pl-3 my-3 focus:ring-0 resize-none disabled:opacity-50"
-                        placeholder="What's happening?"
-                        @input="resize"
-                        :disabled="isLoading"
-                    >
-                    </textarea>
+                <Textarea v-model="form.message" @content="setValue" :contenteditable="!isLoading" :class="{ 'opacity-50': isLoading }" :placeholder="!isLoading && !form.message ? 'What is happening?' : ''" />
+                    <!--                    <textarea
+                                            ref="tweet-message"
+                                            v-model="form.message"
+                                            rows="1"
+                                            class="text-lg w-full border-none p-0 pl-3 my-3 focus:ring-0 resize-none disabled:opacity-50"
+                                            placeholder="What's happening?"
+                                            @input="resize"
+                                            :disabled="isLoading"
+                                        >
+                                        </textarea>-->
                     <div class="flex">
                         <div v-show="!isLoading" class="actions flex items-center">
                             <div class="action relative w-10 h-10 rounded-full flex justify-center items-center overflow-hidden">
@@ -60,8 +61,10 @@
 </template>
 
 <script>
+import Textarea from "./Textarea";
 export default {
     name: "TweetForm",
+    components: { Textarea },
     props: {
         user: String
     },
@@ -86,6 +89,9 @@ export default {
         this.profile = JSON.parse(this.user)
     },
     methods: {
+        setValue(value) {
+            this.form.message = value
+        },
         resize() {
             const textarea = this.$refs["tweet-message"]
 
@@ -99,7 +105,7 @@ export default {
             setTimeout(() => {
                 this.isLoading = false
             }, 2000)
-            console.log('submitted')
+            console.log(this.form.message)
         }
     }
 }
