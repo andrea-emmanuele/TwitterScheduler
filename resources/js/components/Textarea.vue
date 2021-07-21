@@ -23,8 +23,6 @@ export default {
         returnValue() {
             let value = this.$refs["tweet-message"].innerText
 
-            value = value.replace(/\r?\n|\r/g, "");
-
             this.showPlaceholder(value)
             this.resize()
 

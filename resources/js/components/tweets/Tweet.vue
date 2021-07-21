@@ -11,7 +11,7 @@
                 <span class="opacity-50 mr-1.5">@{{ payload.user.tag }}</span>
                 <span class="opacity-50">· 1h</span>
             </div>
-            <p class="break-all">{{ payload.message }}</p>
+            <p class="break-all" v-html="payload.message"></p>
         </div>
     </div>
 </template>

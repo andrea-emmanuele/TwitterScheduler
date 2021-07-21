@@ -18237,7 +18237,6 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     returnValue: function returnValue() {
       var value = this.$refs["tweet-message"].innerText;
-      value = value.replace(/\r?\n|\r/g, "");
       this.showPlaceholder(value);
       this.resize();
       this.$emit('content', value);
@@ -18321,10 +18320,6 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
     this.$store.commit('setUserID', this.profile.id);
   },
   methods: {
-    setValue: function setValue(value) {
-      this.$store.commit('setMessage', value);
-      console.log(this.$store.state.form.message);
-    },
     createTweet: function createTweet() {
       var _this = this;
 
@@ -18335,7 +18330,7 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
               case 0:
                 _this.isLoading = true;
                 _context.next = 3;
-                return axios.post('/api/create-tweet', _this.$store.state.form);
+                return axios.post('/api/create-tweet', _this.processText(_this.$store.state.form));
 
               case 3:
                 return _context.abrupt("return", _context.sent);
@@ -18348,9 +18343,18 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
         }, _callee);
       }))();
     },
+    setValue: function setValue(value) {
+      this.$store.commit('setMessage', value);
+    },
+    processText: function processText(payload) {
+      var lineBreak = /(\r\n|\r|\n)/g;
+      payload.message = payload.message.replace(lineBreak, '<br>');
+      return payload;
+    },
     submit: function submit() {
       var _this2 = this;
 
+      console.log(this.processText(this.$store.state.form));
       this.createTweet().then(function (response) {
         _this2.isLoading = false;
 
@@ -18698,7 +18702,7 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     placeholder: !$data.isLoading && !_ctx.$store.state.form.message ? 'What is happening?' : ''
   }, null, 8
   /* PROPS */
-  , ["onContent", "contenteditable", "class", "placeholder"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                    <textarea\n                                            ref=\"tweet-message\"\n                                            v-model=\"form.message\"\n                                            rows=\"1\"\n                                            class=\"text-lg w-full border-none p-0 pl-3 my-3 focus:ring-0 resize-none disabled:opacity-50\"\n                                            placeholder=\"What's happening?\"\n                                            @input=\"resize\"\n                                            :disabled=\"isLoading\"\n                                        >\n                                        </textarea>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [_hoisted_5, _hoisted_6], 512
+  , ["onContent", "contenteditable", "class", "placeholder"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [_hoisted_5, _hoisted_6], 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, !$data.isLoading]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.remainingChars), 513
   /* TEXT, NEED_PATCH */
@@ -18766,10 +18770,6 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_8 = {
-  "class": "break-all"
-};
-
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)();
 
 var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data, $options) {
@@ -18783,9 +18783,12 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_6, "@" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.payload.user.tag), 1
   /* TEXT */
-  ), _hoisted_7]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.payload.message), 1
-  /* TEXT */
-  )])], 512
+  ), _hoisted_7]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+    "class": "break-all",
+    innerHTML: $props.payload.message
+  }, null, 8
+  /* PROPS */
+  , ["innerHTML"])])], 512
   /* NEED_PATCH */
   );
 });

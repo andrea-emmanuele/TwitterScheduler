@@ -8,16 +8,6 @@
         <div class="ml-1 flex-1">
             <form @submit.prevent="submit">
                 <Textarea @content="setValue" :contenteditable="!isLoading" :class="{ 'opacity-50': isLoading }" :placeholder="!isLoading && !$store.state.form.message ? 'What is happening?' : ''" />
-                    <!--                    <textarea
-                                            ref="tweet-message"
-                                            v-model="form.message"
-                                            rows="1"
-                                            class="text-lg w-full border-none p-0 pl-3 my-3 focus:ring-0 resize-none disabled:opacity-50"
-                                            placeholder="What's happening?"
-                                            @input="resize"
-                                            :disabled="isLoading"
-                                        >
-                                        </textarea>-->
                     <div class="flex">
                         <div v-show="!isLoading" class="actions flex items-center">
                             <div class="action relative w-10 h-10 rounded-full flex justify-center items-center overflow-hidden">
@@ -90,22 +80,28 @@ export default {
         this.$store.commit('setUserID', this.profile.id)
     },
     methods: {
-        setValue(value) {
-            this.$store.commit('setMessage', value)
-            console.log(this.$store.state.form.message)
-        },
         async createTweet() {
             this.isLoading = true
-            return await axios.post('/api/create-tweet', this.$store.state.form)
+            return await axios.post('/api/create-tweet', this.processText(this.$store.state.form))
+        },
+        setValue(value) {
+            this.$store.commit('setMessage', value)
+        },
+        processText(payload) {
+            const lineBreak = /(\r\n|\r|\n)/g
+
+            payload.message = payload.message.replace(lineBreak, '<br>');
+            return payload
         },
         submit() {
+            console.log(this.processText(this.$store.state.form))
             this.createTweet()
                 .then(response => {
                     this.isLoading = false
 
                     this.$store.commit('clearMessage')
                     this.$store.commit('addNewTweet', response.data[0])
-                })
+            })
         }
     }
 }
