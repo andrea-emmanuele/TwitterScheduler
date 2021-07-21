@@ -87,14 +87,29 @@ export default {
         setValue(value) {
             this.$store.commit('setMessage', value)
         },
-        processText(payload) {
+        addLineBreaks(value) {
             const lineBreak = /(\r\n|\r|\n)/g
 
-            payload.message = payload.message.replace(lineBreak, '<br>');
+            return value.replace(lineBreak, '<br>');
+        },
+        wrapURLs(value) {
+            const url = /(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-&?=%.]+/gm
+            const prefix = /https?/
+            let message = ''
+
+            !prefix.test(value)
+                ? message = value.replace(url, '<a href="http://$&" target="_blank" class="text-blue">$&</a>')
+                : message = value.replace(url, '<a href="$&" target="_blank" class="text-blue">$&</a>')
+
+            return message
+        },
+        processText(payload) {
+            payload.message = this.wrapURLs(payload.message)
+            payload.message = this.addLineBreaks(payload.message)
+
             return payload
         },
         submit() {
-            console.log(this.processText(this.$store.state.form))
             this.createTweet()
                 .then(response => {
                     this.isLoading = false

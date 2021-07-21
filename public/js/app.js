@@ -18231,7 +18231,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     '$store.state.form.message': function $storeStateFormMessage() {
-      !this.$store.state.form.message ? this.$refs["tweet-message"].innerHTML = '' : null;
+      if (!this.$store.state.form.message) {
+        this.$refs["tweet-message"].innerHTML = '';
+        this.$refs["tweet-message"].style.height = 'initial';
+      }
     }
   },
   methods: {
@@ -18346,15 +18349,25 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
     setValue: function setValue(value) {
       this.$store.commit('setMessage', value);
     },
-    processText: function processText(payload) {
+    addLineBreaks: function addLineBreaks(value) {
       var lineBreak = /(\r\n|\r|\n)/g;
-      payload.message = payload.message.replace(lineBreak, '<br>');
+      return value.replace(lineBreak, '<br>');
+    },
+    wrapURLs: function wrapURLs(value) {
+      var url = /(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-&?=%.]+/gm;
+      var prefix = /https?/;
+      var message = '';
+      !prefix.test(value) ? message = value.replace(url, '<a href="http://$&" target="_blank" class="text-blue">$&</a>') : message = value.replace(url, '<a href="$&" target="_blank" class="text-blue">$&</a>');
+      return message;
+    },
+    processText: function processText(payload) {
+      payload.message = this.wrapURLs(payload.message);
+      payload.message = this.addLineBreaks(payload.message);
       return payload;
     },
     submit: function submit() {
       var _this2 = this;
 
-      console.log(this.processText(this.$store.state.form));
       this.createTweet().then(function (response) {
         _this2.isLoading = false;
 

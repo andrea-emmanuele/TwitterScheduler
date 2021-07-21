@@ -16,7 +16,10 @@ export default {
     },
     watch: {
         '$store.state.form.message'() {
-            !this.$store.state.form.message ? this.$refs["tweet-message"].innerHTML = '' : null
+            if (!this.$store.state.form.message) {
+                this.$refs["tweet-message"].innerHTML = ''
+                this.$refs["tweet-message"].style.height = 'initial'
+            }
         }
     },
     methods: {
