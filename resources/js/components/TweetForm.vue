@@ -7,7 +7,7 @@
         </div>
         <div class="ml-1 flex-1">
             <form @submit.prevent="submit">
-                <Textarea @content="setValue" :contenteditable="!isLoading" :class="{ 'opacity-50': isLoading }" :placeholder="!isLoading && !$store.state.form.message ? 'What is happening?' : ''" />
+                <tweet-content @content="setValue" :contenteditable="!isLoading" :class="{ 'opacity-50': isLoading }" :placeholder="!isLoading && !$store.state.form.message ? 'What is happening?' : ''" />
                     <div class="flex">
                         <div v-show="!isLoading" class="actions flex items-center">
                             <div class="action relative w-10 h-10 rounded-full flex justify-center items-center overflow-hidden">
@@ -30,8 +30,8 @@
                             </div>
                         </div>
                         <div class="flex items-center ml-auto">
-                            <span v-show="$store.state.form.message && !isLoading">{{ remainingChars }}</span>
-                            <div v-show="$store.state.form.message && !isLoading" class="h-8 border-r border-solid border-gray-100 mx-3"></div>
+                            <span v-show="$store.state.form.message && !isLoading && noWhitespaceOnly">{{ remainingChars }}</span>
+                            <div v-show="$store.state.form.message && !isLoading && noWhitespaceOnly" class="h-8 border-r border-solid border-gray-100 mx-3"></div>
                             <button type="submit" class="text-white font-bold bg-blue py-2 px-4 rounded-full flex items-center" :disabled="!canSubmit">
                                 <svg v-show="isLoading" class="animate-spin mr-2 h-5 w-5 text-white"
                                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -51,13 +51,13 @@
 </template>
 
 <script>
-import Textarea from "./Textarea";
+import TweetContent from "./TweetContent";
 
 const axios = require('axios')
 
 export default {
     name: "TweetForm",
-    components: { Textarea },
+    components: { TweetContent },
     props: {
         user: String
     },
@@ -71,8 +71,16 @@ export default {
         remainingChars() {
             return 320 - this.$store.state.form.message.length
         },
+        noWhitespaceOnly() {
+            const { message } = this.$store.state.form
+            const regex = /[^\s]+/
+
+            return regex.test(message)
+        },
         canSubmit() {
-            return this.$store.state.form.message && this.remainingChars >= 0 && !this.isLoading
+            const { message } = this.$store.state.form
+
+            return message && this.noWhitespaceOnly && message !== ' ' && this.remainingChars >= 0 && !this.isLoading
         }
     },
     created() {
