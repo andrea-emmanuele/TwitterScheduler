@@ -18241,8 +18241,8 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
   },
   data: function data() {
     return {
-      apiData: [],
       hashtags: {
+        data: [],
         values: [],
         last: {
           value: '',
@@ -18265,10 +18265,10 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
       if (this.hashtags.values) {
         if (this.hashtags.last.value.length < this.hashtags.failedRequestAt || this.hashtags.failedRequestAt === 0) {
           this.getExistingHashtags().then(function (response) {
-            _this.apiData = response.data;
+            _this.hashtags.data = response.data;
             _this.hashtags.failedRequestAt = 0;
           })["catch"](function (error) {
-            _this.apiData = [];
+            _this.hashtags.data = [];
             _this.hashtags.failedRequestAt = _this.hashtags.last.value.length;
           });
         }
@@ -18280,7 +18280,7 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
     }
   },
   methods: {
-    returnValue: function returnValue() {
+    returnValue: function returnValue(event) {
       var tweetContent = this.$refs["tweet-content"];
       var innerText = tweetContent.innerText;
 
@@ -18311,14 +18311,13 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
       this.hashtags.values = value.match(hash);
 
       if (this.hashtags.values) {
-        this.hashtags.last.value = this.hashtags.values[this.hashtags.values.length - 1];
-
-        if (this.hashtags.last.lastLength === this.hashtags.last.value.length) {
-          this.apiData = [];
-          this.hashtags.failedRequestAt = 0;
+        if (this.hashtags.values[this.hashtags.values.length - 1].length === this.hashtags.last.lastLength) {
+          this.hashtags.data = [];
         }
+
+        this.hashtags.last.value = this.hashtags.values[this.hashtags.values.length - 1];
       } else {
-        this.apiData = [];
+        this.hashtags.data = [];
         this.hashtags.last.value = '';
       }
     },
@@ -18348,18 +18347,6 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
         }, _callee);
       }))();
     }
-    /*detectUrls(value) {
-        if (event.key === " ") {
-            console.log('space!')
-        }
-        console.log('a')
-        const regex = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/ig
-         value = value.replace(regex, "<span class='text-blue font-bold'>$&</span>")
-         this.$refs["tweet-content"].append(value)
-         const sel = window.getSelection();
-        sel.collapse(this.$refs["tweet-content"], 1);
-    }*/
-
   }
 });
 
@@ -18655,9 +18642,6 @@ var _hoisted_1 = {
 var _hoisted_2 = {
   "class": "bg-white w-2/4 rounded mt-2 absolute top-full left-3 z-30 list-shadow"
 };
-var _hoisted_3 = {
-  key: 0
-};
 
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)();
 
@@ -18669,12 +18653,12 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     "class": [{
       'opacity-50': _ctx.$store.state.isLoading
     }, "text-lg w-full p-0 pl-3 my-3 outline-none break-all overflow-y-auto placeholder"],
-    onInput: _cache[1] || (_cache[1] = function () {
-      return $options.returnValue && $options.returnValue.apply($options, arguments);
+    onInput: _cache[1] || (_cache[1] = function ($event) {
+      return $options.returnValue($event);
     })
   }, null, 42
   /* CLASS, PROPS, HYDRATE_EVENTS */
-  , ["contenteditable", "data-placeholder"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [$data.hashtags.values ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", _hoisted_3, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.apiData, function (hashtag) {
+  , ["contenteditable", "data-placeholder"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.hashtags.data, function (hashtag) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", {
       key: hashtag.id,
       "class": "font-bold py-4 px-4 border-b border-gray hover:bg-gray-50 transition cursor-pointer",
@@ -18684,9 +18668,9 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     , ["textContent"]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 512
+  ))])], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.apiData.length]])]);
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.hashtags.data.length]])]);
 });
 
 /***/ }),
@@ -18831,7 +18815,11 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     onSubmit: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.submit && $options.submit.apply($options, arguments);
     }, ["prevent"]))
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_tweet_content), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [_hoisted_5, _hoisted_6], 512
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_tweet_content, {
+    user: $data.profile.id
+  }, null, 8
+  /* PROPS */
+  , ["user"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [_hoisted_5, _hoisted_6], 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, !_ctx.$store.state.isLoading]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.remainingChars), 513
   /* TEXT, NEED_PATCH */

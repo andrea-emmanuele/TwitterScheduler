@@ -7,7 +7,7 @@
         </div>
         <div class="ml-1 flex-1">
             <form @submit.prevent="submit">
-                <tweet-content />
+                <tweet-content :user="profile.id"/>
                     <div class="flex">
                         <div v-show="!$store.state.isLoading" class="actions flex items-center">
                             <div class="action relative w-10 h-10 rounded-full flex justify-center items-center overflow-hidden">

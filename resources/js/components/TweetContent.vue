@@ -6,12 +6,12 @@
             :data-placeholder="!$store.state.isLoading && !$store.state.form.message ? 'What is happening?' : ''"
             :class="{ 'opacity-50': $store.state.isLoading }"
             class="text-lg w-full p-0 pl-3 my-3 outline-none break-all overflow-y-auto placeholder"
-            @input="returnValue"
+            @input="returnValue($event)"
         >
         </div>
-        <div v-show="apiData.length" class="bg-white w-2/4 rounded mt-2 absolute top-full left-3 z-30 list-shadow">
-            <ul v-if="hashtags.values">
-                <li v-for="hashtag in apiData" :key="hashtag.id" class="font-bold py-4 px-4 border-b border-gray hover:bg-gray-50 transition cursor-pointer" v-text="hashtag.name"></li>
+        <div v-show="hashtags.data.length" class="bg-white w-2/4 rounded mt-2 absolute top-full left-3 z-30 list-shadow">
+            <ul>
+                <li v-for="hashtag in hashtags.data" :key="hashtag.id" class="font-bold py-4 px-4 border-b border-gray hover:bg-gray-50 transition cursor-pointer" v-text="hashtag.name"></li>
             </ul>
         </div>
     </div>
@@ -27,8 +27,8 @@ export default {
     },
     data() {
         return {
-            apiData: [],
             hashtags: {
+                data: [],
                 values: [],
                 last: {
                     value: '',
@@ -49,11 +49,11 @@ export default {
             if (this.hashtags.values) {
                 if (this.hashtags.last.value.length < this.hashtags.failedRequestAt || this.hashtags.failedRequestAt === 0) {
                     this.getExistingHashtags().then(response => {
-                        this.apiData = response.data
+                        this.hashtags.data = response.data
                         this.hashtags.failedRequestAt = 0
                     })
                     .catch(error => {
-                        this.apiData = []
+                        this.hashtags.data = []
                         this.hashtags.failedRequestAt = this.hashtags.last.value.length
                     })
                 }
@@ -66,7 +66,7 @@ export default {
         }
     },
     methods: {
-        returnValue() {
+        returnValue(event) {
             let tweetContent = this.$refs["tweet-content"]
             let { innerText } = tweetContent
 
@@ -99,15 +99,15 @@ export default {
             this.hashtags.values = value.match(hash)
 
             if (this.hashtags.values) {
-                this.hashtags.last.value = this.hashtags.values[this.hashtags.values.length - 1]
 
-                if (this.hashtags.last.lastLength === this.hashtags.last.value.length) {
-                    this.apiData = []
-                    this.hashtags.failedRequestAt = 0
+                if (this.hashtags.values[this.hashtags.values.length - 1].length === this.hashtags.last.lastLength) {
+                    this.hashtags.data = []
                 }
+
+                this.hashtags.last.value = this.hashtags.values[this.hashtags.values.length - 1]
             }
             else {
-                this.apiData = []
+                this.hashtags.data = []
                 this.hashtags.last.value = ''
             }
         },
@@ -118,20 +118,6 @@ export default {
                 }
             })
         }
-        /*detectUrls(value) {
-            if (event.key === " ") {
-                console.log('space!')
-            }
-            console.log('a')
-            const regex = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/ig
-
-            value = value.replace(regex, "<span class='text-blue font-bold'>$&</span>")
-
-            this.$refs["tweet-content"].append(value)
-
-            const sel = window.getSelection();
-            sel.collapse(this.$refs["tweet-content"], 1);
-        }*/
     }
 }
 </script>
