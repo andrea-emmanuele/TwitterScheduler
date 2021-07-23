@@ -1,24 +1,59 @@
 <template>
-    <div
-        ref="tweet-content"
-        class="text-lg w-full p-0 pl-3 my-3 outline-none break-all overflow-y-auto placeholder"
-        :data-placeholder="placeholder"
-        @input="returnValue"
-    >
+    <div class="relative">
+        <div
+            ref="tweet-content"
+            :contenteditable="!$store.state.isLoading"
+            :data-placeholder="!$store.state.isLoading && !$store.state.form.message ? 'What is happening?' : ''"
+            :class="{ 'opacity-50': $store.state.isLoading }"
+            class="text-lg w-full p-0 pl-3 my-3 outline-none break-all overflow-y-auto placeholder"
+            @input="returnValue"
+        >
+        </div>
+        <div v-show="apiData.length" class="bg-white w-2/4 rounded mt-2 absolute top-full left-3 z-30 list-shadow">
+            <ul>
+                <li v-for="hashtag in apiData" :key="hashtag.id" class="font-bold py-4 px-4 border-b border-gray hover:bg-gray-50 transition cursor-pointer" v-text="hashtag.name"></li>
+            </ul>
+        </div>
     </div>
 </template>
 
 <script>
+const axios = require('axios')
+
 export default {
     name: "TweetContent",
     props: {
       placeholder: String
+    },
+    data() {
+        return {
+            apiData: [],
+            hashtags: {
+                values: [],
+                last: '',
+                failedRequestAt: 0
+            }
+        }
     },
     watch: {
         '$store.state.form.message'() {
             if (!this.$store.state.form.message) {
                 this.$refs["tweet-content"].innerHTML = ''
                 this.$refs["tweet-content"].style.height = 'initial'
+            }
+        },
+        'hashtags.last.length'() {
+            if (this.hashtags.values) {
+                if (this.hashtags.last.length < this.hashtags.failedRequestAt || this.hashtags.failedRequestAt === 0) {
+                    this.getExistingHashtags().then(response => {
+                        this.apiData = response.data
+                        this.hashtags.failedRequestAt = 0
+                    })
+                    .catch(error => {
+                        this.apiData = ''
+                        this.hashtags.failedRequestAt = this.hashtags.last.length
+                    })
+                }
             }
         }
     },
@@ -30,12 +65,14 @@ export default {
             if (innerText === '\n') {
                 innerText = ''
             }
+
             /*value = value.replace(/^\s+|\s+$/g, '');*/
-            /*this.detectUrls(value)*/
+
             this.showPlaceholder(tweetContent, innerText)
             this.resize()
+            this.findHashtags(innerText)
 
-            this.$emit('content', innerText)
+            this.$store.commit('setMessage', innerText)
         },
         showPlaceholder(tweetContent, value) {
             value ? tweetContent.classList.remove('placeholder') : tweetContent.classList.add('placeholder')
@@ -48,7 +85,40 @@ export default {
                 textarea.style.height = `${textarea.scrollHeight}px`
             }
         },
-        detectUrls(value) {
+        findHashtags(value) {
+            const hash = /\B(\#[a-zA-Z]+\b)(?![$-/:-?{-~!"^_`\[\]])/g
+
+            this.hashtags.values = value.match(hash)
+
+            if (this.hashtags.values)
+                this.hashtags.last = this.hashtags.values[this.hashtags.values.length - 1]
+
+            /*if (this.hashtags) {
+                if (this.apiData) {
+                    if (!this.apiData.some(data => data.name.includes(this.hashtags[this.hashtags.length - 1])) || !this.apiData.length) {
+                        console.log('diverso')
+                        this.getExistingHashtags().then(response => this.apiData = response.data)
+                    }
+                    else {
+                        console.log('uguale')
+                    }
+                }
+                else {
+                    this.getExistingHashtags().then(response => this.apiData = response.data)
+                }
+            }
+            else if (!this.hashtags && this.apiData.length) {
+                this.apiData = ''
+            }*/
+        },
+        async getExistingHashtags() {
+            return await axios.get('/api/hashtags', {
+                params: {
+                    'name': this.hashtags.values[this.hashtags.values.length - 1]
+                }
+            })
+        }
+        /*detectUrls(value) {
             if (event.key === " ") {
                 console.log('space!')
             }
@@ -61,7 +131,7 @@ export default {
 
             const sel = window.getSelection();
             sel.collapse(this.$refs["tweet-content"], 1);
-        }
+        }*/
     }
 }
 </script>
@@ -74,5 +144,8 @@ export default {
             opacity: 0.7;
             pointer-events: none;
         }
+    }
+    .list-shadow {
+        box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px
     }
 </style>

@@ -9,6 +9,7 @@ export default createStore({
                 publishedAt: '',
                 userId: null
             },
+            isLoading: false
         }
     },
     mutations: {
@@ -26,6 +27,9 @@ export default createStore({
         },
         clearMessage(state) {
             state.form.message = ''
+        },
+        setLoadingState(state, value = true) {
+            state.isLoading = value
         }
     }
 })
