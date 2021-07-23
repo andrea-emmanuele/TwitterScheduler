@@ -10,7 +10,7 @@
         >
         </div>
         <div v-show="apiData.length" class="bg-white w-2/4 rounded mt-2 absolute top-full left-3 z-30 list-shadow">
-            <ul>
+            <ul v-if="hashtags.values">
                 <li v-for="hashtag in apiData" :key="hashtag.id" class="font-bold py-4 px-4 border-b border-gray hover:bg-gray-50 transition cursor-pointer" v-text="hashtag.name"></li>
             </ul>
         </div>
@@ -30,7 +30,10 @@ export default {
             apiData: [],
             hashtags: {
                 values: [],
-                last: '',
+                last: {
+                    value: '',
+                    lastLength: 0
+                },
                 failedRequestAt: 0
             }
         }
@@ -42,19 +45,24 @@ export default {
                 this.$refs["tweet-content"].style.height = 'initial'
             }
         },
-        'hashtags.last.length'() {
+        'hashtags.last.value.length'() {
             if (this.hashtags.values) {
-                if (this.hashtags.last.length < this.hashtags.failedRequestAt || this.hashtags.failedRequestAt === 0) {
+                if (this.hashtags.last.value.length < this.hashtags.failedRequestAt || this.hashtags.failedRequestAt === 0) {
                     this.getExistingHashtags().then(response => {
                         this.apiData = response.data
                         this.hashtags.failedRequestAt = 0
                     })
                     .catch(error => {
-                        this.apiData = ''
-                        this.hashtags.failedRequestAt = this.hashtags.last.length
+                        this.apiData = []
+                        this.hashtags.failedRequestAt = this.hashtags.last.value.length
                     })
                 }
             }
+            else {
+                this.hashtags.failedRequestAt = 0
+            }
+
+            this.hashtags.last.lastLength = this.hashtags.last.value.length
         }
     },
     methods: {
@@ -86,30 +94,22 @@ export default {
             }
         },
         findHashtags(value) {
-            const hash = /\B(\#[a-zA-Z]+\b)(?![$-/:-?{-~!"^_`\[\]])/g
+            const hash = /\B(\#[a-zA-Z\d]+\b)(?![$-/:-?{-~!"^_`\[\]])/g
 
             this.hashtags.values = value.match(hash)
 
-            if (this.hashtags.values)
-                this.hashtags.last = this.hashtags.values[this.hashtags.values.length - 1]
+            if (this.hashtags.values) {
+                this.hashtags.last.value = this.hashtags.values[this.hashtags.values.length - 1]
 
-            /*if (this.hashtags) {
-                if (this.apiData) {
-                    if (!this.apiData.some(data => data.name.includes(this.hashtags[this.hashtags.length - 1])) || !this.apiData.length) {
-                        console.log('diverso')
-                        this.getExistingHashtags().then(response => this.apiData = response.data)
-                    }
-                    else {
-                        console.log('uguale')
-                    }
-                }
-                else {
-                    this.getExistingHashtags().then(response => this.apiData = response.data)
+                if (this.hashtags.last.lastLength === this.hashtags.last.value.length) {
+                    this.apiData = []
+                    this.hashtags.failedRequestAt = 0
                 }
             }
-            else if (!this.hashtags && this.apiData.length) {
-                this.apiData = ''
-            }*/
+            else {
+                this.apiData = []
+                this.hashtags.last.value = ''
+            }
         },
         async getExistingHashtags() {
             return await axios.get('/api/hashtags', {

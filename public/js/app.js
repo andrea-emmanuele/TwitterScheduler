@@ -18244,7 +18244,10 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
       apiData: [],
       hashtags: {
         values: [],
-        last: '',
+        last: {
+          value: '',
+          lastLength: 0
+        },
         failedRequestAt: 0
       }
     };
@@ -18256,20 +18259,24 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
         this.$refs["tweet-content"].style.height = 'initial';
       }
     },
-    'hashtags.last.length': function hashtagsLastLength() {
+    'hashtags.last.value.length': function hashtagsLastValueLength() {
       var _this = this;
 
       if (this.hashtags.values) {
-        if (this.hashtags.last.length < this.hashtags.failedRequestAt || this.hashtags.failedRequestAt === 0) {
+        if (this.hashtags.last.value.length < this.hashtags.failedRequestAt || this.hashtags.failedRequestAt === 0) {
           this.getExistingHashtags().then(function (response) {
             _this.apiData = response.data;
             _this.hashtags.failedRequestAt = 0;
           })["catch"](function (error) {
-            _this.apiData = '';
-            _this.hashtags.failedRequestAt = _this.hashtags.last.length;
+            _this.apiData = [];
+            _this.hashtags.failedRequestAt = _this.hashtags.last.value.length;
           });
         }
+      } else {
+        this.hashtags.failedRequestAt = 0;
       }
+
+      this.hashtags.last.lastLength = this.hashtags.last.value.length;
     }
   },
   methods: {
@@ -18300,26 +18307,20 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
       }
     },
     findHashtags: function findHashtags(value) {
-      var hash = /\B(\#[a-zA-Z]+\b)(?![$-/:-?{-~!"^_`\[\]])/g;
+      var hash = /\B(\#[a-zA-Z\d]+\b)(?![$-/:-?{-~!"^_`\[\]])/g;
       this.hashtags.values = value.match(hash);
-      if (this.hashtags.values) this.hashtags.last = this.hashtags.values[this.hashtags.values.length - 1];
-      /*if (this.hashtags) {
-          if (this.apiData) {
-              if (!this.apiData.some(data => data.name.includes(this.hashtags[this.hashtags.length - 1])) || !this.apiData.length) {
-                  console.log('diverso')
-                  this.getExistingHashtags().then(response => this.apiData = response.data)
-              }
-              else {
-                  console.log('uguale')
-              }
-          }
-          else {
-              this.getExistingHashtags().then(response => this.apiData = response.data)
-          }
+
+      if (this.hashtags.values) {
+        this.hashtags.last.value = this.hashtags.values[this.hashtags.values.length - 1];
+
+        if (this.hashtags.last.lastLength === this.hashtags.last.value.length) {
+          this.apiData = [];
+          this.hashtags.failedRequestAt = 0;
+        }
+      } else {
+        this.apiData = [];
+        this.hashtags.last.value = '';
       }
-      else if (!this.hashtags && this.apiData.length) {
-          this.apiData = ''
-      }*/
     },
     getExistingHashtags: function getExistingHashtags() {
       var _this2 = this;
@@ -18654,6 +18655,9 @@ var _hoisted_1 = {
 var _hoisted_2 = {
   "class": "bg-white w-2/4 rounded mt-2 absolute top-full left-3 z-30 list-shadow"
 };
+var _hoisted_3 = {
+  key: 0
+};
 
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)();
 
@@ -18670,7 +18674,7 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     })
   }, null, 42
   /* CLASS, PROPS, HYDRATE_EVENTS */
-  , ["contenteditable", "data-placeholder"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.apiData, function (hashtag) {
+  , ["contenteditable", "data-placeholder"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [$data.hashtags.values ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", _hoisted_3, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.apiData, function (hashtag) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", {
       key: hashtag.id,
       "class": "font-bold py-4 px-4 border-b border-gray hover:bg-gray-50 transition cursor-pointer",
@@ -18680,7 +18684,7 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     , ["textContent"]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])], 512
+  ))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.apiData.length]])]);
 });
