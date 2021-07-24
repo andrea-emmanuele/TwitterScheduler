@@ -11,7 +11,12 @@
         </div>
         <div v-show="hashtags.data.length" class="bg-white w-2/4 rounded mt-2 absolute top-full left-3 z-30 list-shadow">
             <ul>
-                <li v-for="hashtag in hashtags.data" :key="hashtag.id" class="font-bold py-4 px-4 border-b border-gray hover:bg-gray-50 transition cursor-pointer" v-text="hashtag.name"></li>
+                <li
+                    v-for="hashtag in hashtags.data"
+                    :key="hashtag.id"
+                    class="font-bold py-4 px-4 border-b border-gray hover:bg-gray-50 transition cursor-pointer"
+                    @click="addToText(hashtag.name)"
+                    v-text="hashtag.name"></li>
             </ul>
         </div>
     </div>
@@ -66,21 +71,12 @@ export default {
         }
     },
     methods: {
-        returnValue(event) {
-            let tweetContent = this.$refs["tweet-content"]
-            let { innerText } = tweetContent
-
-            if (innerText === '\n') {
-                innerText = ''
-            }
-
-            /*value = value.replace(/^\s+|\s+$/g, '');*/
-
-            this.showPlaceholder(tweetContent, innerText)
-            this.resize()
-            this.findHashtags(innerText)
-
-            this.$store.commit('setMessage', innerText)
+        async getExistingHashtags() {
+            return await axios.get('/api/hashtags', {
+                params: {
+                    'name': this.hashtags.values[this.hashtags.values.length - 1]
+                }
+            })
         },
         showPlaceholder(tweetContent, value) {
             value ? tweetContent.classList.remove('placeholder') : tweetContent.classList.add('placeholder')
@@ -93,13 +89,29 @@ export default {
                 textarea.style.height = `${textarea.scrollHeight}px`
             }
         },
+        addToText(hashtag) {
+            let { innerText } = this.$refs["tweet-content"]
+
+            let n = innerText.toLowerCase().lastIndexOf(this.hashtags.values[this.hashtags.values.length - 1].toLowerCase());
+
+            const pat = new RegExp(this.hashtags.values[this.hashtags.values.length - 1], 'i')
+            this.$refs["tweet-content"].innerText = innerText.slice(0, n) + innerText.slice(n).replace(pat, hashtag);
+
+            this.hashtags.data = []
+            this.hashtags.values = []
+            this.hashtags.last.lastLength = 0
+            this.hashtags.failedRequestAt = 0
+
+            this.$refs["tweet-content"].focus()
+            const sel = window.getSelection();
+            sel.collapse(this.$refs["tweet-content"], 1);
+        },
         findHashtags(value) {
             const hash = /\B(\#[a-zA-Z\d]+\b)(?![$-/:-?{-~!"^_`\[\]])/g
 
             this.hashtags.values = value.match(hash)
 
             if (this.hashtags.values) {
-
                 if (this.hashtags.values[this.hashtags.values.length - 1].length === this.hashtags.last.lastLength) {
                     this.hashtags.data = []
                 }
@@ -111,13 +123,25 @@ export default {
                 this.hashtags.last.value = ''
             }
         },
-        async getExistingHashtags() {
-            return await axios.get('/api/hashtags', {
-                params: {
-                    'name': this.hashtags.values[this.hashtags.values.length - 1]
-                }
-            })
-        }
+        returnValue(event) {
+            let tweetContent = this.$refs["tweet-content"]
+            let { innerText } = tweetContent
+
+            if (innerText === '\n') {
+                innerText = ''
+            }
+
+            if (event.data !== ' ') {
+                this.findHashtags(innerText)
+            }
+
+            /*value = value.replace(/^\s+|\s+$/g, '');*/
+
+            this.showPlaceholder(tweetContent, innerText)
+            this.resize()
+
+            this.$store.commit('setMessage', innerText)
+        },
     }
 }
 </script>

@@ -16,6 +16,9 @@ export default createStore({
         setTweets(state, payload) {
             state.tweets = payload
         },
+        scheduleTweet(state, value) {
+            state.form.publishedAt = value
+        },
         addNewTweet(state, payload) {
             state.tweets.unshift(payload)
         },
