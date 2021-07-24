@@ -3,7 +3,7 @@
         <div
             ref="tweet-content"
             :contenteditable="!$store.state.isLoading"
-            :data-placeholder="!$store.state.isLoading && !$store.state.form.message ? 'What is happening?' : ''"
+            :data-placeholder="!$store.state.isLoading && !$store.state.form.message ? 'Che c\'è di nuovo?' : ''"
             :class="{ 'opacity-50': $store.state.isLoading }"
             class="text-lg w-full p-0 pl-3 my-3 outline-none break-all overflow-y-auto placeholder"
             @input="returnValue($event)"

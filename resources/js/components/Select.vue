@@ -12,16 +12,16 @@
             </ListboxButton>
 
             <transition v-if="data" leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
-                <ListboxOptions class="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+                <ListboxOptions class="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-80 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
                     <ListboxOption v-for="d in data" :key="d.name" v-slot="{ active, selected }" :value="d.name" as="template" @click="onSelect">
-                        <li :class="[active ? 'text-white bg-indigo-600' : 'text-gray-900', 'cursor-default select-none relative py-2 pl-3 pr-9']">
+                        <li :class="[active ? 'text-white bg-blue' : 'text-gray-900', 'cursor-default select-none relative py-2 pl-3 pr-9']">
                             <div class="flex items-center">
                                 <span :class="[selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate']">
                                   {{ d.name }}
                                 </span>
                             </div>
 
-                            <span v-if="selected" :class="[active ? 'text-white' : 'text-indigo-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
+                            <span v-if="selected" :class="[active ? 'text-white' : 'text-black', 'absolute inset-y-0 right-0 flex items-center pr-4']">
                                 <CheckIcon aria-hidden="true" class="h-5 w-5"/>
                             </span>
                         </li>
@@ -29,16 +29,16 @@
                 </ListboxOptions>
             </transition>
             <transition v-if="numbers" leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
-                <ListboxOptions class="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm" @click="onSelect">
+                <ListboxOptions class="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-80 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm" @click="onSelect">
                     <ListboxOption v-for="number in numbers" :key="number" v-slot="{ active, selected }" :value="number" as="template">
-                        <li :class="[active ? 'text-white bg-indigo-600' : 'text-gray-900', 'cursor-default select-none relative py-2 pl-3 pr-9']">
+                        <li :class="[active ? 'text-white bg-blue' : 'text-gray-900', 'cursor-default select-none relative py-2 pl-3 pr-9']">
                             <div class="flex items-center">
                                 <span :class="[selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate']">
                                   {{ number }}
                                 </span>
                             </div>
 
-                            <span v-if="selected" :class="[active ? 'text-white' : 'text-indigo-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
+                            <span v-if="selected" :class="[active ? 'text-white' : 'text-black', 'absolute inset-y-0 right-0 flex items-center pr-4']">
                                 <CheckIcon aria-hidden="true" class="h-5 w-5"/>
                             </span>
                         </li>

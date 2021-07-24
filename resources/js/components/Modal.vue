@@ -23,9 +23,12 @@
                                         Programma
                                     </DialogTitle>
                                 </div>
-                                <div class="ml-auto">
+                                <div class="ml-auto flex">
+                                    <button v-if="$store.state.form.publishedAt" class="action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer" @click="clearSchedule">
+                                        <span class="text-blue font-bold py-1 px-4">Cancella</span>
+                                    </button>
                                     <button class="text-white font-bold bg-blue py-1 px-4 rounded-full mr-1 outline-none flex items-center hover:opacity-75 transition disabled:opacity-50" @click="submit" :disabled="dateTime.isInvalid">
-                                        <span>Conferma</span>
+                                        <span>{{ $store.state.form.publishedAt ? 'Aggiorna' : 'Conferma' }}</span>
                                     </button>
                                 </div>
                             </div>
@@ -189,6 +192,15 @@ export default {
         this.getActualDateTime()
         this.getDayName()
     },
+    updated() {
+        if (!this.$store.state.form.publishedAt) {
+            this.dateTime.isInvalid = false
+            this.getActualDateTime()
+            return
+        }
+
+        this.getExistingDataTime()
+    },
     methods: {
         getActualDateTime() {
             this.dateTime.month = this.months[this.today.getMonth()].name
@@ -196,6 +208,16 @@ export default {
             this.dateTime.year = this.today.getFullYear()
             this.dateTime.hours = this.today.getHours()
             this.dateTime.minutes = this.today.getMinutes()
+        },
+        getExistingDataTime() {
+            const { month, dayName, day, year, hours, minutes, isInvalid } = this.$store.state.form.scheduled.dateTime
+            this.dateTime.month = month
+            this.dateTime.dayName = dayName
+            this.dateTime.day = day
+            this.dateTime.year = year
+            this.dateTime.hours = hours
+            this.dateTime.minutes = minutes
+            this.dateTime.isInvalid = isInvalid
         },
         getTomorrowDay() {
             const tomorrow = new Date()
@@ -224,10 +246,16 @@ export default {
 
             date < this.today ? this.dateTime.isInvalid = true : this.dateTime.isInvalid = false
         },
+        clearSchedule() {
+            this.$store.commit('clearPublishedAt')
+            this.$store.commit('clearSchedule')
+            this.$emit('closed')
+        },
         submit() {
             const { day, year, hours, minutes } = this.dateTime
 
             this.$store.commit('scheduleTweet', `${year}-${this.numericMonth + 1}-${day} ${hours - 2}:${minutes}:00`)
+            this.$store.commit('setDateTime', this.dateTime)
             this.$emit('closed')
         }
     }
