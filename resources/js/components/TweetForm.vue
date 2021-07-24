@@ -1,15 +1,15 @@
 <template>
     <div class="p-4 flex border-b border-solid border-gray">
-        <div class="relative w-12 h-12 rounded-full overflow-hidden" :class="{ avatar: !isLoading }">
-            <a href="#" :class="{ 'pointer-events-none': isLoading}">
-                <img :src="profile.avatar_path" :alt="profile.name" class="w-full h-full" :class="{ 'opacity-50':  isLoading }">
+        <div class="relative w-12 h-12 rounded-full overflow-hidden" :class="{ avatar: !$store.state.isLoading }">
+            <a href="#" :class="{ 'pointer-events-none': $store.state.isLoading}">
+                <img :src="profile.avatar_path" :alt="profile.name" class="w-full h-full" :class="{ 'opacity-50':  $store.state.isLoading }">
             </a>
         </div>
         <div class="ml-1 flex-1">
             <form @submit.prevent="submit">
-                <tweet-content @content="setValue" :contenteditable="!isLoading" :class="{ 'opacity-50': isLoading }" :placeholder="!isLoading && !$store.state.form.message ? 'What is happening?' : ''" />
+                <tweet-content :user="profile.id"/>
                     <div class="flex">
-                        <div v-show="!isLoading" class="actions flex items-center">
+                        <div v-show="!$store.state.isLoading" class="actions flex items-center">
                             <div class="action relative w-10 h-10 rounded-full flex justify-center items-center overflow-hidden">
                                 <input type="file" class="absolute top-0 w-full h-full opacity-0 cursor-pointer">
                                 <svg viewBox="0 0 24 24" aria-hidden="true" class="relative text-blue fill-current w-5 h-5 z-20 pointer-events-none">
@@ -19,7 +19,7 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class="action relative w-10 h-10 rounded-full flex justify-center items-center overflow-hidden cursor-pointer">
+                            <div class="action relative w-10 h-10 rounded-full flex justify-center items-center overflow-hidden cursor-pointer" @click="open = true">
                                 <svg viewBox="0 0 24 24" aria-hidden="true" class="relative text-blue fill-current w-5 h-5 z-20 pointer-events-none">
                                     <g>
                                         <path d="M-37.9 18c-.1-.1-.1-.1-.1-.2.1 0 .1.1.1.2z"></path>
@@ -30,17 +30,15 @@
                             </div>
                         </div>
                         <div class="flex items-center ml-auto">
-                            <span v-show="$store.state.form.message && !isLoading && noWhitespaceOnly">{{ remainingChars }}</span>
-                            <div v-show="$store.state.form.message && !isLoading && noWhitespaceOnly" class="h-8 border-r border-solid border-gray-100 mx-3"></div>
+                            <span v-show="$store.state.form.message && !$store.state.isLoading && noWhitespaceOnly">{{ remainingChars }}</span>
+                            <div v-show="$store.state.form.message && !$store.state.isLoading && noWhitespaceOnly" class="h-8 border-r border-solid border-gray-100 mx-3"></div>
                             <button type="submit" class="text-white font-bold bg-blue py-2 px-4 rounded-full flex items-center" :disabled="!canSubmit">
-                                <svg v-show="isLoading" class="animate-spin mr-2 h-5 w-5 text-white"
+                                <svg v-show="$store.state.isLoading" class="animate-spin mr-2 h-5 w-5 text-white"
                                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                            stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor"
-                                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                 </svg>
-                                <span>Tweet</span>
+                                <span>{{ $store.state.form.publishedAt ? 'Programma' : 'Twitta' }}</span>
                             </button>
                         </div>
                     </div>
@@ -48,23 +46,27 @@
         </div>
     </div>
     <div class="bg-gray-50 h-2.5"></div>
+    <teleport to="body">
+        <modal :opened="open" @closed="open = false"/>
+    </teleport>
 </template>
 
 <script>
 import TweetContent from "./TweetContent";
+import Modal from "./Modal";
 
 const axios = require('axios')
 
 export default {
     name: "TweetForm",
-    components: { TweetContent },
+    components: {Modal, TweetContent },
     props: {
         user: String
     },
     data() {
         return {
             profile: {},
-            isLoading: false,
+            open: false
         }
     },
     computed: {
@@ -80,7 +82,7 @@ export default {
         canSubmit() {
             const { message } = this.$store.state.form
 
-            return message && this.noWhitespaceOnly && message !== ' ' && this.remainingChars >= 0 && !this.isLoading
+            return message && this.noWhitespaceOnly && message !== ' ' && this.remainingChars >= 0 && !this.$store.state.isLoading
         }
     },
     created() {
@@ -89,11 +91,8 @@ export default {
     },
     methods: {
         async createTweet() {
-            this.isLoading = true
+            this.$store.commit('setLoadingState', true)
             return await axios.post('/api/create-tweet', this.processText(this.$store.state.form))
-        },
-        setValue(value) {
-            this.$store.commit('setMessage', value)
         },
         addLineBreaks(value) {
             const lineBreak = /(\r\n|\r|\n)/g
@@ -120,10 +119,10 @@ export default {
         submit() {
             this.createTweet()
                 .then(response => {
-                    this.isLoading = false
+                    this.$store.commit('setLoadingState', false)
 
                     this.$store.commit('clearMessage')
-                    this.$store.commit('addNewTweet', response.data[0])
+                    !this.$store.state.form.publishedAt ? this.$store.commit('addNewTweet', response.data[0]) : null
             })
         }
     }

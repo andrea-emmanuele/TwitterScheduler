@@ -9,11 +9,15 @@ export default createStore({
                 publishedAt: '',
                 userId: null
             },
+            isLoading: false
         }
     },
     mutations: {
         setTweets(state, payload) {
             state.tweets = payload
+        },
+        scheduleTweet(state, value) {
+            state.form.publishedAt = value
         },
         addNewTweet(state, payload) {
             state.tweets.unshift(payload)
@@ -26,6 +30,9 @@ export default createStore({
         },
         clearMessage(state) {
             state.form.message = ''
+        },
+        setLoadingState(state, value = true) {
+            state.isLoading = value
         }
     }
 })

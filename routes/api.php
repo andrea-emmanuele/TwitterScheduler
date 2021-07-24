@@ -15,4 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/tweets', [\App\Http\Controllers\TweetController::class, 'index']);
+Route::get('/hashtags', [\App\Http\Controllers\HashtagController::class, 'index']);
+Route::get('/users', [\App\Http\Controllers\UserController::class, 'index']);
+
 Route::post('/create-tweet', [\App\Http\Controllers\TweetController::class, 'store']);
+

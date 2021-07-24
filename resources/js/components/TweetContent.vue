@@ -1,18 +1,47 @@
 <template>
-    <div
-        ref="tweet-content"
-        class="text-lg w-full p-0 pl-3 my-3 outline-none break-all overflow-y-auto placeholder"
-        :data-placeholder="placeholder"
-        @input="returnValue"
-    >
+    <div class="relative">
+        <div
+            ref="tweet-content"
+            :contenteditable="!$store.state.isLoading"
+            :data-placeholder="!$store.state.isLoading && !$store.state.form.message ? 'What is happening?' : ''"
+            :class="{ 'opacity-50': $store.state.isLoading }"
+            class="text-lg w-full p-0 pl-3 my-3 outline-none break-all overflow-y-auto placeholder"
+            @input="returnValue($event)"
+        >
+        </div>
+        <div v-show="hashtags.data.length" class="bg-white w-2/4 rounded mt-2 absolute top-full left-3 z-30 list-shadow">
+            <ul>
+                <li
+                    v-for="hashtag in hashtags.data"
+                    :key="hashtag.id"
+                    class="font-bold py-4 px-4 border-b border-gray hover:bg-gray-50 transition cursor-pointer"
+                    @click="addToText(hashtag.name)"
+                    v-text="hashtag.name"></li>
+            </ul>
+        </div>
     </div>
 </template>
 
 <script>
+const axios = require('axios')
+
 export default {
     name: "TweetContent",
     props: {
       placeholder: String
+    },
+    data() {
+        return {
+            hashtags: {
+                data: [],
+                values: [],
+                last: {
+                    value: '',
+                    lastLength: 0
+                },
+                failedRequestAt: 0
+            }
+        }
     },
     watch: {
         '$store.state.form.message'() {
@@ -20,22 +49,34 @@ export default {
                 this.$refs["tweet-content"].innerHTML = ''
                 this.$refs["tweet-content"].style.height = 'initial'
             }
+        },
+        'hashtags.last.value.length'() {
+            if (this.hashtags.values) {
+                if (this.hashtags.last.value.length < this.hashtags.failedRequestAt || this.hashtags.failedRequestAt === 0) {
+                    this.getExistingHashtags().then(response => {
+                        this.hashtags.data = response.data
+                        this.hashtags.failedRequestAt = 0
+                    })
+                    .catch(error => {
+                        this.hashtags.data = []
+                        this.hashtags.failedRequestAt = this.hashtags.last.value.length
+                    })
+                }
+            }
+            else {
+                this.hashtags.failedRequestAt = 0
+            }
+
+            this.hashtags.last.lastLength = this.hashtags.last.value.length
         }
     },
     methods: {
-        returnValue() {
-            let tweetContent = this.$refs["tweet-content"]
-            let { innerText } = tweetContent
-
-            if (innerText === '\n') {
-                innerText = ''
-            }
-            /*value = value.replace(/^\s+|\s+$/g, '');*/
-            /*this.detectUrls(value)*/
-            this.showPlaceholder(tweetContent, innerText)
-            this.resize()
-
-            this.$emit('content', innerText)
+        async getExistingHashtags() {
+            return await axios.get('/api/hashtags', {
+                params: {
+                    'name': this.hashtags.values[this.hashtags.values.length - 1]
+                }
+            })
         },
         showPlaceholder(tweetContent, value) {
             value ? tweetContent.classList.remove('placeholder') : tweetContent.classList.add('placeholder')
@@ -48,20 +89,59 @@ export default {
                 textarea.style.height = `${textarea.scrollHeight}px`
             }
         },
-        detectUrls(value) {
-            if (event.key === " ") {
-                console.log('space!')
-            }
-            console.log('a')
-            const regex = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/ig
+        addToText(hashtag) {
+            let { innerText } = this.$refs["tweet-content"]
 
-            value = value.replace(regex, "<span class='text-blue font-bold'>$&</span>")
+            let n = innerText.toLowerCase().lastIndexOf(this.hashtags.values[this.hashtags.values.length - 1].toLowerCase());
 
-            this.$refs["tweet-content"].append(value)
+            const pat = new RegExp(this.hashtags.values[this.hashtags.values.length - 1], 'i')
+            this.$refs["tweet-content"].innerText = innerText.slice(0, n) + innerText.slice(n).replace(pat, hashtag);
 
+            this.hashtags.data = []
+            this.hashtags.values = []
+            this.hashtags.last.lastLength = 0
+            this.hashtags.failedRequestAt = 0
+
+            this.$refs["tweet-content"].focus()
             const sel = window.getSelection();
             sel.collapse(this.$refs["tweet-content"], 1);
-        }
+        },
+        findHashtags(value) {
+            const hash = /\B(\#[a-zA-Z\d]+\b)(?![$-/:-?{-~!"^_`\[\]])/g
+
+            this.hashtags.values = value.match(hash)
+
+            if (this.hashtags.values) {
+                if (this.hashtags.values[this.hashtags.values.length - 1].length === this.hashtags.last.lastLength) {
+                    this.hashtags.data = []
+                }
+
+                this.hashtags.last.value = this.hashtags.values[this.hashtags.values.length - 1]
+            }
+            else {
+                this.hashtags.data = []
+                this.hashtags.last.value = ''
+            }
+        },
+        returnValue(event) {
+            let tweetContent = this.$refs["tweet-content"]
+            let { innerText } = tweetContent
+
+            if (innerText === '\n') {
+                innerText = ''
+            }
+
+            if (event.data !== ' ') {
+                this.findHashtags(innerText)
+            }
+
+            /*value = value.replace(/^\s+|\s+$/g, '');*/
+
+            this.showPlaceholder(tweetContent, innerText)
+            this.resize()
+
+            this.$store.commit('setMessage', innerText)
+        },
     }
 }
 </script>
@@ -74,5 +154,8 @@ export default {
             opacity: 0.7;
             pointer-events: none;
         }
+    }
+    .list-shadow {
+        box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px
     }
 </style>

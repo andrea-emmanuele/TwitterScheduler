@@ -22,9 +22,9 @@ class TweetController extends Controller
         $tweet = new Tweet();
         $tweet->message = $request->message;
 
-        if ($request->published_at)
+        if ($request->publishedAt)
         {
-            $tweet->published_at = $request->published_at;
+            $tweet->published_at = $request->publishedAt;
         }
         else
         {
