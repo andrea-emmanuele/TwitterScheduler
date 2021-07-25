@@ -32897,7 +32897,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.slide-fade-enter-active[data-v-18e6aa82] {\n    transition: all 200ms ease;\n}\n.slide-fade-leave-active[data-v-18e6aa82] {\n    transition: all 300ms cubic-bezier(1.0, 0.5, 0.8, 1.0);\n}\n.slide-fade-enter[data-v-18e6aa82], .slide-fade-leave-to[data-v-18e6aa82] {\n    transform: translateX(10px);\n    opacity: 0;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.slide-fade-enter-active[data-v-18e6aa82] {\r\n    transition: all 200ms ease;\n}\n.slide-fade-leave-active[data-v-18e6aa82] {\r\n    transition: all 300ms cubic-bezier(1.0, 0.5, 0.8, 1.0);\n}\n.slide-fade-enter[data-v-18e6aa82], .slide-fade-leave-to[data-v-18e6aa82] {\r\n    transform: translateX(10px);\r\n    opacity: 0;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
