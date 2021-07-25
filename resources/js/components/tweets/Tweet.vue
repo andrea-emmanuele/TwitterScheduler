@@ -9,7 +9,7 @@
             <div>
                 <a href="#" class="font-bold hover:underline mr-1.5">{{ payload.user.name }}</a>
                 <span class="opacity-50 mr-1.5">@{{ payload.user.tag }}</span>
-                <span class="opacity-50">· 1h</span>
+                <Time :published-at="payload.published_at" />
             </div>
             <p class="break-all" v-html="payload.message"></p>
         </div>
@@ -17,8 +17,10 @@
 </template>
 
 <script>
+import Time from "./Time";
 export default {
     name: "Tweet",
+    components: { Time },
     props: {
         payload: Object
     },

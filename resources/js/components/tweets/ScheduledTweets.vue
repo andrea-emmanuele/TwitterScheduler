@@ -21,23 +21,14 @@ export default {
     props: {
         user: Number
     },
-    data() {
-        return {
-            isLoading: false
-        }
-    },
     created() {
         this.getTweets()
             .then((response) => {
-                this.isLoading = false
-
                 this.$store.commit('setScheduledTweets', response.data)
             })
     },
     methods: {
         async getTweets() {
-            this.isLoading = true
-
             return await axios.get('/api/scheduled-tweets', {
                 params: {
                     'user': this.user
