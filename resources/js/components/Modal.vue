@@ -7,8 +7,8 @@
                 </TransitionChild>
 
                 <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100" leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-                    <div>
-                        <Tab :key="actualTab" name="schedule" :selected="actualTab">
+                    <div class="w-full sm:w-container">
+                        <Tab name="schedule" :selected="actualTab">
                             <div class="inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle w-full">
                                 <div class="bg-white px-4 pt-5 pb-4 border-b border-gray-100 rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2">
                                     <div class="flex items-center">
@@ -73,41 +73,39 @@
                                         Non è possibile programmare la condivisione di un tweet nel passato.
                                     </p>
                                 </div>
-                                <div class="my-4 mx-3 flex items-end gap-2">
+                                <div class="my-4 mx-3 grid grid-cols-4 gap-2 flex items-end">
                                     <Select
                                         title="Data"
                                         :data="months"
                                         :current-data="dateTime.month"
                                         @selected="change('month', $event)"
-                                        class="flex-1"
+                                        class="col-span-2"
                                     />
                                     <Select
                                         :key="dateTime.month"
                                         :numbers="monthDays"
                                         :current-data="dateTime.day"
                                         @selected="change('day', $event)"
-                                        class="flex-1"
                                     />
                                     <Select
                                         :data="years"
                                         :current-data="dateTime.year"
                                         @selected="change('year', $event)"
-                                        class="flex-1"
                                     />
                                 </div>
-                                <div class="my-4 mx-3 flex items-end gap-2">
+                                <div class="my-4 mx-3 grid grid-cols-4 gap-2 flex items-end">
                                     <Select
                                         title="Ora"
                                         :data="hours"
                                         :current-data="dateTime.hours"
                                         @selected="change('hours', $event)"
-                                        class="w-1/4"
+                                        class="col-span-1"
                                     />
                                     <Select
                                         :data="minutes"
                                         :current-data="dateTime.minutes"
                                         @selected="change('minutes', $event)"
-                                        class="w-1/4"
+                                        class="col-span-1"
                                     />
                                 </div>
                                 <div class="px-2 py-3 border-t border-gray">
@@ -120,8 +118,8 @@
                                 </div>
                             </div>
                         </Tab>
-                        <Tab :key="actualTab" name="scheduledTweets" :selected="actualTab">
-                            <div class="inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle w-full">
+                        <Tab name="scheduledTweets" :selected="actualTab">
+                            <div class="w-full inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle">
                                 <div class="bg-white px-4 pt-5 pb-4 border-b border-gray rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2">
                                     <div class="flex items-center">
                                         <button
@@ -148,22 +146,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="border-b border-gray py-3 mx-3">
-                                    <p class="text-sm text-gray-500 flex">
-                                        <svg viewBox="0 0 24 24" aria-hidden="true" class="w-5 h-5 fill-current mr-2.5">
-                                            <g>
-                                                <path d="M-37.9 18c-.1-.1-.1-.1-.1-.2.1 0 .1.1.1.2z"></path>
-                                                <path
-                                                    d="M-37.9 18c-.1-.1-.1-.1-.1-.2.1 0 .1.1.1.2zM18 2.2h-1.3v-.3c0-.4-.3-.8-.8-.8-.4 0-.8.3-.8.8v.3H7.7v-.3c0-.4-.3-.8-.8-.8-.4 0-.8.3-.8.8v.3H4.8c-1.4 0-2.5 1.1-2.5 2.5v13.1c0 1.4 1.1 2.5 2.5 2.5h2.9c.4 0 .8-.3.8-.8 0-.4-.3-.8-.8-.8H4.8c-.6 0-1-.5-1-1V7.9c0-.3.4-.7 1-.7H18c.6 0 1 .4 1 .7v1.8c0 .4.3.8.8.8.4 0 .8-.3.8-.8v-5c-.1-1.4-1.2-2.5-2.6-2.5zm1 3.7c-.3-.1-.7-.2-1-.2H4.8c-.4 0-.7.1-1 .2V4.7c0-.6.5-1 1-1h1.3v.5c0 .4.3.8.8.8.4 0 .8-.3.8-.8v-.5h7.5v.5c0 .4.3.8.8.8.4 0 .8-.3.8-.8v-.5H18c.6 0 1 .5 1 1v1.2z"></path>
-                                                <path
-                                                    d="M15.5 10.4c-3.4 0-6.2 2.8-6.2 6.2 0 3.4 2.8 6.2 6.2 6.2 3.4 0 6.2-2.8 6.2-6.2 0-3.4-2.8-6.2-6.2-6.2zm0 11c-2.6 0-4.7-2.1-4.7-4.7s2.1-4.7 4.7-4.7 4.7 2.1 4.7 4.7c0 2.5-2.1 4.7-4.7 4.7z"></path>
-                                                <path
-                                                    d="M18.9 18.7c-.1.2-.4.4-.6.4-.1 0-.3 0-.4-.1l-3.1-2v-3c0-.4.3-.8.8-.8.4 0 .8.3.8.8v2.2l2.4 1.5c.2.2.3.6.1 1z"></path>
-                                            </g>
-                                        </svg>
-                                        Verrà inviato il {{ `${dateTime.dayName} ${dateTime.day} ${dateTime.month} ${dateTime.year} alle ${dateTime.hours}:${dateTime.minutes}` }}
-                                    </p>
-                                    <p>aaaa</p>
+                                <div class="h-96 overflow-y-auto">
+                                    <scheduled-tweets :user="$store.state.form.userId"/>
                                 </div>
                                 <div class="px-2 py-3">
                                     <button
@@ -186,9 +170,11 @@
 import { Dialog, DialogOverlay, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import Select from "./Select";
 import Tab from "./Tab";
+import ScheduledTweets from "./tweets/ScheduledTweets";
 
 export default {
     components: {
+        ScheduledTweets,
         Tab,
         Select,
         Dialog,
@@ -322,8 +308,8 @@ export default {
             this.dateTime.month = this.months[this.today.getMonth()].name
             this.dateTime.day = this.getTomorrowDay()
             this.dateTime.year = this.today.getFullYear()
-            this.dateTime.hours = this.today.getHours()
-            this.dateTime.minutes = this.today.getMinutes()
+            this.today.getHours() < 10 ? this.dateTime.hours = `0${this.today.getHours()}` : this.dateTime.hours = this.today.getHours()
+            this.today.getMinutes() < 10 ? this.dateTime.minutes = `0${this.today.getMinutes()}` : this.dateTime.minutes = this.today.getMinutes()
         },
         getExistingDataTime() {
             const { month, dayName, day, year, hours, minutes, isInvalid } = this.$store.state.form.scheduled.dateTime

@@ -17,6 +17,16 @@ class TweetController extends Controller
         return response()->json($tweets);
     }
 
+    public function indexScheduled(Request $request)
+    {
+        $scheduledTweets = Tweet::where([
+            ['user_id', $request->user],
+            ['published_at', '>', now()]
+        ])->with('user')->orderBy('published_at', 'ASC')->get();
+
+        return response()->json($scheduledTweets);
+    }
+
     public function store(Request $request)
     {
         $tweet = new Tweet();

@@ -21,6 +21,9 @@ export default {
     },
     created() {
         this.selected === this.name ? this.isActive = true : this.isActive = false
+    },
+    updated() {
+        this.selected === this.name ? this.isActive = true : this.isActive = false
     }
 }
 </script>

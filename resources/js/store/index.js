@@ -4,6 +4,7 @@ export default createStore({
     state() {
         return {
             tweets: [],
+            scheduledTweets: [],
             form: {
                 message: '',
                 publishedAt: '',
@@ -27,11 +28,14 @@ export default createStore({
         setTweets(state, payload) {
             state.tweets = payload
         },
-        scheduleTweet(state, value) {
-            state.form.publishedAt = value
+        setScheduledTweets(state, payload) {
+            state.scheduledTweets = payload
         },
         addNewTweet(state, payload) {
             state.tweets.unshift(payload)
+        },
+        scheduleTweet(state, value) {
+            state.form.publishedAt = value
         },
         setUserID(state, value) {
             state.form.userId = value

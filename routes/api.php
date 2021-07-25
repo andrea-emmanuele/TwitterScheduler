@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/tweets', [\App\Http\Controllers\TweetController::class, 'index']);
+Route::get('/scheduled-tweets', [\App\Http\Controllers\TweetController::class, 'indexScheduled']);
 Route::get('/hashtags', [\App\Http\Controllers\HashtagController::class, 'index']);
 Route::get('/users', [\App\Http\Controllers\UserController::class, 'index']);
 
