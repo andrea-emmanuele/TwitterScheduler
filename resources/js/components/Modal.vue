@@ -8,13 +8,13 @@
 
                 <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100" leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
                     <div class="w-full sm:w-container">
-                        <Tab name="schedule" :selected="actualTab">
+                        <Tab name="schedule">
                             <div class="inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle w-full">
                                 <div class="bg-white px-4 pt-5 pb-4 border-b border-gray-100 rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2">
                                     <div class="flex items-center">
                                         <button
                                             class="action relative w-10 h-10 rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
-                                            @click="$emit('closed')"
+                                            @click="changeUrl('/', '')"
                                         >
                                             <svg viewBox="0 0 24 24" aria-hidden="true" class="relative text-blue fill-current w-6 h-6 z-20 pointer-events-none">
                                                 <g>
@@ -111,20 +111,20 @@
                                 <div class="px-2 py-3 border-t border-gray">
                                     <button
                                         class="action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
-                                        @click="switchTo('scheduledTweets')"
+                                        @click="changeUrl('/schedule/tweets', 'scheduledTweets')"
                                     >
                                         <span class="text-blue font-bold py-1 px-4">Tweet programmati</span>
                                     </button>
                                 </div>
                             </div>
                         </Tab>
-                        <Tab name="scheduledTweets" :selected="actualTab">
+                        <Tab name="scheduledTweets">
                             <div class="w-full inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle">
                                 <div class="bg-white px-4 pt-5 pb-4 border-b border-gray rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2">
                                     <div class="flex items-center">
                                         <button
                                             class="action relative w-10 h-10 rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
-                                            @click="switchTo('schedule')"
+                                            @click="changeUrl('/schedule', 'schedule')"
                                         >
                                             <svg viewBox="0 0 24 24" aria-hidden="true" class="relative text-blue fill-current w-6 h-6 z-20 pointer-events-none">
                                                 <g>
@@ -152,9 +152,8 @@
                                 <div class="px-2 py-3">
                                     <button
                                         class="action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
-                                        @click="switchTo('scheduledTweets')"
                                     >
-                                        <span class="text-blue font-bold py-1 px-4">Tweet programmati</span>
+                                        <span class="text-blue font-bold py-1 px-4">Select All</span>
                                     </button>
                                 </div>
                             </div>
@@ -183,12 +182,8 @@ export default {
         TransitionChild,
         TransitionRoot
     },
-    props: {
-        opened: Boolean
-    },
     data() {
         return {
-            actualTab: 'schedule',
             months: [
             {
                 name: 'Gennaio',
@@ -248,7 +243,8 @@ export default {
                 minutes: 0,
                 isInvalid: false
             },
-            today: new Date()
+            today: new Date(),
+            opened: false
         }
     },
     computed: {
@@ -287,9 +283,16 @@ export default {
             return minutes
         }
     },
+    watch: {
+        '$store.state.urlPath'() {
+            window.location.pathname === '/schedule' || window.location.pathname === '/schedule/tweets' ? this.opened = true : this.opened = false
+        }
+    },
     created() {
         this.getActualDateTime()
         this.getDayName()
+
+        window.location.pathname === '/schedule' || window.location.pathname === '/schedule/tweets' ? this.opened = true : null
     },
     updated() {
         if (!this.$store.state.form.publishedAt) {
@@ -301,9 +304,6 @@ export default {
         this.getExistingDataTime()
     },
     methods: {
-        switchTo(value) {
-            this.actualTab = value
-        },
         getActualDateTime() {
             this.dateTime.month = this.months[this.today.getMonth()].name
             this.dateTime.day = this.getTomorrowDay()
@@ -351,14 +351,20 @@ export default {
         clearSchedule() {
             this.$store.commit('clearPublishedAt')
             this.$store.commit('clearSchedule')
-            this.$emit('closed')
+            this.changeUrl('/', '')
+        },
+        changeUrl(url, name) {
+            if (window.history.replaceState) {
+                window.history.replaceState('', '', url);
+            }
+            this.$store.commit('setUrlPath', name)
         },
         submit() {
             const { day, year, hours, minutes } = this.dateTime
 
             this.$store.commit('scheduleTweet', `${year}-${this.numericMonth + 1}-${day} ${hours - 2}:${minutes}:00`)
             this.$store.commit('setDateTime', this.dateTime)
-            this.$emit('closed')
+            this.changeUrl('/', '')
         }
     }
 }

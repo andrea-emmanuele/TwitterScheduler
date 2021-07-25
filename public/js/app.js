@@ -30272,12 +30272,8 @@ __webpack_require__.r(__webpack_exports__);
     TransitionChild: _headlessui_vue__WEBPACK_IMPORTED_MODULE_0__.TransitionChild,
     TransitionRoot: _headlessui_vue__WEBPACK_IMPORTED_MODULE_0__.TransitionRoot
   },
-  props: {
-    opened: Boolean
-  },
   data: function data() {
     return {
-      actualTab: 'schedule',
       months: [{
         name: 'Gennaio',
         days: 31
@@ -30325,7 +30321,8 @@ __webpack_require__.r(__webpack_exports__);
         minutes: 0,
         isInvalid: false
       },
-      today: new Date()
+      today: new Date(),
+      opened: false
     };
   },
   computed: {
@@ -30382,9 +30379,15 @@ __webpack_require__.r(__webpack_exports__);
       return minutes;
     }
   },
+  watch: {
+    '$store.state.urlPath': function $storeStateUrlPath() {
+      window.location.pathname === '/schedule' || window.location.pathname === '/schedule/tweets' ? this.opened = true : this.opened = false;
+    }
+  },
   created: function created() {
     this.getActualDateTime();
     this.getDayName();
+    window.location.pathname === '/schedule' || window.location.pathname === '/schedule/tweets' ? this.opened = true : null;
   },
   updated: function updated() {
     if (!this.$store.state.form.publishedAt) {
@@ -30396,9 +30399,6 @@ __webpack_require__.r(__webpack_exports__);
     this.getExistingDataTime();
   },
   methods: {
-    switchTo: function switchTo(value) {
-      this.actualTab = value;
-    },
     getActualDateTime: function getActualDateTime() {
       this.dateTime.month = this.months[this.today.getMonth()].name;
       this.dateTime.day = this.getTomorrowDay();
@@ -30453,7 +30453,14 @@ __webpack_require__.r(__webpack_exports__);
     clearSchedule: function clearSchedule() {
       this.$store.commit('clearPublishedAt');
       this.$store.commit('clearSchedule');
-      this.$emit('closed');
+      this.changeUrl('/', '');
+    },
+    changeUrl: function changeUrl(url, name) {
+      if (window.history.replaceState) {
+        window.history.replaceState('', '', url);
+      }
+
+      this.$store.commit('setUrlPath', name);
     },
     submit: function submit() {
       var _this$dateTime3 = this.dateTime,
@@ -30463,7 +30470,7 @@ __webpack_require__.r(__webpack_exports__);
           minutes = _this$dateTime3.minutes;
       this.$store.commit('scheduleTweet', "".concat(year, "-").concat(this.numericMonth + 1, "-").concat(day, " ").concat(hours - 2, ":").concat(minutes, ":00"));
       this.$store.commit('setDateTime', this.dateTime);
-      this.$emit('closed');
+      this.changeUrl('/', '');
     }
   }
 });
@@ -30521,6 +30528,39 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Snackbar.vue?vue&type=script&lang=js":
+/*!**************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Snackbar.vue?vue&type=script&lang=js ***!
+  \**************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "Snackbar",
+  props: {
+    text: String,
+    timeout: Number
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    setTimeout(function () {
+      _this.close();
+    }, this.timeout);
+  },
+  methods: {
+    close: function close() {
+      this.$emit('closed');
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Tab.vue?vue&type=script&lang=js":
 /*!*********************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Tab.vue?vue&type=script&lang=js ***!
@@ -30535,11 +30575,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Tab",
   props: {
-    name: String,
-    selected: {
-      Boolean: Boolean,
-      required: true
-    }
+    name: String
   },
   data: function data() {
     return {
@@ -30547,10 +30583,12 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.selected === this.name ? this.isActive = true : this.isActive = false;
+    console.log(this.$store.state.urlPath);
+    this.$store.state.urlPath === this.name ? this.isActive = true : this.isActive = false;
   },
   updated: function updated() {
-    this.selected === this.name ? this.isActive = true : this.isActive = false;
+    console.log(this.$store.state.urlPath);
+    this.$store.state.urlPath === this.name ? this.isActive = true : this.isActive = false;
   }
 });
 
@@ -30726,6 +30764,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _TweetContent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TweetContent */ "./resources/js/components/TweetContent.vue");
 /* harmony import */ var _Modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Modal */ "./resources/js/components/Modal.vue");
+/* harmony import */ var _Snackbar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Snackbar */ "./resources/js/components/Snackbar.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -30735,11 +30774,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+
 var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "TweetForm",
   components: {
+    Snackbar: _Snackbar__WEBPACK_IMPORTED_MODULE_3__.default,
     Modal: _Modal__WEBPACK_IMPORTED_MODULE_2__.default,
     TweetContent: _TweetContent__WEBPACK_IMPORTED_MODULE_1__.default
   },
@@ -30749,7 +30790,8 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
   data: function data() {
     return {
       profile: {},
-      open: false
+      open: false,
+      addedScheduled: false
     };
   },
   computed: {
@@ -30795,6 +30837,13 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
         }, _callee);
       }))();
     },
+    openModal: function openModal() {
+      if (window.history.replaceState) {
+        window.history.replaceState('', '', '/schedule');
+      }
+
+      this.$store.commit('setUrlPath', 'schedule');
+    },
     addLineBreaks: function addLineBreaks(value) {
       var lineBreak = /(\r\n|\r|\n)/g;
       return value.replace(lineBreak, '<br>');
@@ -30817,7 +30866,7 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
       this.createTweet().then(function (response) {
         _this2.$store.commit('setLoadingState', false);
 
-        !_this2.$store.state.form.publishedAt ? _this2.$store.commit('addNewTweet', response.data[0]) : null;
+        !_this2.$store.state.form.publishedAt ? _this2.$store.commit('addNewTweet', response.data[0]) : _this2.addedScheduled = true;
 
         _this2.$store.commit('clearForm');
       });
@@ -31377,13 +31426,14 @@ var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 var _hoisted_28 = {
   "class": "h-96 overflow-y-auto"
 };
-var _hoisted_29 = {
-  "class": "px-2 py-3"
-};
 
-var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
+var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  "class": "px-2 py-3"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+  "class": "action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
   "class": "text-blue font-bold py-1 px-4"
-}, "Tweet programmati", -1
+}, "Select All")])], -1
 /* HOISTED */
 );
 
@@ -31408,14 +31458,14 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_TransitionRoot, {
     as: "template",
-    show: $props.opened
+    show: $data.opened
   }, {
     "default": _withId(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dialog, {
         as: "div",
         "static": "",
         "class": "fixed z-40 inset-y-12 inset-x-0",
-        open: $props.opened
+        open: $data.opened
       }, {
         "default": _withId(function () {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TransitionChild, {
@@ -31446,14 +31496,13 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
           }, {
             "default": _withId(function () {
               return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Tab, {
-                name: "schedule",
-                selected: $data.actualTab
+                name: "schedule"
               }, {
                 "default": _withId(function () {
                   return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
                     "class": "action relative w-10 h-10 rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer",
                     onClick: _cache[1] || (_cache[1] = function ($event) {
-                      return _ctx.$emit('closed');
+                      return $options.changeUrl('/', '');
                     })
                   }, [_hoisted_6]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DialogTitle, {
                     as: "h3",
@@ -31536,24 +31585,21 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
                   , ["data", "current-data"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
                     "class": "action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer",
                     onClick: _cache[9] || (_cache[9] = function ($event) {
-                      return $options.switchTo('scheduledTweets');
+                      return $options.changeUrl('/schedule/tweets', 'scheduledTweets');
                     })
                   }, [_hoisted_20])])])];
                 }),
                 _: 1
                 /* STABLE */
 
-              }, 8
-              /* PROPS */
-              , ["selected"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Tab, {
-                name: "scheduledTweets",
-                selected: $data.actualTab
+              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Tab, {
+                name: "scheduledTweets"
               }, {
                 "default": _withId(function () {
                   return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
                     "class": "action relative w-10 h-10 rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer",
                     onClick: _cache[10] || (_cache[10] = function ($event) {
-                      return $options.switchTo('schedule');
+                      return $options.changeUrl('/schedule', 'schedule');
                     })
                   }, [_hoisted_24]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DialogTitle, {
                     as: "h3",
@@ -31569,19 +31615,12 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
                     user: _ctx.$store.state.form.userId
                   }, null, 8
                   /* PROPS */
-                  , ["user"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-                    "class": "action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer",
-                    onClick: _cache[11] || (_cache[11] = function ($event) {
-                      return $options.switchTo('scheduledTweets');
-                    })
-                  }, [_hoisted_30])])])];
+                  , ["user"])]), _hoisted_29])];
                 }),
                 _: 1
                 /* STABLE */
 
-              }, 8
-              /* PROPS */
-              , ["selected"])])];
+              })])];
             }),
             _: 1
             /* STABLE */
@@ -31814,6 +31853,43 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Snackbar.vue?vue&type=template&id=727e1820&scoped=true":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Snackbar.vue?vue&type=template&id=727e1820&scoped=true ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+
+var _withId = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.withScopeId)("data-v-727e1820");
+
+(0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-727e1820");
+
+var _hoisted_1 = {
+  "class": "text-white whitespace-nowrap w-min bg-blue py-2 px-4 rounded-md fixed inset-x-1/2 bottom-8 transform -translate-x-1/2 flex"
+};
+
+(0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)();
+
+var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data, $options) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.text) + " ", 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+    "class": "font-bold text-white ml-3 hover:underline transition",
+    onClick: _cache[1] || (_cache[1] = function () {
+      return $options.close && $options.close.apply($options, arguments);
+    })
+  }, "Close")]);
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Tab.vue?vue&type=template&id=8dbef60c&scoped=true":
 /*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Tab.vue?vue&type=template&id=8dbef60c&scoped=true ***!
@@ -31841,7 +31917,7 @@ var _hoisted_1 = {
 var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default", {}, undefined, true)], 512
   /* NEED_PATCH */
-  )), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.isActive]]);
+  )), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.$store.state.urlPath === $props.name]]);
 });
 
 /***/ }),
@@ -32040,6 +32116,8 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
 
   var _component_modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("modal");
 
+  var _component_snackbar = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("snackbar");
+
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
     "class": ["relative w-12 h-12 rounded-full overflow-hidden", {
       avatar: !_ctx.$store.state.isLoading
@@ -32075,8 +32153,8 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
   /* PROPS */
   , ["user"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
     "class": "action relative w-10 h-10 rounded-full flex justify-center items-center overflow-hidden cursor-pointer",
-    onClick: _cache[1] || (_cache[1] = function ($event) {
-      return $data.open = true;
+    onClick: _cache[1] || (_cache[1] = function () {
+      return $options.openModal && $options.openModal.apply($options, arguments);
     })
   }, [_hoisted_9])], 512
   /* NEED_PATCH */
@@ -32098,14 +32176,14 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
   /* HYDRATE_EVENTS */
   )])]), _hoisted_15, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Teleport, {
     to: "body"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_modal, {
-    opened: $data.open,
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_modal), $data.addedScheduled ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_snackbar, {
+    key: 0,
+    text: "Il tuo tweet è stato programmato con successo.",
+    timeout: 5000,
     onClosed: _cache[3] || (_cache[3] = function ($event) {
-      return $data.open = false;
+      return $data.addedScheduled = false;
     })
-  }, null, 8
-  /* PROPS */
-  , ["opened"])]))], 64
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]))], 64
   /* STABLE_FRAGMENT */
   );
 });
@@ -32486,6 +32564,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,vuex__WEBPACK_IMPORTED_MODULE_0__.createStore)({
   state: function state() {
     return {
+      urlPath: '',
       tweets: [],
       scheduledTweets: [],
       form: {
@@ -32508,6 +32587,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mutations: {
+    setUrlPath: function setUrlPath(state, value) {
+      state.urlPath = value;
+    },
     setTweets: function setTweets(state, payload) {
       state.tweets = payload;
     },
@@ -34289,6 +34371,33 @@ _Select_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.__file 
 
 /***/ }),
 
+/***/ "./resources/js/components/Snackbar.vue":
+/*!**********************************************!*\
+  !*** ./resources/js/components/Snackbar.vue ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Snackbar_vue_vue_type_template_id_727e1820_scoped_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Snackbar.vue?vue&type=template&id=727e1820&scoped=true */ "./resources/js/components/Snackbar.vue?vue&type=template&id=727e1820&scoped=true");
+/* harmony import */ var _Snackbar_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Snackbar.vue?vue&type=script&lang=js */ "./resources/js/components/Snackbar.vue?vue&type=script&lang=js");
+
+
+
+_Snackbar_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.render = _Snackbar_vue_vue_type_template_id_727e1820_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render
+_Snackbar_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.__scopeId = "data-v-727e1820"
+/* hot reload */
+if (false) {}
+
+_Snackbar_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.__file = "resources/js/components/Snackbar.vue"
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_Snackbar_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default);
+
+/***/ }),
+
 /***/ "./resources/js/components/Tab.vue":
 /*!*****************************************!*\
   !*** ./resources/js/components/Tab.vue ***!
@@ -34568,6 +34677,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Snackbar.vue?vue&type=script&lang=js":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/Snackbar.vue?vue&type=script&lang=js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Snackbar_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__.default)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Snackbar_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Snackbar.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Snackbar.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
 /***/ "./resources/js/components/Tab.vue?vue&type=script&lang=js":
 /*!*****************************************************************!*\
   !*** ./resources/js/components/Tab.vue?vue&type=script&lang=js ***!
@@ -34740,6 +34865,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Select_vue_vue_type_template_id_17cc0527_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Select_vue_vue_type_template_id_17cc0527_scoped_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Select.vue?vue&type=template&id=17cc0527&scoped=true */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Select.vue?vue&type=template&id=17cc0527&scoped=true");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Snackbar.vue?vue&type=template&id=727e1820&scoped=true":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/Snackbar.vue?vue&type=template&id=727e1820&scoped=true ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Snackbar_vue_vue_type_template_id_727e1820_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Snackbar_vue_vue_type_template_id_727e1820_scoped_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Snackbar.vue?vue&type=template&id=727e1820&scoped=true */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Snackbar.vue?vue&type=template&id=727e1820&scoped=true");
 
 
 /***/ }),

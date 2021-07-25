@@ -3,6 +3,7 @@ import { createStore } from "vuex";
 export default createStore({
     state() {
         return {
+            urlPath: '',
             tweets: [],
             scheduledTweets: [],
             form: {
@@ -25,6 +26,9 @@ export default createStore({
         }
     },
     mutations: {
+        setUrlPath(state, value) {
+            state.urlPath = value
+        },
         setTweets(state, payload) {
             state.tweets = payload
         },

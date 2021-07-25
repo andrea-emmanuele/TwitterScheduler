@@ -1,5 +1,5 @@
 <template>
-    <div v-show="isActive" class="w-full sm:w-container">
+    <div v-show="$store.state.urlPath === name" class="w-full sm:w-container">
         <slot></slot>
     </div>
 </template>
@@ -8,11 +8,7 @@
 export default {
     name: "Tab",
     props: {
-        name: String,
-        selected: {
-            Boolean,
-            required: true
-        }
+        name: String
     },
     data() {
         return {
@@ -20,10 +16,12 @@ export default {
         }
     },
     created() {
-        this.selected === this.name ? this.isActive = true : this.isActive = false
+        console.log(this.$store.state.urlPath)
+        this.$store.state.urlPath === this.name ? this.isActive = true : this.isActive = false
     },
     updated() {
-        this.selected === this.name ? this.isActive = true : this.isActive = false
+        console.log(this.$store.state.urlPath)
+        this.$store.state.urlPath === this.name ? this.isActive = true : this.isActive = false
     }
 }
 </script>
