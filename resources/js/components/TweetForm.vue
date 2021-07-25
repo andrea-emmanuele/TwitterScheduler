@@ -57,7 +57,7 @@
     </div>
     <div class="bg-gray-50 h-2.5"></div>
     <teleport to="body">
-        <modal :opened="open" @getDate="savedDateTime = $event" @closed="open = false" />
+        <modal :opened="open" @closed="open = false" />
     </teleport>
 </template>
 
@@ -69,14 +69,13 @@ const axios = require('axios')
 
 export default {
     name: "TweetForm",
-    components: {Modal, TweetContent },
+    components: { Modal, TweetContent },
     props: {
         user: String
     },
     data() {
         return {
             profile: {},
-            savedDateTime: {},
             open: false
         }
     },

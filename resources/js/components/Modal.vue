@@ -1,69 +1,180 @@
 <template>
     <TransitionRoot as="template" :show="opened">
-        <Dialog as="div" static class="fixed z-40 -inset-y-48 inset-x-0" :open="opened">
-            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <Dialog as="div" static class="fixed z-40 inset-y-12 inset-x-0" :open="opened">
+            <div class="flex items-end justify-center pt-4 px-4 pb-20 text-center sm:p-0">
                 <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
                     <DialogOverlay class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
                 </TransitionChild>
 
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                 <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100" leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-                    <div class="inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle w-full sm:max-w-lg sm:w-full">
-                        <div class="bg-white px-4 pt-5 pb-4 border-b border-gray-100 rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2">
-                            <div class="flex items-center">
-                                <button class="action relative w-10 h-10 rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer" @click="$emit('closed')">
-                                    <svg viewBox="0 0 24 24" aria-hidden="true" class="relative text-blue fill-current w-6 h-6 z-20 pointer-events-none">
-                                        <g>
-                                            <path d="M13.414 12l5.793-5.793c.39-.39.39-1.023 0-1.414s-1.023-.39-1.414 0L12 10.586 6.207 4.793c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L10.586 12l-5.793 5.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293L12 13.414l5.793 5.793c.195.195.45.293.707.293s.512-.098.707-.293c.39-.39.39-1.023 0-1.414L13.414 12z"></path>
-                                        </g>
-                                    </svg>
-                                </button>
-                                <div class="mt-3 text-center sm:mt-0 sm:text-left">
-                                    <DialogTitle as="h3" class="text-xl leading-6 font-bold text-gray-900">
-                                        Programma
-                                    </DialogTitle>
+                    <div>
+                        <Tab :key="actualTab" name="schedule" :selected="actualTab">
+                            <div class="inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle w-full">
+                                <div class="bg-white px-4 pt-5 pb-4 border-b border-gray-100 rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2">
+                                    <div class="flex items-center">
+                                        <button
+                                            class="action relative w-10 h-10 rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
+                                            @click="$emit('closed')"
+                                        >
+                                            <svg viewBox="0 0 24 24" aria-hidden="true" class="relative text-blue fill-current w-6 h-6 z-20 pointer-events-none">
+                                                <g>
+                                                    <path
+                                                        d="M13.414 12l5.793-5.793c.39-.39.39-1.023 0-1.414s-1.023-.39-1.414 0L12 10.586 6.207 4.793c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L10.586 12l-5.793 5.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293L12 13.414l5.793 5.793c.195.195.45.293.707.293s.512-.098.707-.293c.39-.39.39-1.023 0-1.414L13.414 12z"></path>
+                                                </g>
+                                            </svg>
+                                        </button>
+                                        <div class="mt-3 text-center sm:mt-0 sm:text-left">
+                                            <DialogTitle as="h3" class="text-xl leading-6 font-bold text-gray-900">
+                                                Programma
+                                            </DialogTitle>
+                                        </div>
+                                        <div class="ml-auto flex">
+                                            <button
+                                                v-if="$store.state.form.publishedAt"
+                                                class="action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
+                                                @click="clearSchedule"
+                                            >
+                                                <span class="text-blue font-bold py-1 px-4">Cancella</span>
+                                            </button>
+                                            <button
+                                                class="text-white font-bold bg-blue py-1 px-4 rounded-full mr-1 outline-none flex items-center hover:opacity-75 transition disabled:opacity-50"
+                                                @click="submit"
+                                                :disabled="dateTime.isInvalid"
+                                            >
+                                                <span>{{ $store.state.form.publishedAt ? 'Aggiorna' : 'Conferma' }}</span>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="ml-auto flex">
-                                    <button v-if="$store.state.form.publishedAt" class="action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer" @click="clearSchedule">
-                                        <span class="text-blue font-bold py-1 px-4">Cancella</span>
-                                    </button>
-                                    <button class="text-white font-bold bg-blue py-1 px-4 rounded-full mr-1 outline-none flex items-center hover:opacity-75 transition disabled:opacity-50" @click="submit" :disabled="dateTime.isInvalid">
-                                        <span>{{ $store.state.form.publishedAt ? 'Aggiorna' : 'Conferma' }}</span>
+                                <div class="my-3 mx-3">
+                                    <p v-show="!dateTime.isInvalid" class="text-sm text-gray-500 flex">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true" class="w-5 h-5 fill-current mr-2.5">
+                                            <g>
+                                                <path d="M-37.9 18c-.1-.1-.1-.1-.1-.2.1 0 .1.1.1.2z"></path>
+                                                <path
+                                                    d="M-37.9 18c-.1-.1-.1-.1-.1-.2.1 0 .1.1.1.2zM18 2.2h-1.3v-.3c0-.4-.3-.8-.8-.8-.4 0-.8.3-.8.8v.3H7.7v-.3c0-.4-.3-.8-.8-.8-.4 0-.8.3-.8.8v.3H4.8c-1.4 0-2.5 1.1-2.5 2.5v13.1c0 1.4 1.1 2.5 2.5 2.5h2.9c.4 0 .8-.3.8-.8 0-.4-.3-.8-.8-.8H4.8c-.6 0-1-.5-1-1V7.9c0-.3.4-.7 1-.7H18c.6 0 1 .4 1 .7v1.8c0 .4.3.8.8.8.4 0 .8-.3.8-.8v-5c-.1-1.4-1.2-2.5-2.6-2.5zm1 3.7c-.3-.1-.7-.2-1-.2H4.8c-.4 0-.7.1-1 .2V4.7c0-.6.5-1 1-1h1.3v.5c0 .4.3.8.8.8.4 0 .8-.3.8-.8v-.5h7.5v.5c0 .4.3.8.8.8.4 0 .8-.3.8-.8v-.5H18c.6 0 1 .5 1 1v1.2z"></path>
+                                                <path
+                                                    d="M15.5 10.4c-3.4 0-6.2 2.8-6.2 6.2 0 3.4 2.8 6.2 6.2 6.2 3.4 0 6.2-2.8 6.2-6.2 0-3.4-2.8-6.2-6.2-6.2zm0 11c-2.6 0-4.7-2.1-4.7-4.7s2.1-4.7 4.7-4.7 4.7 2.1 4.7 4.7c0 2.5-2.1 4.7-4.7 4.7z"></path>
+                                                <path
+                                                    d="M18.9 18.7c-.1.2-.4.4-.6.4-.1 0-.3 0-.4-.1l-3.1-2v-3c0-.4.3-.8.8-.8.4 0 .8.3.8.8v2.2l2.4 1.5c.2.2.3.6.1 1z"></path>
+                                            </g>
+                                        </svg>
+                                        Verrà inviato il {{ `${dateTime.dayName} ${dateTime.day} ${dateTime.month} ${dateTime.year} alle ${dateTime.hours}:${dateTime.minutes}` }}
+                                    </p>
+                                    <p v-show="dateTime.isInvalid" class="text-sm text-red-500 flex">
+                                        <svg viewBox="0 0 32 32" aria-hidden="true" class="w-5 h-5 fill-current mr-2.5"
+                                             style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+                                             preserveAspectRatio="xMidYMid meet">
+                                            <g fill="none" stroke="currentColor" stroke-linecap="round"
+                                               stroke-linejoin="round" stroke-width="2">
+                                                <path d="M16 3l14 26H2zm0 8v8m0 4v2"/>
+                                            </g>
+                                        </svg>
+                                        Non è possibile programmare la condivisione di un tweet nel passato.
+                                    </p>
+                                </div>
+                                <div class="my-4 mx-3 flex items-end gap-2">
+                                    <Select
+                                        title="Data"
+                                        :data="months"
+                                        :current-data="dateTime.month"
+                                        @selected="change('month', $event)"
+                                        class="flex-1"
+                                    />
+                                    <Select
+                                        :key="dateTime.month"
+                                        :numbers="monthDays"
+                                        :current-data="dateTime.day"
+                                        @selected="change('day', $event)"
+                                        class="flex-1"
+                                    />
+                                    <Select
+                                        :data="years"
+                                        :current-data="dateTime.year"
+                                        @selected="change('year', $event)"
+                                        class="flex-1"
+                                    />
+                                </div>
+                                <div class="my-4 mx-3 flex items-end gap-2">
+                                    <Select
+                                        title="Ora"
+                                        :data="hours"
+                                        :current-data="dateTime.hours"
+                                        @selected="change('hours', $event)"
+                                        class="w-1/4"
+                                    />
+                                    <Select
+                                        :data="minutes"
+                                        :current-data="dateTime.minutes"
+                                        @selected="change('minutes', $event)"
+                                        class="w-1/4"
+                                    />
+                                </div>
+                                <div class="px-2 py-3 border-t border-gray">
+                                    <button
+                                        class="action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
+                                        @click="switchTo('scheduledTweets')"
+                                    >
+                                        <span class="text-blue font-bold py-1 px-4">Tweet programmati</span>
                                     </button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="my-3 mx-3">
-                            <p v-show="!dateTime.isInvalid" class="text-sm text-gray-500 flex">
-                                <svg viewBox="0 0 24 24" aria-hidden="true" class="w-5 h-5 fill-current mr-2.5">
-                                    <g>
-                                        <path d="M-37.9 18c-.1-.1-.1-.1-.1-.2.1 0 .1.1.1.2z"></path><path d="M-37.9 18c-.1-.1-.1-.1-.1-.2.1 0 .1.1.1.2zM18 2.2h-1.3v-.3c0-.4-.3-.8-.8-.8-.4 0-.8.3-.8.8v.3H7.7v-.3c0-.4-.3-.8-.8-.8-.4 0-.8.3-.8.8v.3H4.8c-1.4 0-2.5 1.1-2.5 2.5v13.1c0 1.4 1.1 2.5 2.5 2.5h2.9c.4 0 .8-.3.8-.8 0-.4-.3-.8-.8-.8H4.8c-.6 0-1-.5-1-1V7.9c0-.3.4-.7 1-.7H18c.6 0 1 .4 1 .7v1.8c0 .4.3.8.8.8.4 0 .8-.3.8-.8v-5c-.1-1.4-1.2-2.5-2.6-2.5zm1 3.7c-.3-.1-.7-.2-1-.2H4.8c-.4 0-.7.1-1 .2V4.7c0-.6.5-1 1-1h1.3v.5c0 .4.3.8.8.8.4 0 .8-.3.8-.8v-.5h7.5v.5c0 .4.3.8.8.8.4 0 .8-.3.8-.8v-.5H18c.6 0 1 .5 1 1v1.2z"></path><path d="M15.5 10.4c-3.4 0-6.2 2.8-6.2 6.2 0 3.4 2.8 6.2 6.2 6.2 3.4 0 6.2-2.8 6.2-6.2 0-3.4-2.8-6.2-6.2-6.2zm0 11c-2.6 0-4.7-2.1-4.7-4.7s2.1-4.7 4.7-4.7 4.7 2.1 4.7 4.7c0 2.5-2.1 4.7-4.7 4.7z"></path><path d="M18.9 18.7c-.1.2-.4.4-.6.4-.1 0-.3 0-.4-.1l-3.1-2v-3c0-.4.3-.8.8-.8.4 0 .8.3.8.8v2.2l2.4 1.5c.2.2.3.6.1 1z"></path>
-                                    </g>
-                                </svg>
-                                Verrà inviato il {{ `${dateTime.dayName} ${dateTime.day} ${dateTime.month} ${dateTime.year} alle ${dateTime.hours}:${dateTime.minutes}` }}
-                            </p>
-                            <p v-show="dateTime.isInvalid" class="text-sm text-red-500 flex">
-                                <svg viewBox="0 0 32 32" aria-hidden="true"  class="w-5 h-5 fill-current mr-2.5" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet">
-                                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M16 3l14 26H2zm0 8v8m0 4v2"/>
-                                    </g>
-                                </svg>
-                                Non è possibile programmare la condivisione di un tweet nel passato.
-                            </p>
-                        </div>
-                        <div class="my-4 mx-3 flex items-end gap-2">
-                            <Select title="Data" :data="months" :current-data="dateTime.month" @selected="change('month', $event)" class="flex-1" />
-                            <Select :key="dateTime.month" :numbers="monthDays" :current-data="dateTime.day" @selected="change('day', $event)" class="flex-1" />
-                            <Select :data="years" :current-data="dateTime.year" @selected="change('year', $event)" class="flex-1" />
-                        </div>
-                        <div class="my-4 mx-3 flex items-end gap-2">
-                            <Select title="Ora" :data="hours" :current-data="dateTime.hours" @selected="change('hours', $event)" class="w-1/4"  />
-                            <Select :data="minutes" :current-data="dateTime.minutes" @selected="change('minutes', $event)" class="w-1/4" />
-                        </div>
-                        <div class="px-2 py-3 border-t border-gray">
-                            <button class="action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer">
-                                <span class="text-blue font-bold py-1 px-4">Tweet programmati</span>
-                            </button>
-                        </div>
+                        </Tab>
+                        <Tab :key="actualTab" name="scheduledTweets" :selected="actualTab">
+                            <div class="inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle w-full">
+                                <div class="bg-white px-4 pt-5 pb-4 border-b border-gray-100 rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2">
+                                    <div class="flex items-center">
+                                        <button
+                                            class="action relative w-10 h-10 rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
+                                            @click="switchTo('schedule')"
+                                        >
+                                            <svg viewBox="0 0 24 24" aria-hidden="true" class="relative text-blue fill-current w-6 h-6 z-20 pointer-events-none">
+                                                <g>
+                                                    <path d="M20 11H7.414l4.293-4.293c.39-.39.39-1.023 0-1.414s-1.023-.39-1.414 0l-6 6c-.39.39-.39 1.023 0 1.414l6 6c.195.195.45.293.707.293s.512-.098.707-.293c.39-.39.39-1.023 0-1.414L7.414 13H20c.553 0 1-.447 1-1s-.447-1-1-1z"></path>
+                                                </g>
+                                            </svg>
+                                        </button>
+                                        <div class="mt-3 text-center sm:mt-0 sm:text-left">
+                                            <DialogTitle as="h3" class="text-xl leading-6 font-bold text-gray-900">
+                                                Tweet non inviati
+                                            </DialogTitle>
+                                        </div>
+                                        <div class="ml-auto">
+                                            <button
+                                                class="text-white font-bold bg-blue py-1 px-4 rounded-full mr-1 outline-none flex items-center hover:opacity-75 transition disabled:opacity-50"
+                                            >
+                                                <span>Modifica</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="my-3 mx-3">
+                                    <p class="text-sm text-gray-500 mb-2 flex">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true" class="w-5 h-5 fill-current mr-2.5">
+                                            <g>
+                                                <path d="M-37.9 18c-.1-.1-.1-.1-.1-.2.1 0 .1.1.1.2z"></path>
+                                                <path
+                                                    d="M-37.9 18c-.1-.1-.1-.1-.1-.2.1 0 .1.1.1.2zM18 2.2h-1.3v-.3c0-.4-.3-.8-.8-.8-.4 0-.8.3-.8.8v.3H7.7v-.3c0-.4-.3-.8-.8-.8-.4 0-.8.3-.8.8v.3H4.8c-1.4 0-2.5 1.1-2.5 2.5v13.1c0 1.4 1.1 2.5 2.5 2.5h2.9c.4 0 .8-.3.8-.8 0-.4-.3-.8-.8-.8H4.8c-.6 0-1-.5-1-1V7.9c0-.3.4-.7 1-.7H18c.6 0 1 .4 1 .7v1.8c0 .4.3.8.8.8.4 0 .8-.3.8-.8v-5c-.1-1.4-1.2-2.5-2.6-2.5zm1 3.7c-.3-.1-.7-.2-1-.2H4.8c-.4 0-.7.1-1 .2V4.7c0-.6.5-1 1-1h1.3v.5c0 .4.3.8.8.8.4 0 .8-.3.8-.8v-.5h7.5v.5c0 .4.3.8.8.8.4 0 .8-.3.8-.8v-.5H18c.6 0 1 .5 1 1v1.2z"></path>
+                                                <path
+                                                    d="M15.5 10.4c-3.4 0-6.2 2.8-6.2 6.2 0 3.4 2.8 6.2 6.2 6.2 3.4 0 6.2-2.8 6.2-6.2 0-3.4-2.8-6.2-6.2-6.2zm0 11c-2.6 0-4.7-2.1-4.7-4.7s2.1-4.7 4.7-4.7 4.7 2.1 4.7 4.7c0 2.5-2.1 4.7-4.7 4.7z"></path>
+                                                <path
+                                                    d="M18.9 18.7c-.1.2-.4.4-.6.4-.1 0-.3 0-.4-.1l-3.1-2v-3c0-.4.3-.8.8-.8.4 0 .8.3.8.8v2.2l2.4 1.5c.2.2.3.6.1 1z"></path>
+                                            </g>
+                                        </svg>
+                                        Verrà inviato il {{ `${dateTime.dayName} ${dateTime.day} ${dateTime.month} ${dateTime.year} alle ${dateTime.hours}:${dateTime.minutes}` }}
+                                    </p>
+                                    <p>aaaa</p>
+                                </div>
+                                <div class="px-2 py-3 border-t border-gray">
+                                    <button
+                                        class="action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
+                                        @click="switchTo('scheduledTweets')"
+                                    >
+                                        <span class="text-blue font-bold py-1 px-4">Tweet programmati</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </Tab>
                     </div>
                 </TransitionChild>
             </div>
@@ -74,9 +185,11 @@
 <script>
 import { Dialog, DialogOverlay, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import Select from "./Select";
+import Tab from "./Tab";
 
 export default {
     components: {
+        Tab,
         Select,
         Dialog,
         DialogOverlay,
@@ -89,6 +202,7 @@ export default {
     },
     data() {
         return {
+            actualTab: 'schedule',
             months: [
             {
                 name: 'Gennaio',
@@ -148,8 +262,7 @@ export default {
                 minutes: 0,
                 isInvalid: false
             },
-            today: new Date(),
-            open: true
+            today: new Date()
         }
     },
     computed: {
@@ -202,6 +315,9 @@ export default {
         this.getExistingDataTime()
     },
     methods: {
+        switchTo(value) {
+            this.actualTab = value
+        },
         getActualDateTime() {
             this.dateTime.month = this.months[this.today.getMonth()].name
             this.dateTime.day = this.getTomorrowDay()
