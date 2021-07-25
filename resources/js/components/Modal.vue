@@ -122,7 +122,7 @@
                         </Tab>
                         <Tab :key="actualTab" name="scheduledTweets" :selected="actualTab">
                             <div class="inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle w-full">
-                                <div class="bg-white px-4 pt-5 pb-4 border-b border-gray-100 rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2">
+                                <div class="bg-white px-4 pt-5 pb-4 border-b border-gray rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2">
                                     <div class="flex items-center">
                                         <button
                                             class="action relative w-10 h-10 rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
@@ -148,8 +148,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="my-3 mx-3">
-                                    <p class="text-sm text-gray-500 mb-2 flex">
+                                <div class="border-b border-gray py-3 mx-3">
+                                    <p class="text-sm text-gray-500 flex">
                                         <svg viewBox="0 0 24 24" aria-hidden="true" class="w-5 h-5 fill-current mr-2.5">
                                             <g>
                                                 <path d="M-37.9 18c-.1-.1-.1-.1-.1-.2.1 0 .1.1.1.2z"></path>
@@ -165,7 +165,7 @@
                                     </p>
                                     <p>aaaa</p>
                                 </div>
-                                <div class="px-2 py-3 border-t border-gray">
+                                <div class="px-2 py-3">
                                     <button
                                         class="action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
                                         @click="switchTo('scheduledTweets')"

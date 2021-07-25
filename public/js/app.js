@@ -31103,7 +31103,7 @@ var _hoisted_20 = {
   "class": "inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle w-full"
 };
 var _hoisted_21 = {
-  "class": "bg-white px-4 pt-5 pb-4 border-b border-gray-100 rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2"
+  "class": "bg-white px-4 pt-5 pb-4 border-b border-gray rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2"
 };
 var _hoisted_22 = {
   "class": "flex items-center"
@@ -31134,10 +31134,10 @@ var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 );
 
 var _hoisted_27 = {
-  "class": "my-3 mx-3"
+  "class": "border-b border-gray py-3 mx-3"
 };
 var _hoisted_28 = {
-  "class": "text-sm text-gray-500 mb-2 flex"
+  "class": "text-sm text-gray-500 flex"
 };
 
 var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
@@ -31161,7 +31161,7 @@ var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 );
 
 var _hoisted_31 = {
-  "class": "px-2 py-3 border-t border-gray"
+  "class": "px-2 py-3"
 };
 
 var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
