@@ -16,11 +16,9 @@ export default {
         }
     },
     created() {
-        console.log(this.$store.state.urlPath)
         this.$store.state.urlPath === this.name ? this.isActive = true : this.isActive = false
     },
     updated() {
-        console.log(this.$store.state.urlPath)
         this.$store.state.urlPath === this.name ? this.isActive = true : this.isActive = false
     }
 }

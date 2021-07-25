@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function (Request $request) {
+Route::get('/{url?}', function (Request $request, $url = null) {
     $user = $request->user();
 
     return view('home', compact('user'));
-})->middleware(['auth']);
+})->middleware(['auth'])->where(['url' => 'schedule|schedule/tweets']);
 
 require __DIR__.'/auth.php';

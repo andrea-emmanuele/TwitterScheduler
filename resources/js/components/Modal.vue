@@ -153,7 +153,7 @@
                                     <button
                                         class="action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
                                     >
-                                        <span class="text-blue font-bold py-1 px-4">Select All</span>
+                                        <span class="text-blue font-bold py-1 px-4">Seleziona tutto</span>
                                     </button>
                                 </div>
                             </div>
@@ -285,14 +285,24 @@ export default {
     },
     watch: {
         '$store.state.urlPath'() {
-            window.location.pathname === '/schedule' || window.location.pathname === '/schedule/tweets' ? this.opened = true : this.opened = false
+            window.location.pathname.includes('/schedule') ? this.opened = true : this.opened = false
         }
     },
     created() {
         this.getActualDateTime()
         this.getDayName()
 
-        window.location.pathname === '/schedule' || window.location.pathname === '/schedule/tweets' ? this.opened = true : null
+        if (window.location.pathname.includes('/schedule/tweets')) {
+            this.$store.commit('setUrlPath', 'scheduledTweets')
+            this.opened = true
+            return
+        }
+
+        if (window.location.pathname.includes('/schedule')) {
+            this.$store.commit('setUrlPath', 'schedule')
+            this.opened = true
+        }
+
     },
     updated() {
         if (!this.$store.state.form.publishedAt) {

@@ -30381,13 +30381,23 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     '$store.state.urlPath': function $storeStateUrlPath() {
-      window.location.pathname === '/schedule' || window.location.pathname === '/schedule/tweets' ? this.opened = true : this.opened = false;
+      window.location.pathname.includes('/schedule') ? this.opened = true : this.opened = false;
     }
   },
   created: function created() {
     this.getActualDateTime();
     this.getDayName();
-    window.location.pathname === '/schedule' || window.location.pathname === '/schedule/tweets' ? this.opened = true : null;
+
+    if (window.location.pathname.includes('/schedule/tweets')) {
+      this.$store.commit('setUrlPath', 'scheduledTweets');
+      this.opened = true;
+      return;
+    }
+
+    if (window.location.pathname.includes('/schedule')) {
+      this.$store.commit('setUrlPath', 'schedule');
+      this.opened = true;
+    }
   },
   updated: function updated() {
     if (!this.$store.state.form.publishedAt) {
@@ -30583,11 +30593,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    console.log(this.$store.state.urlPath);
     this.$store.state.urlPath === this.name ? this.isActive = true : this.isActive = false;
   },
   updated: function updated() {
-    console.log(this.$store.state.urlPath);
     this.$store.state.urlPath === this.name ? this.isActive = true : this.isActive = false;
   }
 });
@@ -31176,6 +31184,7 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
       _this.$store.commit('setTweets', response.data);
     });
+    this.windowVisibilityListener();
   },
   methods: {
     getTweets: function getTweets() {
@@ -31204,6 +31213,48 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
           }
         }, _callee);
       }))();
+    },
+    checkTweets: function checkTweets() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.get('/api/check-tweets', {
+                  params: {
+                    'user': _this3.user
+                  }
+                });
+
+              case 2:
+                return _context2.abrupt("return", _context2.sent);
+
+              case 3:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    windowVisibilityListener: function windowVisibilityListener() {
+      var _this4 = this;
+
+      document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "visible") {
+          _this4.checkTweets().then(function (response) {
+            var length = response.data;
+            _this4.$store.state.tweets.length !== length ? _this4.getTweets().then(function (response) {
+              _this4.isLoading = false;
+
+              _this4.$store.commit('setTweets', response.data);
+            }) : null;
+          });
+        }
+      });
     }
   }
 });
@@ -31433,7 +31484,7 @@ var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
   "class": "action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
   "class": "text-blue font-bold py-1 px-4"
-}, "Select All")])], -1
+}, "Seleziona tutto")])], -1
 /* HOISTED */
 );
 
@@ -32268,26 +32319,18 @@ var _withId = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.withScopeId)("dat
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-2c003ba6");
 
 var _hoisted_1 = {
-  "class": "flex justify-center py-3"
+  "class": "h-36 flex flex-col justify-center items-center"
 };
 
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
-  "class": "animate-spin mr-2 h-7 w-7 text-blue",
-  xmlns: "http://www.w3.org/2000/svg",
-  fill: "none",
-  viewBox: "0 0 24 24"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("circle", {
-  "class": "opacity-25",
-  cx: "12",
-  cy: "12",
-  r: "10",
-  stroke: "currentColor",
-  "stroke-width": "4"
-}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
-  "class": "opacity-75",
-  fill: "currentColor",
-  d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-})], -1
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", {
+  "class": "text-xl font-bold text-black mb-2"
+}, "Non hai Tweet programmati", -1
+/* HOISTED */
+);
+
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+  "class": "text-gray-500"
+}, "Quando ne avrai, li troverai qui.", -1
 /* HOISTED */
 );
 
@@ -32296,9 +32339,9 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data, $options) {
   var _component_scheduled_tweet = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("scheduled-tweet");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [_hoisted_2], 512
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [_hoisted_2, _hoisted_3], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.isLoading]]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$store.state.scheduledTweets, function (scheduledTweet) {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, !_ctx.$store.state.scheduledTweets.length]]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$store.state.scheduledTweets, function (scheduledTweet) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_scheduled_tweet, {
       payload: scheduledTweet
     }, null, 8

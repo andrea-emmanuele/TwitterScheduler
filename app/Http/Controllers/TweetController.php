@@ -27,6 +27,16 @@ class TweetController extends Controller
         return response()->json($scheduledTweets);
     }
 
+    public function checkLength(Request $request)
+    {
+        $n = Tweet::where([
+            ['user_id', $request->user],
+            ['published_at', '<', now()]
+        ])->count();
+
+        return response()->json($n);
+    }
+
     public function store(Request $request)
     {
         $tweet = new Tweet();

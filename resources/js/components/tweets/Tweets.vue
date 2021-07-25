@@ -28,11 +28,13 @@ export default {
     },
     created() {
         this.getTweets()
-            .then((response) => {
+            .then(response => {
                 this.isLoading = false
 
                 this.$store.commit('setTweets', response.data)
             })
+
+        this.windowVisibilityListener()
     },
     methods: {
         async getTweets() {
@@ -42,6 +44,29 @@ export default {
                 params: {
                     'user': this.user
                 }
+            })
+        },
+        async checkTweets() {
+            return await axios.get('/api/check-tweets', {
+                params: {
+                    'user': this.user
+                }
+            })
+        },
+        windowVisibilityListener() {
+            document.addEventListener("visibilitychange", () => {
+               if (document.visibilityState === "visible")  {
+                   this.checkTweets().then(response => {
+                       let length = response.data
+
+                       this.$store.state.tweets.length !== length
+                                ? this.getTweets().then(response => {
+                                    this.isLoading = false
+                                    this.$store.commit('setTweets', response.data)
+                                    })
+                                : null
+                   })
+               }
             })
         }
     }
