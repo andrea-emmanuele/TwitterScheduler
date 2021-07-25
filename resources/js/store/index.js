@@ -3,6 +3,7 @@ import { createStore } from "vuex";
 export default createStore({
     state() {
         return {
+            windowLoading: true,
             urlPath: '',
             tweets: [],
             scheduledTweets: [],
@@ -75,6 +76,9 @@ export default createStore({
         },
         setLoadingState(state, value = true) {
             state.isLoading = value
+        },
+        setWindowState(state, value) {
+            state.windowLoading = value
         }
     }
 })

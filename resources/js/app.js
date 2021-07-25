@@ -3,15 +3,23 @@ import store from './store'
 import LoginForm from "./components/LoginForm";
 import TweetForm from "./components/TweetForm";
 import Tweets from "./components/tweets/Tweets";
+import LoadingView from "./components/LoadingView";
 
 
 const axios = require('axios')
 
 const app = createApp({
     components: {
+        LoadingView,
         LoginForm,
         TweetForm,
         Tweets
+    },
+    created() {
+        this.$store.commit('setWindowState', true)
+    },
+    mounted() {
+        this.$store.commit('setWindowState', false)
     },
     methods: {
         async logout() {
