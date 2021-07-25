@@ -1,7 +1,7 @@
 <template>
     <TransitionRoot as="template" :show="opened">
-        <Dialog as="div" static class="fixed z-40 inset-y-12 inset-x-0" :open="opened">
-            <div class="flex items-end justify-center pt-4 px-4 pb-20 text-center sm:p-0">
+        <Dialog as="div" static class="fixed inset-y-0 sm:inset-y-12 inset-x-0 z-40" :open="opened">
+            <div class="flex items-end justify-center text-center sm:pt-4 sm:px-4 sm:pb-20">
                 <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
                     <DialogOverlay class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
                 </TransitionChild>
@@ -9,7 +9,7 @@
                 <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100" leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
                     <div class="w-full sm:w-container">
                         <Tab name="schedule">
-                            <div class="inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle w-full">
+                            <div class="w-full h-screen flex flex-col bg-white sm:rounded-lg text-left shadow-xl transform transition-all sm:h-full sm:my-8 sm:inline-block sm:align-middle">
                                 <div class="bg-white px-4 pt-5 pb-4 border-b border-gray-100 rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2">
                                     <div class="flex items-center">
                                         <button
@@ -23,7 +23,7 @@
                                                 </g>
                                             </svg>
                                         </button>
-                                        <div class="mt-3 text-center sm:mt-0 sm:text-left">
+                                        <div class="text-center sm:text-left">
                                             <DialogTitle as="h3" class="text-xl leading-6 font-bold text-gray-900">
                                                 Programma
                                             </DialogTitle>
@@ -79,18 +79,20 @@
                                         :data="months"
                                         :current-data="dateTime.month"
                                         @selected="change('month', $event)"
-                                        class="col-span-2"
+                                        class="col-span-4 sm:col-span-2"
                                     />
                                     <Select
                                         :key="dateTime.month"
                                         :numbers="monthDays"
                                         :current-data="dateTime.day"
                                         @selected="change('day', $event)"
+                                        class="col-span-2 sm:col-span-1"
                                     />
                                     <Select
                                         :data="years"
                                         :current-data="dateTime.year"
                                         @selected="change('year', $event)"
+                                        class="col-span-2 sm:col-span-1"
                                     />
                                 </div>
                                 <div class="my-4 mx-3 grid grid-cols-4 gap-2 flex items-end">
@@ -99,16 +101,16 @@
                                         :data="hours"
                                         :current-data="dateTime.hours"
                                         @selected="change('hours', $event)"
-                                        class="col-span-1"
+                                        class="col-span-2 sm:col-span-1"
                                     />
                                     <Select
                                         :data="minutes"
                                         :current-data="dateTime.minutes"
                                         @selected="change('minutes', $event)"
-                                        class="col-span-1"
+                                        class="col-span-2 sm:col-span-1"
                                     />
                                 </div>
-                                <div class="px-2 py-3 border-t border-gray">
+                                <div class="px-2 py-3 border-t border-gray mt-auto sm:mt-0">
                                     <button
                                         class="action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
                                         @click="changeUrl('/schedule/tweets', 'scheduledTweets')"
@@ -119,7 +121,7 @@
                             </div>
                         </Tab>
                         <Tab name="scheduledTweets">
-                            <div class="w-full inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle">
+                            <div class="w-full h-screen flex flex-col bg-white sm:rounded-lg text-left shadow-xl transform transition-all sm:h-full sm:my-8 sm:inline-block sm:align-middle">
                                 <div class="bg-white px-4 pt-5 pb-4 border-b border-gray rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2">
                                     <div class="flex items-center">
                                         <button
@@ -132,24 +134,22 @@
                                                 </g>
                                             </svg>
                                         </button>
-                                        <div class="mt-3 text-center sm:mt-0 sm:text-left">
+                                        <div class="text-center sm:text-left">
                                             <DialogTitle as="h3" class="text-xl leading-6 font-bold text-gray-900">
                                                 Tweet non inviati
                                             </DialogTitle>
                                         </div>
                                         <div class="ml-auto">
-                                            <button
-                                                class="text-white font-bold bg-blue py-1 px-4 rounded-full mr-1 outline-none flex items-center hover:opacity-75 transition disabled:opacity-50"
-                                            >
+                                            <button class="text-white font-bold bg-blue py-1 px-4 rounded-full mr-1 outline-none flex items-center hover:opacity-75 transition disabled:opacity-50">
                                                 <span>Modifica</span>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="h-96 overflow-y-auto">
+                                <div class="h-full sm:h-96 overflow-y-auto">
                                     <scheduled-tweets :user="$store.state.form.userId"/>
                                 </div>
-                                <div class="px-2 py-3">
+                                <div class="px-2 py-3 border-t border-gray mt-auto sm:mt-0">
                                     <button
                                         class="action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
                                     >

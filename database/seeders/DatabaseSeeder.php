@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         $user->save();
 
         \App\Models\User::factory(10)->create();
-        \App\Models\Tweet::factory(10)->create();
+        \App\Models\Tweet::factory(20)->create();
 
         $hashtags = config('hashtags');
 

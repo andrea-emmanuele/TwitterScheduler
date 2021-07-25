@@ -31393,13 +31393,13 @@ var _withId = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.withScopeId)("dat
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-53ab54d2");
 
 var _hoisted_1 = {
-  "class": "flex items-end justify-center pt-4 px-4 pb-20 text-center sm:p-0"
+  "class": "flex items-end justify-center text-center sm:pt-4 sm:px-4 sm:pb-20"
 };
 var _hoisted_2 = {
   "class": "w-full sm:w-container"
 };
 var _hoisted_3 = {
-  "class": "inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle w-full"
+  "class": "w-full h-screen flex flex-col bg-white sm:rounded-lg text-left shadow-xl transform transition-all sm:h-full sm:my-8 sm:inline-block sm:align-middle"
 };
 var _hoisted_4 = {
   "class": "bg-white px-4 pt-5 pb-4 border-b border-gray-100 rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2"
@@ -31419,7 +31419,7 @@ var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 );
 
 var _hoisted_7 = {
-  "class": "mt-3 text-center sm:mt-0 sm:text-left"
+  "class": "text-center sm:text-left"
 };
 
 var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Programma ");
@@ -31492,7 +31492,7 @@ var _hoisted_18 = {
   "class": "my-4 mx-3 grid grid-cols-4 gap-2 flex items-end"
 };
 var _hoisted_19 = {
-  "class": "px-2 py-3 border-t border-gray"
+  "class": "px-2 py-3 border-t border-gray mt-auto sm:mt-0"
 };
 
 var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
@@ -31502,7 +31502,7 @@ var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 );
 
 var _hoisted_21 = {
-  "class": "w-full inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle"
+  "class": "w-full h-screen flex flex-col bg-white sm:rounded-lg text-left shadow-xl transform transition-all sm:h-full sm:my-8 sm:inline-block sm:align-middle"
 };
 var _hoisted_22 = {
   "class": "bg-white px-4 pt-5 pb-4 border-b border-gray rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2"
@@ -31522,7 +31522,7 @@ var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 );
 
 var _hoisted_25 = {
-  "class": "mt-3 text-center sm:mt-0 sm:text-left"
+  "class": "text-center sm:text-left"
 };
 
 var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Tweet non inviati ");
@@ -31536,11 +31536,11 @@ var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 );
 
 var _hoisted_28 = {
-  "class": "h-96 overflow-y-auto"
+  "class": "h-full sm:h-96 overflow-y-auto"
 };
 
 var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "px-2 py-3"
+  "class": "px-2 py-3 border-t border-gray mt-auto sm:mt-0"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
   "class": "action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
@@ -31576,7 +31576,7 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dialog, {
         as: "div",
         "static": "",
-        "class": "fixed z-40 inset-y-12 inset-x-0",
+        "class": "fixed inset-y-0 sm:inset-y-12 inset-x-0 z-40",
         open: $data.opened
       }, {
         "default": _withId(function () {
@@ -31655,7 +31655,7 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
                     onSelected: _cache[4] || (_cache[4] = function ($event) {
                       return $options.change('month', $event);
                     }),
-                    "class": "col-span-2"
+                    "class": "col-span-4 sm:col-span-2"
                   }, null, 8
                   /* PROPS */
                   , ["data", "current-data"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select, {
@@ -31664,7 +31664,8 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
                     "current-data": $data.dateTime.day,
                     onSelected: _cache[5] || (_cache[5] = function ($event) {
                       return $options.change('day', $event);
-                    })
+                    }),
+                    "class": "col-span-2 sm:col-span-1"
                   }, null, 8
                   /* PROPS */
                   , ["numbers", "current-data"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select, {
@@ -31672,7 +31673,8 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
                     "current-data": $data.dateTime.year,
                     onSelected: _cache[6] || (_cache[6] = function ($event) {
                       return $options.change('year', $event);
-                    })
+                    }),
+                    "class": "col-span-2 sm:col-span-1"
                   }, null, 8
                   /* PROPS */
                   , ["data", "current-data"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select, {
@@ -31682,7 +31684,7 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
                     onSelected: _cache[7] || (_cache[7] = function ($event) {
                       return $options.change('hours', $event);
                     }),
-                    "class": "col-span-1"
+                    "class": "col-span-2 sm:col-span-1"
                   }, null, 8
                   /* PROPS */
                   , ["data", "current-data"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select, {
@@ -31691,7 +31693,7 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
                     onSelected: _cache[8] || (_cache[8] = function ($event) {
                       return $options.change('minutes', $event);
                     }),
-                    "class": "col-span-1"
+                    "class": "col-span-2 sm:col-span-1"
                   }, null, 8
                   /* PROPS */
                   , ["data", "current-data"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {

@@ -23,7 +23,7 @@ class TweetFactory extends Factory
     {
         return [
             'message' => $this->faker->text(320),
-            'published_at' => $this->faker->dateTimeBetween('-60 days', '+0 days'),
+            'published_at' => $this->faker->dateTimeBetween('-60 days', '+90 days'),
             'user_id' => '1'
         ];
     }
