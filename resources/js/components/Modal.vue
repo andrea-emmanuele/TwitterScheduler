@@ -1,15 +1,15 @@
 <template>
     <TransitionRoot as="template" :show="opened">
-        <Dialog as="div" static class="fixed inset-y-0 sm:inset-y-12 inset-x-0 z-40" :open="opened">
-            <div class="flex items-end justify-center text-center sm:pt-4 sm:px-4 sm:pb-20">
+        <Dialog as="div" static class="fixed inset-y-0 sm:inset-y-12 inset-x-0 z-40 flex" :open="opened">
+            <div class="w-full flex items-end justify-center text-center sm:pt-4 sm:px-4 sm:pb-20">
                 <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
                     <DialogOverlay class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
                 </TransitionChild>
 
                 <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100" leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-                    <div class="w-full sm:w-container">
+                    <div class="w-full h-full sm:w-container">
                         <Tab name="schedule">
-                            <div class="w-full h-screen flex flex-col bg-white sm:rounded-lg text-left shadow-xl transform transition-all sm:h-full sm:my-8 sm:inline-block sm:align-middle">
+                            <div class="w-full h-full flex flex-col bg-white sm:rounded-lg text-left shadow-xl transform transition-all sm:h-full sm:my-8 sm:inline-block sm:align-middle">
                                 <div class="bg-white px-4 pt-5 pb-4 border-b border-gray-100 rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2">
                                     <div class="flex items-center">
                                         <button
@@ -121,7 +121,7 @@
                             </div>
                         </Tab>
                         <Tab name="scheduledTweets">
-                            <div class="w-full h-screen flex flex-col bg-white sm:rounded-lg text-left shadow-xl transform transition-all sm:h-full sm:my-8 sm:inline-block sm:align-middle">
+                            <div class="w-full h-full flex flex-col bg-white text-left shadow-xl transform transition-all sm:rounded-lg sm:my-8 sm:inline-block sm:align-middle">
                                 <div class="bg-white px-4 pt-5 pb-4 border-b border-gray rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2">
                                     <div class="flex items-center">
                                         <button

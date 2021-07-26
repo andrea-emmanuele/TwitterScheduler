@@ -1,5 +1,5 @@
 <template>
-    <div v-show="$store.state.urlPath === name" class="w-full sm:w-container">
+    <div v-show="$store.state.urlPath === name" class="w-full h-full sm:w-container sm:h-auto">
         <slot></slot>
     </div>
 </template>
