@@ -11,7 +11,7 @@
                 <span class="opacity-50 mr-1.5">@{{ payload.user.tag }}</span>
                 <Time :published-at="payload.published_at" />
             </div>
-            <p class="break-all" v-html="payload.message"></p>
+            <div class="break-all" v-html="payload.message"></div>
             <div v-if="payload.media_path" class="h-72 my-5">
                 <img :src="payload.media_path" class="h-full w-full object-cover rounded-xl" />
             </div>

@@ -47,8 +47,17 @@ class TweetController extends Controller
             'userId' => 'required',
         ]);
 
+
+        $message = strip_tags($request->message); // Eliminiamo eventuali tag html inseriti dall'utente
+
+        // wrappiamo eventuali URLs in un tag <a href=""></a>
+        $message = preg_replace('@(http(s)?://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@', '<a href="http$2://$3" target="_blank" class="text-blue hover:opacity-80">$0</a>', $message);
+        $message = preg_replace('/(\r\n|\r|\n)/', '<p>${1}</p>', $message); // Aggiungiamo spazi a capo al testo qualora ce ne siano
+        $message = preg_replace('/#+([a-zA-Z0-9_]+)/', '<a href="/hashtag/$1" class="text-blue hover:opacity-80">$0</a>', $message); // Generiamo gli hashtags sempre utilizzando regex
+        $message = preg_replace('/@+([a-zA-Z0-9_]+)/', '<a href="/$1" class="text-blue hover:opacity-80">$0</a>', $message); // Generiamo dei link se l'utente menziona un altro utente utilizzando la @
+
         $tweet = new Tweet();
-        $tweet->message = $request->message;
+        $tweet->message = $message;
 
         if ($request->mediaPath) {
 

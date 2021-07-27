@@ -134,28 +134,6 @@ export default {
             }
             this.$store.commit('setUrlPath', 'schedule')
         },
-        /*addLineBreaks(value) {
-            const lineBreak = /(\r\n|\r|\n)/g
-
-            return value.replace(lineBreak, '<br>');
-        },
-        wrapURLs(value) {
-            const url = /(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-&?=%.]+/gm
-            const prefix = /https?/
-            let message = ''
-
-            !prefix.test(value)
-                ? message = value.replace(url, '<a href="http://$&" target="_blank" class="text-blue">$&</a>')
-                : message = value.replace(url, '<a href="$&" target="_blank" class="text-blue">$&</a>')
-
-            return message
-        },
-        processText(payload) {
-            payload.message = this.wrapURLs(payload.message)
-            payload.message = this.addLineBreaks(payload.message)
-
-            return payload
-        },*/
         getPreview(event) {
             const image = event.target.files[0]
             const reader = new FileReader();
@@ -185,6 +163,7 @@ export default {
                     this.$store.commit('clearForm')
             })
             .catch(error => {
+                this.$store.commit('setLoadingState', false)
                 this.previewImage = this.$store.state.form.mediaPath
             })
         }

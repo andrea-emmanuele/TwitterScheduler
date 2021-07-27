@@ -30785,25 +30785,6 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
       this.$store.commit('setUrlPath', 'schedule');
     },
-
-    /*addLineBreaks(value) {
-        const lineBreak = /(\r\n|\r|\n)/g
-         return value.replace(lineBreak, '<br>');
-    },
-    wrapURLs(value) {
-        const url = /(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-&?=%.]+/gm
-        const prefix = /https?/
-        let message = ''
-         !prefix.test(value)
-            ? message = value.replace(url, '<a href="http://$&" target="_blank" class="text-blue">$&</a>')
-            : message = value.replace(url, '<a href="$&" target="_blank" class="text-blue">$&</a>')
-         return message
-    },
-    processText(payload) {
-        payload.message = this.wrapURLs(payload.message)
-        payload.message = this.addLineBreaks(payload.message)
-         return payload
-    },*/
     getPreview: function getPreview(event) {
       var _this2 = this;
 
@@ -30835,6 +30816,8 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
         _this3.$store.commit('clearForm');
       })["catch"](function (error) {
+        _this3.$store.commit('setLoadingState', false);
+
         _this3.previewImage = _this3.$store.state.form.mediaPath;
       });
     }
@@ -32385,7 +32368,7 @@ var _hoisted_4 = {
 var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Verrà inviato il " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("".concat($data.dateTime.dayName, " ").concat($data.dateTime.day, " ").concat($data.dateTime.month, " ").concat($data.dateTime.year, " alle ").concat($data.dateTime.hours, ":").concat($data.dateTime.minutes)), 1
   /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
     "class": "break-all",
     innerHTML: $props.payload.message
   }, null, 8
@@ -32557,7 +32540,7 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     "published-at": $props.payload.published_at
   }, null, 8
   /* PROPS */
-  , ["published-at"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+  , ["published-at"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
     "class": "break-all",
     innerHTML: $props.payload.message
   }, null, 8

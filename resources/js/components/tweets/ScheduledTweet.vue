@@ -11,7 +11,7 @@
             </svg>
             Verrà inviato il {{ `${dateTime.dayName} ${dateTime.day} ${dateTime.month} ${dateTime.year} alle ${dateTime.hours}:${dateTime.minutes}` }}
         </p>
-        <p class="break-all" v-html="payload.message"></p>
+        <div class="break-all" v-html="payload.message"></div>
         <div v-if="payload.media_path" class="h-72 my-5">
             <img :src="payload.media_path" class="h-full w-full object-cover rounded-xl" />
         </div>
