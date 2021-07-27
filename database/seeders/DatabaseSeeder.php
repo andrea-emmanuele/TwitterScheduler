@@ -24,15 +24,7 @@ class DatabaseSeeder extends Seeder
         $user->remember_token = Str::random(10);
         $user->save();
 
-        \App\Models\User::factory(10)->create();
         \App\Models\Tweet::factory(20)->create();
 
-        $hashtags = config('hashtags');
-
-        foreach ($hashtags as $hashtag) {
-            $newHashtag = new Hashtag();
-            $newHashtag->name = $hashtag;
-            $newHashtag->save();
-        }
     }
 }

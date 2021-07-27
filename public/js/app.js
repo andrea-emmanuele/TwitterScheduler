@@ -30638,33 +30638,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "TweetContent",
   props: {
     placeholder: String
-  },
-  data: function data() {
-    return {
-      hashtags: {
-        data: [],
-        values: [],
-        last: {
-          value: '',
-          lastLength: 0
-        },
-        failedRequestAt: 0
-      }
-    };
   },
   watch: {
     '$store.state.form.message': function $storeStateFormMessage() {
@@ -30672,54 +30649,9 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
         this.$refs["tweet-content"].innerHTML = '';
         this.$refs["tweet-content"].style.height = 'initial';
       }
-    },
-    'hashtags.last.value.length': function hashtagsLastValueLength() {
-      var _this = this;
-
-      if (this.hashtags.values) {
-        if (this.hashtags.last.value.length < this.hashtags.failedRequestAt || this.hashtags.failedRequestAt === 0) {
-          this.getExistingHashtags().then(function (response) {
-            _this.hashtags.data = response.data;
-            _this.hashtags.failedRequestAt = 0;
-          })["catch"](function (error) {
-            _this.hashtags.data = [];
-            _this.hashtags.failedRequestAt = _this.hashtags.last.value.length;
-          });
-        }
-      } else {
-        this.hashtags.failedRequestAt = 0;
-      }
-
-      this.hashtags.last.lastLength = this.hashtags.last.value.length;
     }
   },
   methods: {
-    getExistingHashtags: function getExistingHashtags() {
-      var _this2 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return axios.get('/api/hashtags', {
-                  params: {
-                    'name': _this2.hashtags.values[_this2.hashtags.values.length - 1]
-                  }
-                });
-
-              case 2:
-                return _context.abrupt("return", _context.sent);
-
-              case 3:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }))();
-    },
     showPlaceholder: function showPlaceholder(tweetContent, value) {
       value ? tweetContent.classList.remove('placeholder') : tweetContent.classList.add('placeholder');
     },
@@ -30731,47 +30663,13 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
         textarea.style.height = "".concat(textarea.scrollHeight, "px");
       }
     },
-    addToText: function addToText(hashtag) {
-      var innerText = this.$refs["tweet-content"].innerText;
-      var n = innerText.toLowerCase().lastIndexOf(this.hashtags.values[this.hashtags.values.length - 1].toLowerCase());
-      var pat = new RegExp(this.hashtags.values[this.hashtags.values.length - 1], 'i');
-      this.$refs["tweet-content"].innerText = innerText.slice(0, n) + innerText.slice(n).replace(pat, hashtag);
-      this.hashtags.data = [];
-      this.hashtags.values = [];
-      this.hashtags.last.lastLength = 0;
-      this.hashtags.failedRequestAt = 0;
-      this.$refs["tweet-content"].focus();
-      var sel = window.getSelection();
-      sel.collapse(this.$refs["tweet-content"], 1);
-    },
-    findHashtags: function findHashtags(value) {
-      var hash = /\B(\#[a-zA-Z\d]+\b)(?![$-/:-?{-~!"^_`\[\]])/g;
-      this.hashtags.values = value.match(hash);
-
-      if (this.hashtags.values) {
-        if (this.hashtags.values[this.hashtags.values.length - 1].length === this.hashtags.last.lastLength) {
-          this.hashtags.data = [];
-        }
-
-        this.hashtags.last.value = this.hashtags.values[this.hashtags.values.length - 1];
-      } else {
-        this.hashtags.data = [];
-        this.hashtags.last.value = '';
-      }
-    },
-    returnValue: function returnValue(event) {
+    returnValue: function returnValue() {
       var tweetContent = this.$refs["tweet-content"];
       var innerText = tweetContent.innerText;
 
       if (innerText === '\n') {
         innerText = '';
       }
-
-      if (event.data !== ' ') {
-        this.findHashtags(innerText);
-      }
-      /*value = value.replace(/^\s+|\s+$/g, '');*/
-
 
       this.showPlaceholder(tweetContent, innerText);
       this.resize();
@@ -32174,9 +32072,6 @@ var _withId = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.withScopeId)("dat
 var _hoisted_1 = {
   "class": "relative"
 };
-var _hoisted_2 = {
-  "class": "bg-white w-2/4 rounded mt-2 absolute top-full left-3 z-30 list-shadow"
-};
 
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)();
 
@@ -32193,22 +32088,7 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     })
   }, null, 42
   /* CLASS, PROPS, HYDRATE_EVENTS */
-  , ["contenteditable", "data-placeholder"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.hashtags.data, function (hashtag) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", {
-      key: hashtag.id,
-      "class": "font-bold py-4 px-4 border-b border-gray hover:bg-gray-50 transition cursor-pointer",
-      onClick: function onClick($event) {
-        return $options.addToText(hashtag.name);
-      },
-      textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(hashtag.name)
-    }, null, 8
-    /* PROPS */
-    , ["onClick", "textContent"]);
-  }), 128
-  /* KEYED_FRAGMENT */
-  ))])], 512
-  /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.hashtags.data.length]])]);
+  , ["contenteditable", "data-placeholder"])]);
 });
 
 /***/ }),
@@ -32979,7 +32859,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".placeholder[data-v-64cb64b3]:before {\n  position: absolute;\n  content: attr(data-placeholder);\n  opacity: 0.7;\n  pointer-events: none;\n}\n.list-shadow[data-v-64cb64b3] {\n  box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".placeholder[data-v-64cb64b3]:before {\n  position: absolute;\n  content: attr(data-placeholder);\n  opacity: 0.7;\n  pointer-events: none;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
