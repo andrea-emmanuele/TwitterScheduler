@@ -31393,13 +31393,13 @@ var _withId = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.withScopeId)("dat
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-53ab54d2");
 
 var _hoisted_1 = {
-  "class": "flex items-end justify-center text-center sm:pt-4 sm:px-4 sm:pb-20"
+  "class": "w-full flex items-end justify-center text-center sm:pt-4 sm:px-4 sm:pb-20"
 };
 var _hoisted_2 = {
-  "class": "w-full sm:w-container"
+  "class": "w-full h-full sm:w-container"
 };
 var _hoisted_3 = {
-  "class": "w-full h-screen flex flex-col bg-white sm:rounded-lg text-left shadow-xl transform transition-all sm:h-full sm:my-8 sm:inline-block sm:align-middle"
+  "class": "w-full h-full flex flex-col bg-white sm:rounded-lg text-left shadow-xl transform transition-all sm:h-full sm:my-8 sm:inline-block sm:align-middle"
 };
 var _hoisted_4 = {
   "class": "bg-white px-4 pt-5 pb-4 border-b border-gray-100 rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2"
@@ -31502,7 +31502,7 @@ var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 );
 
 var _hoisted_21 = {
-  "class": "w-full h-screen flex flex-col bg-white sm:rounded-lg text-left shadow-xl transform transition-all sm:h-full sm:my-8 sm:inline-block sm:align-middle"
+  "class": "w-full h-full flex flex-col bg-white text-left shadow-xl transform transition-all sm:rounded-lg sm:my-8 sm:inline-block sm:align-middle"
 };
 var _hoisted_22 = {
   "class": "bg-white px-4 pt-5 pb-4 border-b border-gray rounded-t-lg sm:pt-2 sm:pb-1 sm:px-2"
@@ -31576,7 +31576,7 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dialog, {
         as: "div",
         "static": "",
-        "class": "fixed inset-y-0 sm:inset-y-12 inset-x-0 z-40",
+        "class": "fixed inset-y-0 sm:inset-y-12 inset-x-0 z-40 flex",
         open: $data.opened
       }, {
         "default": _withId(function () {
@@ -32023,7 +32023,7 @@ var _withId = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.withScopeId)("dat
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-8dbef60c");
 
 var _hoisted_1 = {
-  "class": "w-full sm:w-container"
+  "class": "w-full h-full sm:w-container sm:h-auto"
 };
 
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)();
