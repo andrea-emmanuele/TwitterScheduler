@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tweet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TweetController extends Controller
 {
@@ -39,8 +40,25 @@ class TweetController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'message' => 'max:320',
+            'mediaPath' => 'mimes:jpeg,jpg,png,gif|max:8000',
+            'publishedAt' => '',
+            'userId' => 'required',
+        ]);
+
         $tweet = new Tweet();
         $tweet->message = $request->message;
+
+        if ($request->mediaPath) {
+
+            $path = $request->file('mediaPath')->getClientOriginalName() . "_" . time() . "." . $request->file('mediaPath')->getClientOriginalExtension();
+            $store = $request->file('mediaPath')->storeAs('public/' . $request->userId, $path, 's3');
+
+            Storage::disk('s3')->setVisibility($store, 'public');
+
+            $tweet->media_path = Storage::disk('s3')->url($store);
+        }
 
         if ($request->publishedAt)
         {

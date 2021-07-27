@@ -30823,6 +30823,7 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
   data: function data() {
     return {
       profile: {},
+      previewImage: '',
       open: false,
       addedScheduled: false
     };
@@ -30838,7 +30839,7 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
     },
     canSubmit: function canSubmit() {
       var message = this.$store.state.form.message;
-      return message && this.noWhitespaceOnly && message !== ' ' && this.remainingChars >= 0 && !this.$store.state.isLoading;
+      return message && this.noWhitespaceOnly && message !== ' ' && this.remainingChars >= 0 && !this.$store.state.isLoading || this.previewImage;
     }
   },
   created: function created() {
@@ -30850,19 +30851,28 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var _this$$store$state$fo, message, mediaPath, publishedAt, userId, data;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                _this$$store$state$fo = _this.$store.state.form, message = _this$$store$state$fo.message, mediaPath = _this$$store$state$fo.mediaPath, publishedAt = _this$$store$state$fo.publishedAt, userId = _this$$store$state$fo.userId;
+                data = new FormData();
+                data.append('message', message);
+                mediaPath ? data.append('mediaPath', mediaPath) : null;
+                data.append('publishedAt', publishedAt);
+                data.append('userId', userId);
+
                 _this.$store.commit('setLoadingState', true);
 
-                _context.next = 3;
-                return axios.post('/api/create-tweet', _this.processText(_this.$store.state.form));
+                _context.next = 9;
+                return axios.post('/api/create-tweet', data);
 
-              case 3:
+              case 9:
                 return _context.abrupt("return", _context.sent);
 
-              case 4:
+              case 10:
               case "end":
                 return _context.stop();
             }
@@ -30877,31 +30887,57 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
       this.$store.commit('setUrlPath', 'schedule');
     },
-    addLineBreaks: function addLineBreaks(value) {
-      var lineBreak = /(\r\n|\r|\n)/g;
-      return value.replace(lineBreak, '<br>');
+
+    /*addLineBreaks(value) {
+        const lineBreak = /(\r\n|\r|\n)/g
+         return value.replace(lineBreak, '<br>');
     },
-    wrapURLs: function wrapURLs(value) {
-      var url = /(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-&?=%.]+/gm;
-      var prefix = /https?/;
-      var message = '';
-      !prefix.test(value) ? message = value.replace(url, '<a href="http://$&" target="_blank" class="text-blue">$&</a>') : message = value.replace(url, '<a href="$&" target="_blank" class="text-blue">$&</a>');
-      return message;
+    wrapURLs(value) {
+        const url = /(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-&?=%.]+/gm
+        const prefix = /https?/
+        let message = ''
+         !prefix.test(value)
+            ? message = value.replace(url, '<a href="http://$&" target="_blank" class="text-blue">$&</a>')
+            : message = value.replace(url, '<a href="$&" target="_blank" class="text-blue">$&</a>')
+         return message
     },
-    processText: function processText(payload) {
-      payload.message = this.wrapURLs(payload.message);
-      payload.message = this.addLineBreaks(payload.message);
-      return payload;
-    },
-    submit: function submit() {
+    processText(payload) {
+        payload.message = this.wrapURLs(payload.message)
+        payload.message = this.addLineBreaks(payload.message)
+         return payload
+    },*/
+    getPreview: function getPreview(event) {
       var _this2 = this;
 
+      var image = event.target.files[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(image);
+
+      reader.onload = function (e) {
+        _this2.previewImage = e.target.result;
+      };
+
+      this.setImage(image);
+    },
+    setImage: function setImage(image) {
+      this.$store.commit('setMediaPath', image);
+    },
+    removeImage: function removeImage() {
+      this.previewImage = '';
+      this.$store.commit('clearMediaPath');
+    },
+    submit: function submit() {
+      var _this3 = this;
+
+      this.previewImage = '';
       this.createTweet().then(function (response) {
-        _this2.$store.commit('setLoadingState', false);
+        _this3.$store.commit('setLoadingState', false);
 
-        !_this2.$store.state.form.publishedAt ? _this2.$store.commit('addNewTweet', response.data[0]) : _this2.addedScheduled = true;
+        !_this3.$store.state.form.publishedAt ? _this3.$store.commit('addNewTweet', response.data[0]) : _this3.addedScheduled = true;
 
-        _this2.$store.commit('clearForm');
+        _this3.$store.commit('clearForm');
+      })["catch"](function (error) {
+        _this3.previewImage = _this3.$store.state.form.mediaPath;
       });
     }
   }
@@ -32067,7 +32103,7 @@ var _withId = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.withScopeId)("dat
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-727e1820");
 
 var _hoisted_1 = {
-  "class": "text-white whitespace-nowrap w-min bg-blue py-2 px-4 rounded-md fixed inset-x-1/2 bottom-8 transform -translate-x-1/2 flex"
+  "class": "text-white whitespace-nowrap w-full sm:w-min bg-blue py-2 px-4 rounded-md fixed inset-x-1/2 bottom-0 sm:bottom-8 transform -translate-x-1/2 flex"
 };
 
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)();
@@ -32225,18 +32261,31 @@ var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 );
 
 var _hoisted_6 = {
-  "class": "flex"
-};
-var _hoisted_7 = {
-  "class": "actions flex items-center"
+  key: 0,
+  "class": "relative h-72 pl-3 my-5"
 };
 
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
+  viewBox: "0 0 24 24",
+  "aria-hidden": "true",
+  "class": "text-white fill-current h-5 w-5"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("g", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
+  d: "M13.414 12l5.793-5.793c.39-.39.39-1.023 0-1.414s-1.023-.39-1.414 0L12 10.586 6.207 4.793c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L10.586 12l-5.793 5.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293L12 13.414l5.793 5.793c.195.195.45.293.707.293s.512-.098.707-.293c.39-.39.39-1.023 0-1.414L13.414 12z"
+})])], -1
+/* HOISTED */
+);
+
+var _hoisted_8 = {
+  "class": "flex"
+};
+var _hoisted_9 = {
+  "class": "actions flex items-center"
+};
+var _hoisted_10 = {
   "class": "action relative w-10 h-10 rounded-full flex justify-center items-center overflow-hidden"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-  type: "file",
-  "class": "absolute top-0 w-full h-full opacity-0 cursor-pointer"
-}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
+};
+
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
   viewBox: "0 0 24 24",
   "aria-hidden": "true",
   "class": "relative text-blue fill-current w-5 h-5 z-20 pointer-events-none"
@@ -32246,11 +32295,11 @@ var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
   cx: "8.868",
   cy: "8.309",
   r: "1.542"
-})])])], -1
+})])], -1
 /* HOISTED */
 );
 
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
   viewBox: "0 0 24 24",
   "aria-hidden": "true",
   "class": "relative text-blue fill-current w-5 h-5 z-20 pointer-events-none"
@@ -32266,20 +32315,20 @@ var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_10 = {
+var _hoisted_13 = {
   "class": "flex items-center ml-auto"
 };
-var _hoisted_11 = {
+var _hoisted_14 = {
   "class": "h-8 border-r border-solid border-gray-100 mx-3"
 };
-var _hoisted_12 = {
+var _hoisted_15 = {
   "class": "animate-spin mr-2 h-5 w-5 text-white",
   xmlns: "http://www.w3.org/2000/svg",
   fill: "none",
   viewBox: "0 0 24 24"
 };
 
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("circle", {
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("circle", {
   "class": "opacity-25",
   cx: "12",
   cy: "12",
@@ -32290,7 +32339,7 @@ var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 /* HOISTED */
 );
 
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
   "class": "opacity-75",
   fill: "currentColor",
   d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
@@ -32298,7 +32347,7 @@ var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 /* HOISTED */
 );
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "bg-gray-50 h-2.5"
 }, null, -1
 /* HOISTED */
@@ -32339,29 +32388,48 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
   )])], 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.$store.state.form.publishedAt]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
-    onSubmit: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+    onSubmit: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.submit && $options.submit.apply($options, arguments);
-    }, ["prevent"]))
+    }, ["prevent"])),
+    enctype: "multipart/form-data"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_tweet_content, {
     user: $data.profile.id
   }, null, 8
   /* PROPS */
-  , ["user"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-    "class": "action relative w-10 h-10 rounded-full flex justify-center items-center overflow-hidden cursor-pointer",
+  , ["user"]), $data.previewImage ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+    "class": "absolute top-2 left-5 bg-black w-8 h-8 rounded-full opacity-75 flex justify-center items-center cursor-pointer hover:opacity-60 transition",
     onClick: _cache[1] || (_cache[1] = function () {
+      return $options.removeImage && $options.removeImage.apply($options, arguments);
+    })
+  }, [_hoisted_7]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+    src: $data.previewImage,
+    "class": "h-full w-full object-cover rounded-xl"
+  }, null, 8
+  /* PROPS */
+  , ["src"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    type: "file",
+    "class": "absolute top-0 w-full h-full opacity-0 cursor-pointer",
+    onChange: _cache[2] || (_cache[2] = function () {
+      return $options.getPreview && $options.getPreview.apply($options, arguments);
+    })
+  }, null, 32
+  /* HYDRATE_EVENTS */
+  ), _hoisted_11]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+    "class": "action relative w-10 h-10 rounded-full flex justify-center items-center overflow-hidden cursor-pointer",
+    onClick: _cache[3] || (_cache[3] = function () {
       return $options.openModal && $options.openModal.apply($options, arguments);
     })
-  }, [_hoisted_9])], 512
+  }, [_hoisted_12])], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, !_ctx.$store.state.isLoading]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.remainingChars), 513
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, !_ctx.$store.state.isLoading]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.remainingChars), 513
   /* TEXT, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.$store.state.form.message && !_ctx.$store.state.isLoading && $options.noWhitespaceOnly]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, null, 512
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.$store.state.form.message && !_ctx.$store.state.isLoading && $options.noWhitespaceOnly]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, null, 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.$store.state.form.message && !_ctx.$store.state.isLoading && $options.noWhitespaceOnly]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
     type: "submit",
     "class": "text-white font-bold bg-blue py-2 px-4 rounded-full flex items-center",
     disabled: !$options.canSubmit
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_12, [_hoisted_13, _hoisted_14], 512
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_15, [_hoisted_16, _hoisted_17], 512
   /* NEED_PATCH */
   )), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.$store.state.isLoading]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$store.state.form.publishedAt ? 'Programma' : 'Twitta'), 1
   /* TEXT */
@@ -32369,13 +32437,13 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
   /* PROPS */
   , ["disabled"])])])], 32
   /* HYDRATE_EVENTS */
-  )])]), _hoisted_15, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Teleport, {
+  )])]), _hoisted_18, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Teleport, {
     to: "body"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_modal), $data.addedScheduled ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_snackbar, {
     key: 0,
     text: "Il tuo tweet è stato programmato con successo.",
     timeout: 5000,
-    onClosed: _cache[3] || (_cache[3] = function ($event) {
+    onClosed: _cache[5] || (_cache[5] = function ($event) {
       return $data.addedScheduled = false;
     })
   })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]))], 64
@@ -32427,6 +32495,11 @@ var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
+var _hoisted_4 = {
+  key: 0,
+  "class": "h-72 my-5"
+};
+
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)();
 
 var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data, $options) {
@@ -32437,7 +32510,12 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     innerHTML: $props.payload.message
   }, null, 8
   /* PROPS */
-  , ["innerHTML"])], 512
+  , ["innerHTML"]), $props.payload.media_path ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+    src: $props.payload.media_path,
+    "class": "h-full w-full object-cover rounded-xl"
+  }, null, 8
+  /* PROPS */
+  , ["src"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 512
   /* NEED_PATCH */
   );
 });
@@ -32575,6 +32653,10 @@ var _hoisted_5 = {
 var _hoisted_6 = {
   "class": "opacity-50 mr-1.5"
 };
+var _hoisted_7 = {
+  key: 0,
+  "class": "h-72 my-5"
+};
 
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)();
 
@@ -32600,7 +32682,12 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     innerHTML: $props.payload.message
   }, null, 8
   /* PROPS */
-  , ["innerHTML"])])], 512
+  , ["innerHTML"]), $props.payload.media_path ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+    src: $props.payload.media_path,
+    "class": "h-full w-full object-cover rounded-xl"
+  }, null, 8
+  /* PROPS */
+  , ["src"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])], 512
   /* NEED_PATCH */
   );
 });
@@ -32766,6 +32853,7 @@ __webpack_require__.r(__webpack_exports__);
       scheduledTweets: [],
       form: {
         message: '',
+        mediaPath: '',
         publishedAt: '',
         userId: null,
         scheduled: {
@@ -32805,6 +32893,9 @@ __webpack_require__.r(__webpack_exports__);
     setMessage: function setMessage(state, value) {
       state.form.message = value;
     },
+    setMediaPath: function setMediaPath(state, value) {
+      state.form.mediaPath = value;
+    },
     setDateTime: function setDateTime(state, payload) {
       state.form.scheduled.dateTime.month = payload.month;
       state.form.scheduled.dateTime.dayName = payload.dayName;
@@ -32816,8 +32907,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     clearForm: function clearForm(state) {
       state.form.message = '';
+      this.commit('clearMediaPath');
       this.commit('clearPublishedAt');
       this.commit('clearSchedule');
+    },
+    clearMediaPath: function clearMediaPath(state) {
+      state.form.mediaPath = '';
     },
     clearPublishedAt: function clearPublishedAt(state) {
       state.form.publishedAt = '';

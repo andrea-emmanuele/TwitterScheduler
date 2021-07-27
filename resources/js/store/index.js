@@ -9,6 +9,7 @@ export default createStore({
             scheduledTweets: [],
             form: {
                 message: '',
+                mediaPath: '',
                 publishedAt: '',
                 userId: null,
                 scheduled: {
@@ -48,6 +49,9 @@ export default createStore({
         setMessage(state, value) {
             state.form.message = value
         },
+        setMediaPath(state, value) {
+            state.form.mediaPath = value
+        },
         setDateTime(state, payload) {
             state.form.scheduled.dateTime.month = payload.month
             state.form.scheduled.dateTime.dayName = payload.dayName
@@ -59,8 +63,12 @@ export default createStore({
         },
         clearForm(state) {
             state.form.message = ''
+            this.commit('clearMediaPath')
             this.commit('clearPublishedAt')
             this.commit('clearSchedule')
+        },
+        clearMediaPath(state) {
+            state.form.mediaPath = ''
         },
         clearPublishedAt(state) {
             state.form.publishedAt = ''

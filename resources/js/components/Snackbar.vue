@@ -1,5 +1,5 @@
 <template>
-    <div class="text-white whitespace-nowrap w-min bg-blue py-2 px-4 rounded-md fixed inset-x-1/2 bottom-8 transform -translate-x-1/2 flex">
+    <div class="text-white whitespace-nowrap w-full sm:w-min bg-blue py-2 px-4 rounded-md fixed inset-x-1/2 bottom-0 sm:bottom-8 transform -translate-x-1/2 flex">
         {{ text }}
         <button class="font-bold text-white ml-3 hover:underline transition" @click="close">Close</button>
     </div>

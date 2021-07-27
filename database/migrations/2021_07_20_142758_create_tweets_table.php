@@ -15,7 +15,7 @@ class CreateTweetsTable extends Migration
     {
         Schema::create('tweets', function (Blueprint $table) {
             $table->id();
-            $table->text('message');
+            $table->text('message')->nullable();
             $table->string('media_path')->nullable();
             $table->dateTime('published_at');
             $table->foreignId('user_id')

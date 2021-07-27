@@ -12,6 +12,9 @@
                 <Time :published-at="payload.published_at" />
             </div>
             <p class="break-all" v-html="payload.message"></p>
+            <div v-if="payload.media_path" class="h-72 my-5">
+                <img :src="payload.media_path" class="h-full w-full object-cover rounded-xl" />
+            </div>
         </div>
     </div>
 </template>

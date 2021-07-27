@@ -21,4 +21,5 @@ Route::get('/hashtags', [\App\Http\Controllers\HashtagController::class, 'index'
 Route::get('/users', [\App\Http\Controllers\UserController::class, 'index']);
 
 Route::post('/create-tweet', [\App\Http\Controllers\TweetController::class, 'store']);
+Route::post('/upload', [\App\Http\Controllers\MediaController::class, 'store']);
 
