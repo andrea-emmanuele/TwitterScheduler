@@ -30495,7 +30495,9 @@ __webpack_require__.r(__webpack_exports__);
           year = _this$dateTime3.year,
           hours = _this$dateTime3.hours,
           minutes = _this$dateTime3.minutes;
-      this.$store.commit('scheduleTweet', "".concat(year, "-").concat(this.numericMonth + 1, "-").concat(day, " ").concat(hours - 2, ":").concat(minutes, ":00"));
+      var date = new Date(year, this.numericMonth, day, hours, minutes);
+      date.setHours(date.getHours() - 2);
+      this.$store.commit('scheduleTweet', "".concat(year, "-").concat(this.numericMonth + 1, "-").concat(day, " ").concat(date.getHours(), ":").concat(minutes, ":00"));
       this.$store.commit('setDateTime', this.dateTime);
       this.changeUrl('/', '');
     }

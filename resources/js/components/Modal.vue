@@ -372,7 +372,10 @@ export default {
         submit() {
             const { day, year, hours, minutes } = this.dateTime
 
-            this.$store.commit('scheduleTweet', `${year}-${this.numericMonth + 1}-${day} ${hours - 2}:${minutes}:00`)
+            const date = new Date(year, this.numericMonth, day, hours, minutes)
+            date.setHours(date.getHours() - 2)
+
+            this.$store.commit('scheduleTweet', `${year}-${this.numericMonth + 1}-${day} ${date.getHours()}:${minutes}:00`)
             this.$store.commit('setDateTime', this.dateTime)
             this.changeUrl('/', '')
         }
