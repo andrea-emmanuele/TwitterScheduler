@@ -1,16 +1,65 @@
 <template>
-    <form @submit.prevent="submit">
-        <input type="text" v-model="form.email">
-        <input type="password" v-model="form.password">
-        <input type="submit">
-    </form>
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+            <div>
+                <svg width="72" height="72" viewBox="0 0 72 72" class="mx-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M67.812 16.141C65.464 17.18 62.943 17.884 60.293 18.201C62.996 16.581 65.071 14.014 66.049 10.957C63.52 12.457 60.719 13.549 57.736 14.133C55.349 11.591 51.948 10 48.182 10C40.953 10 35.09 15.861 35.09 23.093C35.09 24.119 35.208 25.114 35.428 26.074C24.543 25.526 14.9 20.317 8.441 12.395C7.315 14.331 6.67 16.579 6.67 18.976C6.67 23.518 8.982 27.527 12.494 29.874C10.348 29.805 8.329 29.217 6.564 28.236C6.562 28.291 6.562 28.346 6.562 28.398C6.562 34.743 11.075 40.036 17.066 41.238C15.965 41.536 14.81 41.695 13.617 41.695C12.771 41.695 11.95 41.617 11.152 41.464C12.819 46.664 17.651 50.45 23.382 50.554C18.9 54.066 13.253 56.16 7.122 56.16C6.067 56.16 5.026 56.099 4 55.976C9.794 59.693 16.676 61.858 24.067 61.858C48.15 61.858 61.318 41.909 61.318 24.609C61.318 24.043 61.304 23.475 61.279 22.915C63.838 21.068 66.058 18.765 67.812 16.141Z" fill="#1DA1F2"/>
+                </svg>
+                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                    Accedi al tuo account
+                </h2>
+            </div>
+            <form class="mt-8 space-y-6" @submit.prevent="submit">
+                <input type="hidden" name="remember" value="true" />
+                <div class="rounded-md shadow-sm -space-y-px">
+                    <div>
+                        <label for="email-address" class="sr-only">Email address</label>
+                        <input v-model="form.email" id="email-address" name="email" type="email" autocomplete="email" required="" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email address" />
+                    </div>
+                    <div>
+                        <label for="password" class="sr-only">Password</label>
+                        <input v-model="form.password" id="password" name="password" type="password" autocomplete="current-password" required="" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password" />
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
+                        <label for="remember-me" class="ml-2 block text-sm text-gray-900">
+                            Ricordami
+                        </label>
+                    </div>
+
+                    <div class="text-sm">
+                        <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+                            Password dimenticata?
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue hover:bg-blue-500 transition focus:outline-none">
+                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                          <LockClosedIcon class="h-5 w-5 text-blue-100 group-hover:text-blue-200" aria-hidden="true" />
+                        </span>
+                        Accedi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </template>
 
 <script>
+import { LockClosedIcon } from '@heroicons/vue/solid'
+
 const axios = require('axios')
 
 export default {
     name: "LoginForm",
+    components: {
+        LockClosedIcon,
+    },
     props: {
         credentials: Object
     },

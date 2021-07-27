@@ -1,3 +1,3 @@
-<x-app-layout>
+<x-guest-layout>
     <login-form :credentials="{{ json_encode($credentials) }}" />
-</x-app-layout>
+</x-guest-layout>
