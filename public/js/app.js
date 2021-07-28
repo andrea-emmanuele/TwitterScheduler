@@ -31365,7 +31365,7 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"flex items-center justify-between\" data-v-12a98f72><div class=\"flex items-center\" data-v-12a98f72><input id=\"remember-me\" name=\"remember-me\" type=\"checkbox\" class=\"h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded\" data-v-12a98f72><label for=\"remember-me\" class=\"ml-2 block text-sm text-gray-900\" data-v-12a98f72> Ricordami </label></div><div class=\"text-sm\" data-v-12a98f72><a href=\"#\" class=\"font-medium text-indigo-600 hover:text-indigo-500\" data-v-12a98f72> Password dimenticata? </a></div></div>", 1);
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"flex items-center justify-between\" data-v-12a98f72><div class=\"flex items-center\" data-v-12a98f72><input id=\"remember-me\" name=\"remember-me\" type=\"checkbox\" class=\"h-4 w-4 text-blue focus:ring-blue-500 border-gray-300 rounded\" data-v-12a98f72><label for=\"remember-me\" class=\"ml-2 block text-sm text-gray-900\" data-v-12a98f72> Ricordami </label></div><div class=\"text-sm\" data-v-12a98f72><a href=\"#\" class=\"font-medium text-blue hover:opacity-70\" data-v-12a98f72> Password dimenticata? </a></div></div>", 1);
 
 var _hoisted_9 = {
   type: "submit",
