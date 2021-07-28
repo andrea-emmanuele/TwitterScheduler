@@ -50,12 +50,19 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="flex items-center ml-auto">
-                        <span v-show="$store.state.form.message && !$store.state.isLoading && noWhitespaceOnly">{{ remainingChars }}</span>
-                        <div v-show="$store.state.form.message && !$store.state.isLoading && noWhitespaceOnly" class="h-8 border-r border-solid border-gray-100 mx-3"></div>
+                    <div class="flex ml-auto">
+                        <div v-show="$store.state.form.message && !$store.state.isLoading && noWhitespaceOnly" class="flex items-center">
+                            <div ref="progress" class="relative w-6 h-6">
+                                <svg id="progress" height="100%" style="overflow: visible;" viewBox="0 0 20 20" width="100%">
+                                    <circle cx="50%" cy="50%" fill="none" stroke-width="2" r="9" stroke="#EFF3F4"></circle>
+                                    <circle ref="spinner" cx="50%" cy="50%" fill="none" stroke-width="2" r="9" stroke="#1DA1F2" stroke-linecap="round"></circle>
+                                </svg>
+                                <span v-show="remainingChars <= 20" ref="chars" class="text-sm absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 opacity-75">{{ remainingChars }}</span>
+                            </div>
+                            <div class="h-8 border-r border-solid border-gray-100 mx-3"></div>
+                        </div>
                         <button type="submit" class="text-white font-bold bg-blue py-2 px-4 rounded-full flex items-center" :disabled="!canSubmit">
-                            <svg v-show="$store.state.isLoading" class="animate-spin mr-2 h-5 w-5 text-white"
-                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <svg v-show="$store.state.isLoading" class="animate-spin mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
@@ -110,9 +117,17 @@ export default {
             return message && this.noWhitespaceOnly && message !== ' ' && this.remainingChars >= 0 && !this.$store.state.isLoading || this.previewImage
         }
     },
+    watch: {
+        '$store.state.form.message'() {
+            this.changeSpinnerProgress()
+        }
+    },
     created() {
         this.profile = JSON.parse(this.user)
         this.$store.commit('setUserID', this.profile.id)
+    },
+    mounted() {
+        this.setSpinnerInitialState()
     },
     methods: {
         async createTweet() {
@@ -152,6 +167,49 @@ export default {
             this.previewImage = ''
             this.$store.commit('clearMediaPath')
         },
+        setSpinnerInitialState() {
+            const length = this.$refs.spinner.getTotalLength()
+
+            this.$refs.spinner.style.strokeDasharray = length
+            this.$refs.spinner.style.strokeDashoffset = length
+        },
+        changeSpinnerProgress() {
+            let svg = document.querySelector('#progress')
+            let length = this.$refs.spinner.getTotalLength()
+
+            if (this.remainingChars > 20) {
+                this.$refs.progress.classList.remove('w-9', 'h-9')
+                this.$refs.progress.classList.add('w-6', 'h-6')
+                this.$refs.spinner.style.stroke = '#1da1f2'
+                length = this.$refs.spinner.getTotalLength()
+            }
+
+            if (this.remainingChars <= 20) {
+                this.$refs.progress.classList.remove('w-6', 'h-6')
+                this.$refs.progress.classList.add('w-9', 'h-9')
+                this.$refs.spinner.style.stroke = '#ffad1f'
+                length = this.$refs.spinner.getTotalLength()
+            }
+
+            if (this.remainingChars > 0) {
+                this.$refs.chars.style.color = '#000'
+                const progress = length * (this.$store.state.form.message.length / 320)
+
+                this.$refs.spinner.style.strokeDashoffset = length - progress
+            }
+
+            if (this.remainingChars < 0) {
+                this.$refs.spinner.style.stroke = '#e0245e'
+                this.$refs.chars.style.color = '#e0245e'
+                svg.classList.remove('fade-out')
+                svg.classList.add('fade-in')
+            }
+
+            if (this.remainingChars < -9) {
+                svg.classList.remove('fade-in')
+                svg.classList.add('fade-out')
+            }
+        },
         submit() {
             this.previewImage = ''
 
@@ -190,8 +248,40 @@ export default {
     }
 }
 
+#progress {
+    transform: rotateZ(-90deg);
+}
+
 button[disabled] {
     opacity: 50%;
     cursor: default;
+}
+
+.fade-in {
+    animation: fade-in 200ms cubic-bezier(.95,.05,.8,.04);
+    animation-fill-mode: forwards;
+}
+
+.fade-out {
+    animation: fade-out 200ms cubic-bezier(.95,.05,.8,.04);
+    animation-fill-mode: forwards;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }
 </style>

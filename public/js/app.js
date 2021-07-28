@@ -30740,9 +30740,17 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
       return message && this.noWhitespaceOnly && message !== ' ' && this.remainingChars >= 0 && !this.$store.state.isLoading || this.previewImage;
     }
   },
+  watch: {
+    '$store.state.form.message': function $storeStateFormMessage() {
+      this.changeSpinnerProgress();
+    }
+  },
   created: function created() {
     this.profile = JSON.parse(this.user);
     this.$store.commit('setUserID', this.profile.id);
+  },
+  mounted: function mounted() {
+    this.setSpinnerInitialState();
   },
   methods: {
     createTweet: function createTweet() {
@@ -30804,6 +30812,47 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
     removeImage: function removeImage() {
       this.previewImage = '';
       this.$store.commit('clearMediaPath');
+    },
+    setSpinnerInitialState: function setSpinnerInitialState() {
+      var length = this.$refs.spinner.getTotalLength();
+      this.$refs.spinner.style.strokeDasharray = length;
+      this.$refs.spinner.style.strokeDashoffset = length;
+    },
+    changeSpinnerProgress: function changeSpinnerProgress() {
+      var svg = document.querySelector('#progress');
+      var length = this.$refs.spinner.getTotalLength();
+
+      if (this.remainingChars > 20) {
+        this.$refs.progress.classList.remove('w-9', 'h-9');
+        this.$refs.progress.classList.add('w-6', 'h-6');
+        this.$refs.spinner.style.stroke = '#1da1f2';
+        length = this.$refs.spinner.getTotalLength();
+      }
+
+      if (this.remainingChars <= 20) {
+        this.$refs.progress.classList.remove('w-6', 'h-6');
+        this.$refs.progress.classList.add('w-9', 'h-9');
+        this.$refs.spinner.style.stroke = '#ffad1f';
+        length = this.$refs.spinner.getTotalLength();
+      }
+
+      if (this.remainingChars > 0) {
+        this.$refs.chars.style.color = '#000';
+        var progress = length * (this.$store.state.form.message.length / 320);
+        this.$refs.spinner.style.strokeDashoffset = length - progress;
+      }
+
+      if (this.remainingChars < 0) {
+        this.$refs.spinner.style.stroke = '#e0245e';
+        this.$refs.chars.style.color = '#e0245e';
+        svg.classList.remove('fade-out');
+        svg.classList.add('fade-in');
+      }
+
+      if (this.remainingChars < -9) {
+        svg.classList.remove('fade-in');
+        svg.classList.add('fade-out');
+      }
     },
     submit: function submit() {
       var _this3 = this;
@@ -32179,19 +32228,61 @@ var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 );
 
 var _hoisted_13 = {
-  "class": "flex items-center ml-auto"
+  "class": "flex ml-auto"
 };
 var _hoisted_14 = {
-  "class": "h-8 border-r border-solid border-gray-100 mx-3"
+  "class": "flex items-center"
 };
 var _hoisted_15 = {
+  ref: "progress",
+  "class": "relative w-6 h-6"
+};
+var _hoisted_16 = {
+  id: "progress",
+  height: "100%",
+  style: {
+    "overflow": "visible"
+  },
+  viewBox: "0 0 20 20",
+  width: "100%"
+};
+
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("circle", {
+  cx: "50%",
+  cy: "50%",
+  fill: "none",
+  "stroke-width": "2",
+  r: "9",
+  stroke: "#EFF3F4"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_18 = {
+  ref: "spinner",
+  cx: "50%",
+  cy: "50%",
+  fill: "none",
+  "stroke-width": "2",
+  r: "9",
+  stroke: "#1DA1F2",
+  "stroke-linecap": "round"
+};
+
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  "class": "h-8 border-r border-solid border-gray-100 mx-3"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_20 = {
   "class": "animate-spin mr-2 h-5 w-5 text-white",
   xmlns: "http://www.w3.org/2000/svg",
   fill: "none",
   viewBox: "0 0 24 24"
 };
 
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("circle", {
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("circle", {
   "class": "opacity-25",
   cx: "12",
   cy: "12",
@@ -32202,7 +32293,7 @@ var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 /* HOISTED */
 );
 
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
   "class": "opacity-75",
   fill: "currentColor",
   d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
@@ -32210,7 +32301,7 @@ var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 /* HOISTED */
 );
 
-var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "bg-gray-50 h-2.5"
 }, null, -1
 /* HOISTED */
@@ -32284,15 +32375,22 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     })
   }, [_hoisted_12])], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, !_ctx.$store.state.isLoading]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.remainingChars), 513
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, !_ctx.$store.state.isLoading]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("circle", _hoisted_18, null, 512
+  /* NEED_PATCH */
+  )])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
+    ref: "chars",
+    "class": "text-sm absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 opacity-75"
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.remainingChars), 513
   /* TEXT, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.$store.state.form.message && !_ctx.$store.state.isLoading && $options.noWhitespaceOnly]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, null, 512
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $options.remainingChars <= 20]])], 512
+  /* NEED_PATCH */
+  ), _hoisted_19], 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.$store.state.form.message && !_ctx.$store.state.isLoading && $options.noWhitespaceOnly]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
     type: "submit",
     "class": "text-white font-bold bg-blue py-2 px-4 rounded-full flex items-center",
     disabled: !$options.canSubmit
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_15, [_hoisted_16, _hoisted_17], 512
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_20, [_hoisted_21, _hoisted_22], 512
   /* NEED_PATCH */
   )), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.$store.state.isLoading]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$store.state.form.publishedAt ? 'Programma' : 'Twitta'), 1
   /* TEXT */
@@ -32300,7 +32398,7 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
   /* PROPS */
   , ["disabled"])])])], 32
   /* HYDRATE_EVENTS */
-  )])]), _hoisted_18, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Teleport, {
+  )])]), _hoisted_23, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Teleport, {
     to: "body"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_modal), $data.addedScheduled ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_snackbar, {
     key: 0,
@@ -32866,7 +32964,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".avatar[data-v-42fa5e7a] {\n  transition: all 200ms ease-in-out;\n}\n.avatar[data-v-42fa5e7a]:hover {\n  filter: brightness(85%);\n}\n.actions .action[data-v-42fa5e7a] {\n  transition: background-color 200ms ease-in-out;\n}\n.actions .action[data-v-42fa5e7a]:hover {\n  background: rgba(29, 161, 242, 0.1);\n}\nbutton[disabled][data-v-42fa5e7a] {\n  opacity: 50%;\n  cursor: default;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".avatar[data-v-42fa5e7a] {\n  transition: all 200ms ease-in-out;\n}\n.avatar[data-v-42fa5e7a]:hover {\n  filter: brightness(85%);\n}\n.actions .action[data-v-42fa5e7a] {\n  transition: background-color 200ms ease-in-out;\n}\n.actions .action[data-v-42fa5e7a]:hover {\n  background: rgba(29, 161, 242, 0.1);\n}\n#progress[data-v-42fa5e7a] {\n  transform: rotateZ(-90deg);\n}\nbutton[disabled][data-v-42fa5e7a] {\n  opacity: 50%;\n  cursor: default;\n}\n.fade-in[data-v-42fa5e7a] {\n  -webkit-animation: fade-in-42fa5e7a 200ms cubic-bezier(0.95, 0.05, 0.8, 0.04);\n          animation: fade-in-42fa5e7a 200ms cubic-bezier(0.95, 0.05, 0.8, 0.04);\n  -webkit-animation-fill-mode: forwards;\n          animation-fill-mode: forwards;\n}\n.fade-out[data-v-42fa5e7a] {\n  -webkit-animation: fade-out-42fa5e7a 200ms cubic-bezier(0.95, 0.05, 0.8, 0.04);\n          animation: fade-out-42fa5e7a 200ms cubic-bezier(0.95, 0.05, 0.8, 0.04);\n  -webkit-animation-fill-mode: forwards;\n          animation-fill-mode: forwards;\n}\n@-webkit-keyframes fade-in-42fa5e7a {\nfrom {\n    opacity: 0;\n}\nto {\n    opacity: 1;\n}\n}\n@keyframes fade-in-42fa5e7a {\nfrom {\n    opacity: 0;\n}\nto {\n    opacity: 1;\n}\n}\n@-webkit-keyframes fade-out-42fa5e7a {\nfrom {\n    opacity: 1;\n}\nto {\n    opacity: 0;\n}\n}\n@keyframes fade-out-42fa5e7a {\nfrom {\n    opacity: 1;\n}\nto {\n    opacity: 0;\n}\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
