@@ -196,6 +196,8 @@ export default {
                 const progress = length * (this.$store.state.form.message.length / 320)
 
                 this.$refs.spinner.style.strokeDashoffset = length - progress
+
+                svg.classList.remove('fade-in')
             }
 
             if (this.remainingChars < 0) {
