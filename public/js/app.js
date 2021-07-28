@@ -30840,6 +30840,7 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
         this.$refs.chars.style.color = '#000';
         var progress = length * (this.$store.state.form.message.length / 320);
         this.$refs.spinner.style.strokeDashoffset = length - progress;
+        svg.classList.remove('fade-in');
       }
 
       if (this.remainingChars < 0) {
