@@ -32151,7 +32151,7 @@ var _withId = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.withScopeId)("dat
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-727e1820");
 
 var _hoisted_1 = {
-  "class": "text-white whitespace-nowrap w-full sm:w-min bg-blue py-2 px-4 rounded-md fixed inset-x-1/2 bottom-0 sm:bottom-8 transform -translate-x-1/2 z-50 flex"
+  "class": "text-white whitespace-nowrap w-full sm:w-min bg-blue py-4 px-4 sm:rounded-md fixed left-0 bottom-0 sm:py-2 sm:px-4 sm:bottom-8 sm:inset-x-1/2 sm:transform sm:-translate-x-1/2 z-50 flex"
 };
 
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)();
