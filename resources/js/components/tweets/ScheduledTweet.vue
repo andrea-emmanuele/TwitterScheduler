@@ -98,12 +98,14 @@ export default {
     methods: {
         getExistingDateTime() {
             const date = new Date(this.payload.published_at)
-            date.setHours(date.getHours() + 2)
+
+            console.log(this.payload.published_at, date.getDate())
 
             this.dateTime.month = this.months[date.getMonth()].name
             this.dateTime.dayName = this.days[date.getDay()]
             this.dateTime.day = date.getDate()
             this.dateTime.year = date.getFullYear()
+            date.setHours(date.getHours() + 2)
             date.getHours() < 10 ? this.dateTime.hours = `0${date.getHours()}` : this.dateTime.hours = date.getHours()
             date.getMinutes() < 10 ? this.dateTime.minutes = `0${date.getMinutes()}` : this.dateTime.minutes = date.getMinutes()
         }
