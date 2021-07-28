@@ -126,7 +126,7 @@
                                     <div class="flex items-center">
                                         <button
                                             class="action relative w-10 h-10 rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
-                                            @click="changeUrl('/schedule', 'schedule')"
+                                            @click="goBack"
                                         >
                                             <svg viewBox="0 0 24 24" aria-hidden="true" class="relative text-blue fill-current w-6 h-6 z-20 pointer-events-none">
                                                 <g>
@@ -139,9 +139,12 @@
                                                 Tweet non inviati
                                             </DialogTitle>
                                         </div>
-                                        <div class="ml-auto">
-                                            <button class="text-white font-bold bg-blue py-1 px-4 rounded-full mr-1 outline-none flex items-center hover:opacity-75 transition disabled:opacity-50">
+                                        <div v-if="$store.state.scheduledTweets.length" class="ml-auto">
+                                            <button v-if="!$store.state.onEdit" class="text-white font-bold bg-blue py-1 px-4 rounded-full mr-1 outline-none flex items-center hover:opacity-75 transition disabled:opacity-50" @click="$store.commit('setOnEditState', true)">
                                                 <span>Modifica</span>
+                                            </button>
+                                            <button v-if="$store.state.onEdit" class="text-white font-bold bg-blue py-1 px-4 rounded-full mr-1 outline-none flex items-center hover:opacity-75 transition disabled:opacity-50" @click="$store.commit('clearSelectedScheduledTweets')">
+                                                <span>Fatto</span>
                                             </button>
                                         </div>
                                     </div>
@@ -149,15 +152,34 @@
                                 <div class="h-full sm:h-96 overflow-y-auto">
                                     <scheduled-tweets :user="$store.state.form.userId"/>
                                 </div>
-                                <div class="px-2 py-3 border-t border-gray mt-auto sm:mt-0">
+                                <div v-show="$store.state.onEdit" class="px-2 py-3 border-t border-gray mt-auto sm:mt-0 flex justify-between">
                                     <button
+                                        v-if="!$store.state.selectedScheduledTweets.length"
                                         class="action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
+                                        @click="$store.commit('selectAllScheduledTweets')"
                                     >
                                         <span class="text-blue font-bold py-1 px-4">Seleziona tutto</span>
+                                    </button>
+                                    <button
+                                        v-if="$store.state.selectedScheduledTweets.length"
+                                        class="action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer"
+                                        @click="$store.commit('deselectAllScheduledTweets')"
+                                    >
+                                        <span class="text-blue font-bold py-1 px-4">Deseleziona tutto</span>
+                                    </button>
+                                    <button
+                                        class="action relative rounded-full mr-3 flex outline-none justify-center items-center overflow-hidden cursor-pointer disabled:opacity-50 no-hover-disabled"
+                                        :disabled="!$store.state.selectedScheduledTweets.length"
+                                        @click="deleteScheduledTweets"
+                                    >
+                                        <span class="text-red-700 font-bold py-1 px-4">Elimina</span>
                                     </button>
                                 </div>
                             </div>
                         </Tab>
+                        <teleport to="body">
+                            <snackbar v-if="deleted" text="Operazione effettuata con successo." :timeout="5000" @closed="deleted = false" />
+                        </teleport>
                     </div>
                 </TransitionChild>
             </div>
@@ -170,9 +192,13 @@ import { Dialog, DialogOverlay, DialogTitle, TransitionChild, TransitionRoot } f
 import Select from "./Select";
 import Tab from "./Tab";
 import ScheduledTweets from "./tweets/ScheduledTweets";
+import Snackbar from "./Snackbar";
+
+const axios = require('axios')
 
 export default {
     components: {
+        Snackbar,
         ScheduledTweets,
         Tab,
         Select,
@@ -244,7 +270,8 @@ export default {
                 isInvalid: false
             },
             today: new Date(),
-            opened: false
+            opened: false,
+            deleted: false
         }
     },
     computed: {
@@ -314,6 +341,13 @@ export default {
         this.getExistingDataTime()
     },
     methods: {
+        async delete() {
+            return await axios.delete('/api/delete-scheduled', {
+                params: {
+                    tweets: JSON.stringify(this.$store.state.selectedScheduledTweets)
+                }
+            })
+        },
         getActualDateTime() {
             this.dateTime.month = this.months[this.today.getMonth()].name
             this.dateTime.day = this.getTomorrowDay()
@@ -343,6 +377,10 @@ export default {
             let date = new Date(`${this.numericMonth + 1}/${day}/${year}`)
             this.dateTime.dayName = this.days[date.getDay()]
         },
+        goBack() {
+            this.changeUrl('/schedule', 'schedule')
+            this.$store.commit('clearSelectedScheduledTweets')
+        },
         change(field, value) {
             this.dateTime[field] = value
 
@@ -369,6 +407,14 @@ export default {
             }
             this.$store.commit('setUrlPath', name)
         },
+        deleteScheduledTweets() {
+          this.delete()
+              .then(response => {
+                  this.deleted = true
+                  this.$store.commit('clearSelectedScheduledTweets')
+                  this.$store.commit('removeScheduledTweet', response)
+          })
+        },
         submit() {
             const { day, year, hours, minutes } = this.dateTime
 
@@ -389,6 +435,12 @@ export default {
 
     &:hover {
         background: rgba(29, 161, 242, 0.1);
+    }
+
+    &.no-hover-disabled {
+        &:hover {
+            background: none;
+        }
     }
 }
 button[disabled] {

@@ -3,10 +3,10 @@ import { createStore } from "vuex";
 export default createStore({
     state() {
         return {
-            windowLoading: true,
             urlPath: '',
             tweets: [],
             scheduledTweets: [],
+            selectedScheduledTweets: [],
             form: {
                 message: '',
                 mediaPath: '',
@@ -24,10 +24,21 @@ export default createStore({
                     }
                 }
             },
-            isLoading: false
+            windowLoading: true,
+            isLoading: false,
+            onEdit: false
         }
     },
     mutations: {
+        setLoadingState(state, value = true) {
+            state.isLoading = value
+        },
+        setWindowState(state, value) {
+            state.windowLoading = value
+        },
+        setOnEditState(state, value) {
+            state.onEdit = value
+        },
         setUrlPath(state, value) {
             state.urlPath = value
         },
@@ -37,11 +48,8 @@ export default createStore({
         setScheduledTweets(state, payload) {
             state.scheduledTweets = payload
         },
-        addNewTweet(state, payload) {
-            state.tweets.unshift(payload)
-        },
-        scheduleTweet(state, value) {
-            state.form.publishedAt = value
+        setSelectedScheduledTweets(state, value) {
+            !state.selectedScheduledTweets.includes(value) ? state.selectedScheduledTweets.push(value) : state.selectedScheduledTweets.splice(state.selectedScheduledTweets.indexOf(value), 1)
         },
         setUserID(state, value) {
             state.form.userId = value
@@ -82,11 +90,26 @@ export default createStore({
             state.form.scheduled.dateTime.minutes = 0
             state.form.scheduled.dateTime.isInvalid = false
         },
-        setLoadingState(state, value = true) {
-            state.isLoading = value
+        clearSelectedScheduledTweets() {
+            this.commit('deselectAllScheduledTweets')
+            this.commit('setOnEditState', false)
         },
-        setWindowState(state, value) {
-            state.windowLoading = value
+        addNewTweet(state, payload) {
+            state.tweets.unshift(payload)
+        },
+        scheduleTweet(state, value) {
+            state.form.publishedAt = value
+        },
+        selectAllScheduledTweets(state) {
+            state.selectedScheduledTweets = state.scheduledTweets.map(tweet => tweet.id)
+        },
+        deselectAllScheduledTweets(state) {
+            state.selectedScheduledTweets = []
+        },
+        removeScheduledTweet(state, payload) {
+            payload.data.forEach(id => {
+                state.scheduledTweets = state.scheduledTweets.filter(tweet => tweet.id !== id)
+            })
         }
     }
 })

@@ -85,4 +85,17 @@ class TweetController extends Controller
 
         return response()->json($tweet);
     }
+
+    public function destroy(Request $request)
+    {
+        $tweets = json_decode($request->tweets);
+
+        foreach ($tweets as $id) {
+            $tweet = Tweet::where('id', $id)->delete();
+        }
+
+        if ($tweet) {
+            return response()->json($tweets);
+        }
+    }
 }

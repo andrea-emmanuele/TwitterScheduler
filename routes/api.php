@@ -17,9 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/tweets', [\App\Http\Controllers\TweetController::class, 'index']);
 Route::get('/scheduled-tweets', [\App\Http\Controllers\TweetController::class, 'indexScheduled']);
 Route::get('/check-tweets', [\App\Http\Controllers\TweetController::class, 'checkLength']);
-Route::get('/hashtags', [\App\Http\Controllers\HashtagController::class, 'index']);
-Route::get('/users', [\App\Http\Controllers\UserController::class, 'index']);
 
 Route::post('/create-tweet', [\App\Http\Controllers\TweetController::class, 'store']);
-Route::post('/upload', [\App\Http\Controllers\MediaController::class, 'store']);
+
+Route::delete('/delete-scheduled', [\App\Http\Controllers\TweetController::class, 'destroy']);
 
