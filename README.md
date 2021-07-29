@@ -3,10 +3,7 @@
     <img src="https://img.shields.io/github/license/tailwindcomponents/dashboard-template">
 </a>
 
-
-<p style="font-size: 1rem">
-    Live <a href="https://twitterscheduler.andreaemmanuele.it/">Demo</a>
-</p>
+Live [Demo](https://twitterscheduler.andreaemmanuele.it)
 
 ## Framework utilizzati
 
