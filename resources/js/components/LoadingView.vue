@@ -8,7 +8,13 @@
 
 <script>
 export default {
-    name: "LoadingView"
+    name: "LoadingView",
+    mounted() {
+        window.addEventListener('load', () => {
+            console.log('loaded')
+            this.$store.commit('setWindowState', false)
+        })
+    }
 }
 </script>
 

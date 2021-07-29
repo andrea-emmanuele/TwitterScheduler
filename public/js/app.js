@@ -30186,7 +30186,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "LoadingView"
+  name: "LoadingView",
+  mounted: function mounted() {
+    var _this = this;
+
+    window.addEventListener('load', function () {
+      console.log('loaded');
+
+      _this.$store.commit('setWindowState', false);
+    });
+  }
 });
 
 /***/ }),
