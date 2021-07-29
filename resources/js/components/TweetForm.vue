@@ -210,7 +210,8 @@ export default {
             if (this.remainingChars < -9) {
                 svg.classList.remove('fade-in')
                 svg.classList.add('fade-out')
-            } else if (this.remainingChars > -10) {
+            }
+            else if (this.remainingChars > -10) {
                     console.log(this.remainingChars)
                     svg.classList.remove('fade-out')
                     svg.classList.add('fade-in')
