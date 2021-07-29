@@ -21,62 +21,77 @@ Live [Demo](https://twitterscheduler.andreaemmanuele.it)
 ## Installazione
 
 
-## Funzionalità
+## Anteprima delle funzionalità
 
 - **Pubblicare un tweet** 
-  <br/><br/>
+  <br/>
+  <br/>
   <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291813-694x370.gif">
-  <br/><br/>
+  <br/>
+  <br/>
 - **Programmare la pubblicazione di un tweet**
-  <br/><br/>
+  <br/>
+  <br/>
   <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291823-685x431.gif">
-  <br/><br/>
+  <br/>
+  <br/>
 - **Visualizzazione dei tweets programmati**
-  <br/><br/>
+  <br/>
+  <br/>
   <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291823-682x596.gif">
-  <br/><br/>
+  <br/>
+  <br/>
 - **Eliminare uno o più tweets non ancora inviati**
-  <br/><br/>
-  <img src="">
-  <br/><br/>
+  <br/>
+  <br/>
+  <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291923-695x596.gif">
+  <br/>
+  <br/>
 - **Line breaks**
-  <br/><br/>
+  <br/>
+  <br/>
   <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291833-703x370.gif">
-  <br/><br/>
+  <br/>
+  <br/>
 - **Link**
-  <br/><br/>
+  <br/>
+  <br/>
   <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291835-695x380.gif">
-  <br/><br/>
+  <br/>
+  <br/>
 - **Hashtags**
-  <br/><br/>
+  <br/>
+  <br/>
   <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291839-695x320.gif">
-  <br/><br/>
+  <br/>
+  <br/>
 - **Menzioni**
-  <br/><br/>
+  <br/>
+  <br/>
   <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291839-695x326.gif">
-  <br/><br/>
+  <br/>
+  <br/>
 - **Integrare un'immagine al tweet**
-  <br/><br/>
+  <br/>
+  <br/>
   <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291844-729x838.gif">
-  <br/><br/>
+  <br/>
+  <br/>
 - **Gestione degli eventi**
-  <br/><br/>
+  <br/>
+  <br/>
   a. Validazione del contenuto del tweet
   <br/>
   <br/>
-  <img src=""> 
+  <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291916-695x311.gif"> 
   <br/>
   <br/>
   b. Popups
   <br/>
   <br/>
-  <img src="">
+  <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291916-696x209.gif">
   <br/>
   <br/>
-- **Aggiornamento della lista dei tweets e del tempo trascorso dalla data di pubblicazione**
-  <br/>
-  <br/>
-  <img src="">
-  <br/><br/>
+- ... ed altro
 
 
