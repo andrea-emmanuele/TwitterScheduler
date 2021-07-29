@@ -1,4 +1,7 @@
-<p align="center" style="font-size: 3rem; font-weight: bold">Twitter Scheduler</p>
+# TwitterScheduler
+<a href="https://github.com/tailwindcomponents/dashboard-template/blob/master/LICENSE.md">
+    <img src="https://img.shields.io/github/license/tailwindcomponents/dashboard-template">
+</a>
 
 <p style="font-size: 1rem">
     Live <a href="https://twitterscheduler.andreaemmanuele.it/">Demo</a>
