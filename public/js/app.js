@@ -30900,18 +30900,21 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
         var progress = length * (this.$store.state.form.message.length / 320);
         this.$refs.spinner.style.strokeDashoffset = length - progress;
         svg.classList.remove('fade-in');
+        svg.classList.remove('fade-out');
       }
 
       if (this.remainingChars < 0) {
         this.$refs.spinner.style.stroke = '#e0245e';
         this.$refs.chars.style.color = '#e0245e';
-        svg.classList.remove('fade-out');
-        svg.classList.add('fade-in');
       }
 
       if (this.remainingChars < -9) {
         svg.classList.remove('fade-in');
         svg.classList.add('fade-out');
+      } else if (this.remainingChars > -10) {
+        console.log(this.remainingChars);
+        svg.classList.remove('fade-out');
+        svg.classList.add('fade-in');
       }
     },
     submit: function submit() {
