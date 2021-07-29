@@ -382,9 +382,9 @@ export default {
             this.$store.commit('clearSelectedScheduledTweets')
         },
         change(field, value) {
-            this.dateTime[field] = value
+            field === 'month' && this.dateTime.month !== value ? this.dateTime.day = 1 : null
 
-            field === 'month' ? this.dateTime.day = 1 : null
+            this.dateTime[field] = value
 
             this.getDayName()
             this.checkValidDateTime()

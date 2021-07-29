@@ -30517,8 +30517,8 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
       this.$store.commit('clearSelectedScheduledTweets');
     },
     change: function change(field, value) {
+      field === 'month' && this.dateTime.month !== value ? this.dateTime.day = 1 : null;
       this.dateTime[field] = value;
-      field === 'month' ? this.dateTime.day = 1 : null;
       this.getDayName();
       this.checkValidDateTime();
     },
