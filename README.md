@@ -1,14 +1,19 @@
 <p align="center" style="font-size: 3rem; font-weight: bold">Twitter Scheduler</p>
 
+<p style="font-size: 1rem">
+    Live <a href="https://twitterscheduler.andreaemmanuele.it/">Demo</a>
+</p>
+
 ## Framework utilizzati
 
-- [Vue 3 (javascript)](https://laravel.com/docs/routing)
-- [Laravel 8 (php)](https://laravel.com/docs/container)
-- [Tailwind (css)](https://laravel.com/docs/session)
+- [Vue 3](https://v3.vuejs.org/) (javascript)
+- [Laravel 8](https://laravel.com/) (php)
+- [Tailwind](https://tailwindcss.com/) (css)
 
 ## Altro
 
-- [Amazon S3 (File Storage)](https://laravel.com/docs/session)
+- [Vuex](https://vuex.vuejs.org/) (State Management)
+- [Amazon S3](https://aws.amazon.com/it/s3/) (File Storage)
 
 ## Installazione
 
@@ -26,6 +31,6 @@
 
 ## Funzionalità
 
-## License
+## Licenza
 
-TwitterScheduler è stato rilasciato sotto licenza open source [(Apache2)](https://opensource.org/licenses/MIT).
+TwitterScheduler è stato rilasciato sotto licenza open source [(Apache 2.0)](https://github.com/andrea-emmanuele/TwitterScheduler/blob/develop/LICENSE).
