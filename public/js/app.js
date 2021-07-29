@@ -30236,11 +30236,10 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
     this.form.password = this.credentials.password;
   },
   methods: {
-    submit: function submit() {
+    login: function login() {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -30249,16 +30248,20 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
                 return axios.post('/login', _this.form);
 
               case 2:
-                response = _context.sent;
-                response.status === 200 ? window.location.replace('/') : null;
+                return _context.abrupt("return", _context.sent);
 
-              case 4:
+              case 3:
               case "end":
                 return _context.stop();
             }
           }
         }, _callee);
       }))();
+    },
+    submit: function submit() {
+      this.login().then(function () {
+        window.location.replace('/');
+      });
     }
   }
 });

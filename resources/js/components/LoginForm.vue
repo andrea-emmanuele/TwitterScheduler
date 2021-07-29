@@ -76,10 +76,13 @@ export default {
       this.form.password = this.credentials.password
     },
     methods: {
-        async submit() {
-            const response = await axios.post('/login', this.form)
-
-            response.status === 200 ? window.location.replace('/') : null
+        async login() {
+            return await axios.post('/login', this.form)
+        },
+        submit() {
+            this.login().then(() => {
+                window.location.replace('/')
+            })
         }
     }
 }
