@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     <div class="flex ml-auto">
-                        <div v-show="$store.state.form.message && !$store.state.isLoading && noWhitespaceOnly" class="flex items-center">
+                        <div class="h-0 overflow-hidden flex items-center" :class="{ 'h-full': $store.state.form.message && !$store.state.isLoading && noWhitespaceOnly }">
                             <div ref="progress" class="relative w-6 h-6">
                                 <svg id="progress" height="100%" style="overflow: visible;" viewBox="0 0 20 20" width="100%">
                                     <circle cx="50%" cy="50%" fill="none" stroke-width="2" r="9" stroke="#EFF3F4"></circle>
