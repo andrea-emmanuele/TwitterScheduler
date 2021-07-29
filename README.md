@@ -33,7 +33,3 @@ Live [Demo](https://twitterscheduler.andreaemmanuele.it)
 - **[OP.GG](https://op.gg)**
 
 ## Funzionalità
-
-## Licenza
-
-TwitterScheduler è stato rilasciato sotto licenza open source [(Apache 2.0)](https://github.com/andrea-emmanuele/TwitterScheduler/blob/develop/LICENSE).
