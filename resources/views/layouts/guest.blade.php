@@ -20,5 +20,7 @@
                 {{ $slot }}
             </main>
         </div>
+
+        <loading-view/>
     </body>
 </html>

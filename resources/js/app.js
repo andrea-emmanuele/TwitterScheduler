@@ -15,6 +15,11 @@ const app = createApp({
         TweetForm,
         Tweets
     },
+    created() {
+        window.addEventListener('DOMContentLoaded', (event) => {
+            this.$store.commit('setWindowState', false)
+        })
+    },
     methods: {
         async logout() {
             const response = await axios.post('/logout')

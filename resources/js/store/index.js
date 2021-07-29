@@ -30,11 +30,11 @@ export default createStore({
         }
     },
     mutations: {
-        setLoadingState(state, value = true) {
-            state.isLoading = value
-        },
         setWindowState(state, value) {
             state.windowLoading = value
+        },
+        setLoadingState(state, value = true) {
+            state.isLoading = value
         },
         setOnEditState(state, value) {
             state.onEdit = value
