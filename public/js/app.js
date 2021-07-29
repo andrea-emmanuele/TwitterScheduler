@@ -32905,12 +32905,6 @@ var app = (0,vue__WEBPACK_IMPORTED_MODULE_1__.createApp)({
     TweetForm: _components_TweetForm__WEBPACK_IMPORTED_MODULE_4__.default,
     Tweets: _components_tweets_Tweets__WEBPACK_IMPORTED_MODULE_5__.default
   },
-  created: function created() {
-    this.$store.commit('setWindowState', true);
-  },
-  mounted: function mounted() {
-    this.$store.commit('setWindowState', false);
-  },
   methods: {
     logout: function logout() {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
