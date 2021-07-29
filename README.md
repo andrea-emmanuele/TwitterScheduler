@@ -35,6 +35,10 @@ Live [Demo](https://twitterscheduler.andreaemmanuele.it)
   <br/><br/>
   <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291823-682x596.gif">
   <br/><br/>
+- **Eliminare uno o più tweets non ancora inviati**
+  <br/><br/>
+  <img src="">
+  <br/><br/>
 - **Line breaks**
   <br/><br/>
   <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291833-703x370.gif">
@@ -60,16 +64,18 @@ Live [Demo](https://twitterscheduler.andreaemmanuele.it)
   a. Validazione del contenuto del tweet
   <br/>
   <br/>
+  <img src=""> 
   <br/>
   <br/>
-  b. Messaggio di avvenuta operazione
+  b. Popups
   <br/>
   <br/>
   <img src="">
   <br/>
   <br/>
 - **Aggiornamento della lista dei tweets e del tempo trascorso dalla data di pubblicazione**
-<br/><br/>
+  <br/>
+  <br/>
   <img src="">
   <br/><br/>
 
