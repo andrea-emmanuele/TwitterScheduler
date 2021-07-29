@@ -39,6 +39,7 @@ Live [Demo](https://twitterscheduler.andreaemmanuele.it)
   <br />
 - **Rinominare il file .env.example in .env e settare il database (è necessario creare prima un db in locale)**
   <br />
+  <br />
   ```
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
@@ -47,8 +48,7 @@ Live [Demo](https://twitterscheduler.andreaemmanuele.it)
     DB_USERNAME=tuo_username
     DB_PASSWORD=tua_password
   ```
-  <br />
-  <br />
+  
 - **Generare una random key**
   <br />
   <br />
