@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Hashtag;
+use App\Models\Tweet;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
@@ -24,7 +26,15 @@ class DatabaseSeeder extends Seeder
         $user->remember_token = Str::random(10);
         $user->save();
 
-        \App\Models\Tweet::factory(20)->create();
+        $tweets = Config::get('tweets');
 
+        foreach ($tweets as $tweet) {
+            $newTweet = new Tweet();
+            $newTweet->message = $tweet['message'];
+            $newTweet->media_path = $tweet['media_path'];
+            $newTweet->published_at = $tweet['published_at'];
+            $newTweet->user_id = $tweet['user_id'];
+            $newTweet->save();
+        }
     }
 }
