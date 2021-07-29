@@ -27,8 +27,9 @@
             <main class="mt-10">
                 {{ $slot }}
             </main>
+
+            <loading-view />
         </div>
 
-        <loading-view />
     </body>
 </html>

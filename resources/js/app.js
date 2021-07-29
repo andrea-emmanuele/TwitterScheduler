@@ -16,9 +16,10 @@ const app = createApp({
         Tweets
     },
     created() {
-        window.addEventListener('DOMContentLoaded', (event) => {
-            this.$store.commit('setWindowState', false)
-        })
+        this.$store.commit('setWindowState', true)
+    },
+    mounted() {
+        this.$store.commit('setWindowState', false)
     },
     methods: {
         async logout() {

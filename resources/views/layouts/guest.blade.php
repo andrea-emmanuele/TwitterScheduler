@@ -19,8 +19,8 @@
             <main class="h-screen flex">
                 {{ $slot }}
             </main>
-        </div>
 
-        <loading-view/>
+            <loading-view/>
+        </div>
     </body>
 </html>
