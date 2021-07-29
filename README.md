@@ -2,7 +2,8 @@
 <a href="https://github.com/tailwindcomponents/dashboard-template/blob/master/LICENSE.md">
     <img src="https://img.shields.io/github/license/tailwindcomponents/dashboard-template">
 </a>
-<br>
+
+
 <p style="font-size: 1rem">
     Live <a href="https://twitterscheduler.andreaemmanuele.it/">Demo</a>
 </p>
