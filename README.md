@@ -2,7 +2,8 @@
 <a href="https://github.com/tailwindcomponents/dashboard-template/blob/master/LICENSE.md">
     <img src="https://img.shields.io/github/license/tailwindcomponents/dashboard-template">
 </a>
-
+<br />
+<br />
 Live [Demo](https://twitterscheduler.andreaemmanuele.it)
 
 ## Framework utilizzati
