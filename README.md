@@ -1,11 +1,11 @@
 # TwitterScheduler
-<a href="https://github.com/andrea-emmanuele/TwitterScheduler/blob/master/LICENSE">
+<a href="https://github.com/andrea-emmanuele/TwitterScheduler/blob/master/LICENSE" target="_blank">
     <img src="https://img.shields.io/github/license/tailwindcomponents/dashboard-template">
 </a>
 <br />
 <br />
 
-Live [Demo](https://twitterscheduler.andreaemmanuele.it)
+Live <a href="https://twitterscheduler.andreaemmanuele.it" target="_blank">Demo</a>
 
 ## Framework utilizzati
 
