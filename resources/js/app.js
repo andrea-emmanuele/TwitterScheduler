@@ -15,12 +15,6 @@ const app = createApp({
         TweetForm,
         Tweets
     },
-    created() {
-        this.$store.commit('setWindowState', true)
-    },
-    mounted() {
-        this.$store.commit('setWindowState', false)
-    },
     methods: {
         async logout() {
             const response = await axios.post('/logout')
