@@ -25,40 +25,49 @@ Live [Demo](https://twitterscheduler.andreaemmanuele.it)
 
 - **Pubblicare un tweet** 
   <br/><br/>
-  <img src="">
+  <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291813-694x370.gif">
   <br/><br/>
 - **Programmare la pubblicazione di un tweet**
   <br/><br/>
-  <img src="">
+  <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291823-685x431.gif">
   <br/><br/>
 - **Visualizzazione dei tweets programmati**
   <br/><br/>
-  <img src="">
+  <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291823-682x596.gif">
   <br/><br/>
 - **Line breaks**
   <br/><br/>
-  <img src="">
+  <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291833-703x370.gif">
   <br/><br/>
 - **Link**
   <br/><br/>
-  <img src="">
+  <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291835-695x380.gif">
   <br/><br/>
 - **Hashtags**
   <br/><br/>
-  <img src="">
+  <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291839-695x320.gif">
   <br/><br/>
 - **Menzioni**
   <br/><br/>
-  <img src="">
+  <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291839-695x326.gif">
   <br/><br/>
 - **Integrare un'immagine al tweet**
   <br/><br/>
-  <img src="">
+  <img src="https://raw.githubusercontent.com/andrea-emmanuele/TwitterScheduler/master/functionalities/CPT2107291844-729x838.gif">
   <br/><br/>
 - **Gestione degli eventi**
   <br/><br/>
+  a. Validazione del contenuto del tweet
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  b. Messaggio di avvenuta operazione
+  <br/>
+  <br/>
   <img src="">
-  <br/><br/>
+  <br/>
+  <br/>
 - **Aggiornamento della lista dei tweets e del tempo trascorso dalla data di pubblicazione**
 <br/><br/>
   <img src="">
