@@ -19,6 +19,55 @@ Live [Demo](https://twitterscheduler.andreaemmanuele.it)
 - [Amazon S3](https://aws.amazon.com/it/s3/) (File Storage)
 
 ## Installazione
+- **Clonare la repo**
+  <br />
+  <br />
+```git clone https://github.com/andrea-emmanuele/TwitterScheduler.git```
+  <br />
+  <br />
+- **Installare le dipendenze**
+  <br />
+  <br />
+  ```npm install & composer install```
+  <br />
+  <br />
+- **Compilare gli assets**
+  <br />
+  <br />
+  ```npm run dev```
+  <br />
+  <br />
+- **Rinominare il file .env.example in .env e settare il database (è necessario creare prima un db in locale)**
+  <br />
+  ```DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=nome_del_tuo_database
+    DB_USERNAME=tuo_username
+    DB_PASSWORD=tua_password
+  
+- **Generare una random key**
+  <br />
+  <br />
+  ```php artisan key:generate```
+  <br />
+  <br />
+- **Runnare le migrations**
+  <br />
+  <br />
+  ```php artisan migrate --seed```
+  <br />
+  <br />
+  
+L'applicazione è ora pronta all'uso.\
+Per la pubblicazione delle immagini nei tweet è necessario disporre di un account amazon aws e inserire le credenziali nel file .env
+
+```AWS_ACCESS_KEY_ID=access_key
+    AWS_SECRET_ACCESS_KEY=secret_access_key
+    AWS_DEFAULT_REGION=eu-central-1
+    AWS_BUCKET=nome_bucket_s3
+    AWS_USE_PATH_STYLE_ENDPOINT=false
+   ```
 
 
 ## Anteprima delle funzionalità
