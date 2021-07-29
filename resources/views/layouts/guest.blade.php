@@ -16,7 +16,7 @@
     <body>
         <div id="app">
             <!-- Page Content -->
-            <main>
+            <main class="h-screen flex">
                 {{ $slot }}
             </main>
         </div>

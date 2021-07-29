@@ -31375,7 +31375,7 @@ var _withId = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.withScopeId)("dat
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-12a98f72");
 
 var _hoisted_1 = {
-  "class": "min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+  "class": "w-full flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
 };
 var _hoisted_2 = {
   "class": "max-w-md w-full space-y-8"

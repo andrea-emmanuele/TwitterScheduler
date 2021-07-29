@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="w-full flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-8">
             <div>
                 <svg width="72" height="72" viewBox="0 0 72 72" class="mx-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
