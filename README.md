@@ -1,5 +1,5 @@
 # TwitterScheduler
-<a href="https://github.com/tailwindcomponents/dashboard-template/blob/master/LICENSE.md">
+<a href="https://github.com/andrea-emmanuele/TwitterScheduler/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/tailwindcomponents/dashboard-template">
 </a>
 <br />
