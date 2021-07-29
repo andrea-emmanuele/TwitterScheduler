@@ -1,5 +1,5 @@
 <template>
-    <div v-if="$store.state.windowLoading" class="fixed inset-0 bg-white h-screen flex justify-center items-center z-50">
+    <div v-if="isLoading" class="fixed inset-0 bg-white h-screen flex justify-center items-center z-50">
         <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" class="animate-pulse">
             <path d="M67.812 16.141C65.464 17.18 62.943 17.884 60.293 18.201C62.996 16.581 65.071 14.014 66.049 10.957C63.52 12.457 60.719 13.549 57.736 14.133C55.349 11.591 51.948 10 48.182 10C40.953 10 35.09 15.861 35.09 23.093C35.09 24.119 35.208 25.114 35.428 26.074C24.543 25.526 14.9 20.317 8.441 12.395C7.315 14.331 6.67 16.579 6.67 18.976C6.67 23.518 8.982 27.527 12.494 29.874C10.348 29.805 8.329 29.217 6.564 28.236C6.562 28.291 6.562 28.346 6.562 28.398C6.562 34.743 11.075 40.036 17.066 41.238C15.965 41.536 14.81 41.695 13.617 41.695C12.771 41.695 11.95 41.617 11.152 41.464C12.819 46.664 17.651 50.45 23.382 50.554C18.9 54.066 13.253 56.16 7.122 56.16C6.067 56.16 5.026 56.099 4 55.976C9.794 59.693 16.676 61.858 24.067 61.858C48.15 61.858 61.318 41.909 61.318 24.609C61.318 24.043 61.304 23.475 61.279 22.915C63.838 21.068 66.058 18.765 67.812 16.141Z" fill="#1DA1F2"/>
         </svg>
@@ -9,10 +9,14 @@
 <script>
 export default {
     name: "LoadingView",
-    mounted() {
+    data() {
+        return {
+            isLoading: true
+        }
+    },
+    created() {
         window.addEventListener('load', () => {
-            console.log('loaded')
-            this.$store.commit('setWindowState', false)
+            this.isLoading = false
         })
     }
 }

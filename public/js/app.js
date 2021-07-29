@@ -30187,13 +30187,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "LoadingView",
-  mounted: function mounted() {
+  data: function data() {
+    return {
+      isLoading: true
+    };
+  },
+  created: function created() {
     var _this = this;
 
     window.addEventListener('load', function () {
-      console.log('loaded');
-
-      _this.$store.commit('setWindowState', false);
+      _this.isLoading = false;
     });
   }
 });
@@ -31364,7 +31367,7 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)();
 
 var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data, $options) {
-  return _ctx.$store.state.windowLoading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [_hoisted_2])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
+  return $data.isLoading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [_hoisted_2])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
 });
 
 /***/ }),
@@ -32979,15 +32982,11 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
       },
-      windowLoading: true,
       isLoading: false,
       onEdit: false
     };
   },
   mutations: {
-    setWindowState: function setWindowState(state, value) {
-      state.windowLoading = value;
-    },
     setLoadingState: function setLoadingState(state) {
       var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       state.isLoading = value;

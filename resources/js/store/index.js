@@ -24,15 +24,11 @@ export default createStore({
                     }
                 }
             },
-            windowLoading: true,
             isLoading: false,
             onEdit: false
         }
     },
     mutations: {
-        setWindowState(state, value) {
-            state.windowLoading = value
-        },
         setLoadingState(state, value = true) {
             state.isLoading = value
         },
