@@ -39,13 +39,16 @@ Live [Demo](https://twitterscheduler.andreaemmanuele.it)
   <br />
 - **Rinominare il file .env.example in .env e settare il database (è necessario creare prima un db in locale)**
   <br />
-  ```DB_CONNECTION=mysql
+  ```
+    DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
     DB_PORT=3306
     DB_DATABASE=nome_del_tuo_database
     DB_USERNAME=tuo_username
     DB_PASSWORD=tua_password
-  
+  ```
+  <br />
+  <br />
 - **Generare una random key**
   <br />
   <br />
@@ -62,12 +65,13 @@ Live [Demo](https://twitterscheduler.andreaemmanuele.it)
 L'applicazione è ora pronta all'uso.\
 Per la pubblicazione delle immagini nei tweet è necessario disporre di un account amazon aws e inserire le credenziali nel file .env
 
-```AWS_ACCESS_KEY_ID=access_key
+```
+    AWS_ACCESS_KEY_ID=access_key
     AWS_SECRET_ACCESS_KEY=secret_access_key
     AWS_DEFAULT_REGION=eu-central-1
     AWS_BUCKET=nome_bucket_s3
     AWS_USE_PATH_STYLE_ENDPOINT=false
-   ```
+```
 
 
 ## Anteprima delle funzionalità
