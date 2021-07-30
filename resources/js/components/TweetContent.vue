@@ -20,6 +20,7 @@ export default {
     },
     watch: {
         '$store.state.form.message'() {
+            // Se il messaggio è vuoto, svuota del tutto e setta l'altezza iniziale del div
             if (!this.$store.state.form.message) {
                 this.$refs["tweet-content"].innerHTML = ''
                 this.$refs["tweet-content"].style.height = 'initial'
@@ -27,9 +28,11 @@ export default {
         },
     },
     methods: {
+        // mostra o nasconde il testo di placeholder
         showPlaceholder(tweetContent, value) {
             value ? tweetContent.classList.remove('placeholder') : tweetContent.classList.add('placeholder')
         },
+        // Aumenta l'altezza del div in base al numero di righe di testo inserite
         resize() {
             const textarea = this.$refs["tweet-content"]
 
@@ -49,7 +52,7 @@ export default {
             this.showPlaceholder(tweetContent, innerText)
             this.resize()
 
-            this.$store.commit('setMessage', innerText)
+            this.$store.commit('setMessage', innerText) // Setta il messaggio nel global storage
         },
     }
 }

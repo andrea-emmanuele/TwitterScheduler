@@ -275,12 +275,15 @@ export default {
         }
     },
     computed: {
+        // Otteniamo il giorno del mese numerico
         numericMonth() {
             return this.months.findIndex(month => month.name === this.dateTime.month)
         },
+        // Otteniamo quanti giorni ha un determinato mese
         monthDays() {
             return this.months.find(month => month.name === this.dateTime.month).days
         },
+        // Generiamo una lista a partire dall'anno attuale aggiungendo altri 2 anni
         years() {
             let actualYear = new Date().getFullYear()
             const years = [];
@@ -291,6 +294,7 @@ export default {
 
             return years
         },
+        // Generiamo il numero di ore in un giorno
         hours() {
             const hours = [];
 
@@ -300,6 +304,7 @@ export default {
 
             return hours
         },
+        // Generiamo il numero di minuti in un'ora
         minutes() {
             const minutes = [];
 
@@ -311,6 +316,7 @@ export default {
         }
     },
     watch: {
+        // Se il pathname dell'url attuale corrisponde si apre il modal
         '$store.state.urlPath'() {
             window.location.pathname.includes('/schedule') ? this.opened = true : this.opened = false
         }
@@ -319,6 +325,7 @@ export default {
         this.getActualDateTime()
         this.getDayName()
 
+        // Mostriamo dinamicamente in base al pathname un contenuto diverso per il modal
         if (window.location.pathname.includes('/schedule/tweets')) {
             this.$store.commit('setUrlPath', 'scheduledTweets')
             this.opened = true
@@ -341,6 +348,7 @@ export default {
         this.getExistingDataTime()
     },
     methods: {
+        // Elimina uno o più record dalla tabella tweets
         async delete() {
             return await axios.delete('/api/delete-scheduled', {
                 params: {
@@ -348,6 +356,7 @@ export default {
                 }
             })
         },
+        // Otteniamo la data odierna
         getActualDateTime() {
             this.dateTime.month = this.months[this.today.getMonth()].name
             this.dateTime.day = this.getTomorrowDay()
@@ -355,6 +364,7 @@ export default {
             this.today.getHours() < 10 ? this.dateTime.hours = `0${this.today.getHours()}` : this.dateTime.hours = this.today.getHours()
             this.today.getMinutes() < 10 ? this.dateTime.minutes = `0${this.today.getMinutes()}` : this.dateTime.minutes = this.today.getMinutes()
         },
+        // Otteniamo un payload di dateTime se é già stata selezionata una data per programmare un tweet
         getExistingDataTime() {
             const { month, dayName, day, year, hours, minutes, isInvalid } = this.$store.state.form.scheduled.dateTime
             this.dateTime.month = month
@@ -365,22 +375,26 @@ export default {
             this.dateTime.minutes = minutes
             this.dateTime.isInvalid = isInvalid
         },
+        // Otteniamo il giorno successivo a quello attuale
         getTomorrowDay() {
             const tomorrow = new Date()
             tomorrow.setDate(this.today.getDate() + 1)
 
             return tomorrow.getDate()
         },
+        // Otteniamo il nome del giorno della settimana
         getDayName() {
             const { day, year } = this.dateTime
 
             let date = new Date(`${this.numericMonth + 1}/${day}/${year}`)
             this.dateTime.dayName = this.days[date.getDay()]
         },
+        // Torna alla tab precedente
         goBack() {
             this.changeUrl('/schedule', 'schedule')
             this.$store.commit('clearSelectedScheduledTweets')
         },
+        // Cambia il valore selezionato nelle select
         change(field, value) {
             field === 'month' && this.dateTime.month !== value ? this.dateTime.day = 1 : null
 
@@ -389,6 +403,7 @@ export default {
             this.getDayName()
             this.checkValidDateTime()
         },
+        // Effettua un controllo sulla data nel caso fosse una data passata
         checkValidDateTime() {
             const { day, year, hours, minutes } = this.dateTime
 
@@ -396,17 +411,20 @@ export default {
 
             date < this.today ? this.dateTime.isInvalid = true : this.dateTime.isInvalid = false
         },
+        // Annulla la programmazione di un tweet non ancora inviato
         clearSchedule() {
             this.$store.commit('clearPublishedAt')
             this.$store.commit('clearSchedule')
             this.changeUrl('/', '')
         },
+        // Cambia il pathname dell'url senza aggiornare la pagina
         changeUrl(url, name) {
             if (window.history.replaceState) {
                 window.history.replaceState('', '', url);
             }
             this.$store.commit('setUrlPath', name)
         },
+        // Effettua la chiamata asincrona delete per eliminare i tweets selezionati
         deleteScheduledTweets() {
           this.delete()
               .then(response => {
@@ -415,6 +433,7 @@ export default {
                   this.$store.commit('removeScheduledTweet', response)
           })
         },
+        // Programma il post
         submit() {
             const { day, year, hours, minutes } = this.dateTime
 

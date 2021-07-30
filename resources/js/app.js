@@ -5,7 +5,6 @@ import TweetForm from "./components/TweetForm";
 import Tweets from "./components/tweets/Tweets";
 import LoadingView from "./components/LoadingView";
 
-
 const axios = require('axios')
 
 const app = createApp({

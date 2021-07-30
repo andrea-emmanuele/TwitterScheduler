@@ -16,7 +16,7 @@ export default {
         }
     },
     created() {
-        this.$store.state.urlPath === this.name ? this.isActive = true : this.isActive = false
+        this.$store.state.urlPath === this.name ? this.isActive = true : this.isActive = false // Se il pathname dell'url corrisponde al nome della tab, questa si renderà visibile
     },
     updated() {
         this.$store.state.urlPath === this.name ? this.isActive = true : this.isActive = false

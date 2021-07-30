@@ -102,15 +102,18 @@ export default {
         }
     },
     computed: {
+        // Calcoliamo i restanti caretteri che l'utente può immettere
         remainingChars() {
             return 320 - this.$store.state.form.message.length
         },
+        // Controlliamo che il testo non sia formato da soli spazi
         noWhitespaceOnly() {
             const { message } = this.$store.state.form
             const regex = /[^\s]+/
 
             return regex.test(message)
         },
+        // Effettuiamo vari controlli per abilitare il pulsante di submit del form
         canSubmit() {
             const { message } = this.$store.state.form
 
@@ -118,18 +121,20 @@ export default {
         }
     },
     watch: {
+        // Quando il messaaggio cambia aggiorniamo il progresso dello spinner inerente alla lunghezza del testo
         '$store.state.form.message'() {
             this.changeSpinnerProgress()
         }
     },
     created() {
-        this.profile = JSON.parse(this.user)
-        this.$store.commit('setUserID', this.profile.id)
+        this.profile = JSON.parse(this.user) // Salviamo i dati dell'utente che ha effettuato il login
+        this.$store.commit('setUserID', this.profile.id) // Settiamo l'id dell'utente nel nostro global storage al quale verranno associati i tweet inviati
     },
     mounted() {
         this.setSpinnerInitialState()
     },
     methods: {
+        // Chiamata asincrona di tipo POST per salvare nel database il tweet inviato
         async createTweet() {
             const { message, mediaPath, publishedAt, userId } = this.$store.state.form
             const data = new FormData()
@@ -146,9 +151,10 @@ export default {
         openModal() {
             if (window.history.replaceState) {
                 window.history.replaceState('', '', '/schedule');
-            }
-            this.$store.commit('setUrlPath', 'schedule')
+            } // Modifichiamo l'url senza aggiornare la pagina
+            this.$store.commit('setUrlPath', 'schedule') // Settiamo il pathname dell'url attuale
         },
+        // Serve a mostrare l'anteprima dell'immagine o gif selezionata dall'utente
         getPreview(event) {
             const image = event.target.files[0]
             const reader = new FileReader();
@@ -160,19 +166,22 @@ export default {
 
             this.setImage(image)
         },
+        // Salva il path dell'immagine
         setImage(image) {
             this.$store.commit('setMediaPath', image)
         },
+        // Rimuove l'anteprima dell'immagine
         removeImage() {
             this.previewImage = ''
             this.$store.commit('clearMediaPath')
         },
         setSpinnerInitialState() {
-            const length = this.$refs.spinner.getTotalLength()
+            const length = this.$refs.spinner.getTotalLength() // Otteniamo la lunghezza della svg
 
             this.$refs.spinner.style.strokeDasharray = length
             this.$refs.spinner.style.strokeDashoffset = length
         },
+        // Anima la progress bar circolare quando viene immesso il testo
         changeSpinnerProgress() {
             let svg = document.querySelector('#progress')
             let length = this.$refs.spinner.getTotalLength()
@@ -217,6 +226,7 @@ export default {
                     svg.classList.add('fade-in')
             }
         },
+        // Effettua la chiamata createTweet ed aggiunge il nuovo tweet alla lista se va a buon fine
         submit() {
             this.previewImage = ''
 
